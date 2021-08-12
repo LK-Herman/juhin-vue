@@ -53,7 +53,8 @@ namespace JuhinAPI.Controllers
             context.Add(vendor);
             await context.SaveChangesAsync();
 
-            return new CreatedAtRouteResult("getVendor", new { id = vendor.VendorId }, vendor);
+            //return new CreatedAtRouteResult("getVendor", new { id = vendor.VendorId }, vendor);
+            return new CreatedAtRouteResult("getVendor", vendor);
         }
         [HttpPut]
         public ActionResult Put()
