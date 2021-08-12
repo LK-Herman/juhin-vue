@@ -8,6 +8,7 @@ namespace JuhinAPI.Models
 {
     public class Status
     {
+        [Key]
         [Required]
         public int StatusId { get; set; }
         [Required]

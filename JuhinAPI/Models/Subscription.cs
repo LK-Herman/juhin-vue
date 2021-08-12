@@ -8,6 +8,7 @@ namespace JuhinAPI.Models
 {
     public class Subscription
     {
+        [Key]
         [Required]
         public Guid SubscriptionId { get; set; }
         //Subscription m-1 Delivery

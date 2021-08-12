@@ -14,17 +14,3 @@ namespace JuhinAPI.Models
 
     }
 }
-// To add to dbContex class
-//protected override void OnModelCreating(ModelBuilder modelBuilder)
-//{
-//    modelBuilder.Entity<PurchaseOrder_Delivery>()//BookCategory
-//        .HasKey(pod => new { pod.DeliveryId, pod.PurchaseOrderId });
-//    modelBuilder.Entity<PurchaseOrder_Delivery>()
-//        .HasOne(pod => pod.Delivery)
-//        .WithMany(d => d.PurchaseOrderDeliveries)
-//        .HasForeignKey(pod => pod.DeliveryId);
-//    modelBuilder.Entity<PurchaseOrder_Delivery>()
-//        .HasOne(pod => pod.PurchaseOrder)
-//        .WithMany(po => po.PurchaseOrderDeliveries)
-//        .HasForeignKey(pod => pod.PurchaseOrderId);
-//}

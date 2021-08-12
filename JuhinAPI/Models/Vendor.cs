@@ -8,7 +8,8 @@ namespace JuhinAPI.Models
 {
     public class Vendor
     {
-        public Guid VendorId;
+        [Key, Required]
+        public Guid VendorId { get; set; }
         [Required(ErrorMessage ="Vendor code is required")]
         public string VendorCode { get; set; }
         [Required(ErrorMessage = "Short name is required")]

@@ -8,6 +8,7 @@ namespace JuhinAPI.Models
 {
     public class Pallet
     {
+        [Key]
         [Required]
         public int PalletId { get; set; }
         [Required]

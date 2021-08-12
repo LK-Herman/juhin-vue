@@ -9,6 +9,7 @@ namespace JuhinAPI.Models
     public class Forwarder
     {
         [Required]
+        [Key]
         public int ForwarderId { get; set; }
         [Required]
         public string Name { get; set; }

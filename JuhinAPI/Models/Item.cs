@@ -8,6 +8,7 @@ namespace JuhinAPI.Models
 {
     public class Item
     {
+        [Key]
         [Required]
         public Guid ItemId { get; set; }
         [Required]
@@ -32,9 +33,12 @@ namespace JuhinAPI.Models
         public int PalletId { get; set; }
         public Pallet Pallet { get; set; }
 
-        //Item m-1 PackingList
-        public Guid PackingListId { get; set; }
-        public PackingList PackingList { get; set; }
+        //Item 1-1 PackedItem
+        public PackedItem PackedItem { get; set; }
+
+        //Item m-1 Unit
+        public int UnitId { get; set; }
+        public Unit Unit { get; set; }
 
     }
 }

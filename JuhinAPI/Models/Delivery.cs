@@ -9,6 +9,7 @@ namespace JuhinAPI.Models
     public class Delivery
     {
         [Required]
+        [Key]
         public Guid DeliveryId { get; set; }
         [Required]
         public DateTime CreatedAt { get; set; }
@@ -23,8 +24,8 @@ namespace JuhinAPI.Models
         //Delivery 1-m Document
         public List<Document> Documents { get; set; }
         
-        //Delivery 1-1 PackingList
-        public PackingList PackingList { get; set; }
+        //Delivery 1-m PackedItem
+        public List<PackedItem> PackedItems { get; set; }
         
         //Delivery m-1 Forwarder
         public int ForwarderId { get; set; }

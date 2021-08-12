@@ -6,16 +6,20 @@ using System.Threading.Tasks;
 
 namespace JuhinAPI.Models
 {
-    public class PackingList
+    public class PackedItem
     {
+        [Key]
         [Required]
-        public Guid PackingListId { get; set; }
+        public Guid PackedItemId { get; set; }
+        public int Quantity { get; set; }
 
-        //PackingList 1-1 Delivery
+
+        //PackedItem m-1 Delivery
         public Guid DeliveryId { get; set; }
         public Delivery Delivery { get; set; }
-        //PackingList 1-m Item
-        public List<Item> Items { get; set; }
+        //PackedItem 1-1 Item
+        public Guid ItemId { get; set; }
+        public Item Item { get; set; }
 
     }
 }

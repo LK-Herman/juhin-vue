@@ -9,6 +9,7 @@ namespace JuhinAPI.Models
 {
     public class PurchaseOrder
     {
+        [Key]
         [Required]
         public Guid OrderId { get; set; }
         [Required]

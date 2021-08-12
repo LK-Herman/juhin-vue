@@ -1,5 +1,8 @@
-﻿using JuhinAPI.Models;
+﻿using JuhinAPI.Filters;
+using JuhinAPI.Models;
 using JuhinAPI.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -22,9 +25,11 @@ namespace JuhinAPI.Controllers
             this.logger = logger;
         }
         [HttpGet]
+        //[ResponseCache(Duration = 60)] //caching response for 60 sec
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)] 
+        //[ServiceFilter(typeof(MyActionFilter))]
         public ActionResult<List<Vendor>> Get()
         {
-            logger.LogInformation("Getting all vendors list");
             return repository.GetAllVendors();
         }
         [HttpGet("vendorsId")]
@@ -38,7 +43,6 @@ namespace JuhinAPI.Controllers
             var vendor = repository.GetVendorById(id);
             if (vendor == null)
             {
-                logger.LogWarning($"Vendor with Id {id} not found");
                 return NotFound();
             }
             return vendor;

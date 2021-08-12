@@ -8,6 +8,7 @@ namespace JuhinAPI.Models
 {
     public class Document
     {
+        [Key]
         public Guid DocumentId { get; set; }
         [Required]
         public string Type { get; set; }
