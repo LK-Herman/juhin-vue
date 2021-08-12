@@ -37,7 +37,7 @@ namespace JuhinAPI
                 options.Filters.Add(typeof(MyExceptionFilter));
             }).AddXmlDataContractSerializerFormatters();
 
-            services.AddSingleton<IRepository, InMemoryRepository>();
+            //services.AddSingleton<IRepository, InMemoryRepository>();
             services.AddTransient<Microsoft.Extensions.Hosting.IHostedService, WriteToFileHostedService>();
         }
 

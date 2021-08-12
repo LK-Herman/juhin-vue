@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JuhinAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210812172344_Initial")]
-    partial class Initial
+    [Migration("20210812192457_ModelChange")]
+    partial class ModelChange
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -146,9 +146,6 @@ namespace JuhinAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("PackedItemId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("PalletId")
                         .HasColumnType("int");
 
@@ -159,6 +156,9 @@ namespace JuhinAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("UnitId")
+                        .HasColumnType("int");
+
                     b.Property<Guid>("VendorId")
                         .HasColumnType("uniqueidentifier");
 
@@ -166,9 +166,9 @@ namespace JuhinAPI.Migrations
 
                     b.HasIndex("CurrencyId");
 
-                    b.HasIndex("PackedItemId");
-
                     b.HasIndex("PalletId");
+
+                    b.HasIndex("UnitId");
 
                     b.HasIndex("VendorId");
 
@@ -184,9 +184,17 @@ namespace JuhinAPI.Migrations
                     b.Property<Guid>("DeliveryId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("ItemId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
                     b.HasKey("PackedItemId");
 
-                    b.HasIndex("DeliveryId")
+                    b.HasIndex("DeliveryId");
+
+                    b.HasIndex("ItemId")
                         .IsUnique();
 
                     b.ToTable("PackedItems");
@@ -281,6 +289,24 @@ namespace JuhinAPI.Migrations
                     b.ToTable("Subscriptions");
                 });
 
+            modelBuilder.Entity("JuhinAPI.Models.Unit", b =>
+                {
+                    b.Property<int>("UnitId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ShortName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UnitId");
+
+                    b.ToTable("Units");
+                });
+
             modelBuilder.Entity("JuhinAPI.Models.Vendor", b =>
                 {
                     b.Property<Guid>("VendorId")
@@ -353,15 +379,15 @@ namespace JuhinAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("JuhinAPI.Models.PackedItem", "PackedItem")
-                        .WithMany("Items")
-                        .HasForeignKey("PackedItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("JuhinAPI.Models.Pallet", "Pallet")
                         .WithMany("Items")
                         .HasForeignKey("PalletId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("JuhinAPI.Models.Unit", "Unit")
+                        .WithMany("Items")
+                        .HasForeignKey("UnitId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -375,8 +401,14 @@ namespace JuhinAPI.Migrations
             modelBuilder.Entity("JuhinAPI.Models.PackedItem", b =>
                 {
                     b.HasOne("JuhinAPI.Models.Delivery", "Delivery")
+                        .WithMany("PackedItems")
+                        .HasForeignKey("DeliveryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("JuhinAPI.Models.Item", "Item")
                         .WithOne("PackedItem")
-                        .HasForeignKey("JuhinAPI.Models.PackedItem", "DeliveryId")
+                        .HasForeignKey("JuhinAPI.Models.PackedItem", "ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

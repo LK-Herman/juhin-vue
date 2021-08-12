@@ -26,7 +26,6 @@ C:\Projects\Juhin\JuhinAPI\bin\Debug\netcoreapp3.1\JuhinAPI.runtimeconfig.json
 C:\Projects\Juhin\JuhinAPI\bin\Debug\netcoreapp3.1\JuhinAPI.runtimeconfig.dev.json
 C:\Projects\Juhin\JuhinAPI\bin\Debug\netcoreapp3.1\JuhinAPI.dll
 C:\Projects\Juhin\JuhinAPI\bin\Debug\netcoreapp3.1\JuhinAPI.pdb
-C:\Projects\Juhin\JuhinAPI\obj\Debug\netcoreapp3.1\JuhinAPI.csprojAssemblyReference.cache
 C:\Projects\Juhin\JuhinAPI\obj\Debug\netcoreapp3.1\JuhinAPI.AssemblyInfoInputs.cache
 C:\Projects\Juhin\JuhinAPI\obj\Debug\netcoreapp3.1\JuhinAPI.AssemblyInfo.cs
 C:\Projects\Juhin\JuhinAPI\obj\Debug\netcoreapp3.1\JuhinAPI.csproj.CoreCompileInputs.cache
@@ -80,3 +79,5 @@ C:\Projects\Juhin\JuhinAPI\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\sni.d
 C:\Projects\Juhin\JuhinAPI\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\Projects\Juhin\JuhinAPI\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\Projects\Juhin\JuhinAPI\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+C:\Projects\Juhin\JuhinAPI\obj\Debug\netcoreapp3.1\JuhinAPI.csproj.AssemblyReference.cache
+C:\Projects\Juhin\JuhinAPI\obj\Debug\netcoreapp3.1\JuhinAPI.GeneratedMSBuildEditorConfig.editorconfig

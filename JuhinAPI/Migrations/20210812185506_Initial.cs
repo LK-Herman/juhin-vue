@@ -67,6 +67,20 @@ namespace JuhinAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Units",
+                columns: table => new
+                {
+                    UnitId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: true),
+                    ShortName = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Units", x => x.UnitId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Vendors",
                 columns: table => new
                 {
@@ -116,6 +130,49 @@ namespace JuhinAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Items",
+                columns: table => new
+                {
+                    ItemId = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
+                    Description = table.Column<string>(nullable: false),
+                    RevisionNumber = table.Column<string>(nullable: false),
+                    Price = table.Column<int>(nullable: false),
+                    VendorId = table.Column<Guid>(nullable: false),
+                    CurrencyId = table.Column<int>(nullable: false),
+                    PalletId = table.Column<int>(nullable: false),
+                    UnitId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Items", x => x.ItemId);
+                    table.ForeignKey(
+                        name: "FK_Items_Currency_CurrencyId",
+                        column: x => x.CurrencyId,
+                        principalTable: "Currency",
+                        principalColumn: "CurrencyId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Items_Pallets_PalletId",
+                        column: x => x.PalletId,
+                        principalTable: "Pallets",
+                        principalColumn: "PalletId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Items_Units_UnitId",
+                        column: x => x.UnitId,
+                        principalTable: "Units",
+                        principalColumn: "UnitId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Items_Vendors_VendorId",
+                        column: x => x.VendorId,
+                        principalTable: "Vendors",
+                        principalColumn: "VendorId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PurchaseOrders",
                 columns: table => new
                 {
@@ -155,24 +212,6 @@ namespace JuhinAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PackedItems",
-                columns: table => new
-                {
-                    PackedItemId = table.Column<Guid>(nullable: false),
-                    DeliveryId = table.Column<Guid>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PackedItems", x => x.PackedItemId);
-                    table.ForeignKey(
-                        name: "FK_PackedItems_Deliveries_DeliveryId",
-                        column: x => x.DeliveryId,
-                        principalTable: "Deliveries",
-                        principalColumn: "DeliveryId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Subscriptions",
                 columns: table => new
                 {
@@ -187,6 +226,32 @@ namespace JuhinAPI.Migrations
                         column: x => x.DeliveryId,
                         principalTable: "Deliveries",
                         principalColumn: "DeliveryId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PackedItems",
+                columns: table => new
+                {
+                    PackedItemId = table.Column<Guid>(nullable: false),
+                    Quantity = table.Column<int>(nullable: false),
+                    DeliveryId = table.Column<Guid>(nullable: false),
+                    ItemId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PackedItems", x => x.PackedItemId);
+                    table.ForeignKey(
+                        name: "FK_PackedItems_Deliveries_DeliveryId",
+                        column: x => x.DeliveryId,
+                        principalTable: "Deliveries",
+                        principalColumn: "DeliveryId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PackedItems_Items_ItemId",
+                        column: x => x.ItemId,
+                        principalTable: "Items",
+                        principalColumn: "ItemId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -214,49 +279,6 @@ namespace JuhinAPI.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Items",
-                columns: table => new
-                {
-                    ItemId = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: false),
-                    Description = table.Column<string>(nullable: false),
-                    RevisionNumber = table.Column<string>(nullable: false),
-                    Price = table.Column<int>(nullable: false),
-                    VendorId = table.Column<Guid>(nullable: false),
-                    CurrencyId = table.Column<int>(nullable: false),
-                    PalletId = table.Column<int>(nullable: false),
-                    PackedItemId = table.Column<Guid>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Items", x => x.ItemId);
-                    table.ForeignKey(
-                        name: "FK_Items_Currency_CurrencyId",
-                        column: x => x.CurrencyId,
-                        principalTable: "Currency",
-                        principalColumn: "CurrencyId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Items_PackedItems_PackedItemId",
-                        column: x => x.PackedItemId,
-                        principalTable: "PackedItems",
-                        principalColumn: "PackedItemId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Items_Pallets_PalletId",
-                        column: x => x.PalletId,
-                        principalTable: "Pallets",
-                        principalColumn: "PalletId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Items_Vendors_VendorId",
-                        column: x => x.VendorId,
-                        principalTable: "Vendors",
-                        principalColumn: "VendorId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Deliveries_ForwarderId",
                 table: "Deliveries",
@@ -278,14 +300,14 @@ namespace JuhinAPI.Migrations
                 column: "CurrencyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Items_PackedItemId",
-                table: "Items",
-                column: "PackedItemId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Items_PalletId",
                 table: "Items",
                 column: "PalletId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Items_UnitId",
+                table: "Items",
+                column: "UnitId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Items_VendorId",
@@ -295,7 +317,12 @@ namespace JuhinAPI.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_PackedItems_DeliveryId",
                 table: "PackedItems",
-                column: "DeliveryId",
+                column: "DeliveryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PackedItems_ItemId",
+                table: "PackedItems",
+                column: "ItemId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -320,7 +347,7 @@ namespace JuhinAPI.Migrations
                 name: "Documents");
 
             migrationBuilder.DropTable(
-                name: "Items");
+                name: "PackedItems");
 
             migrationBuilder.DropTable(
                 name: "PurchaseOrders_Deliveries");
@@ -329,19 +356,22 @@ namespace JuhinAPI.Migrations
                 name: "Subscriptions");
 
             migrationBuilder.DropTable(
-                name: "Currency");
-
-            migrationBuilder.DropTable(
-                name: "PackedItems");
-
-            migrationBuilder.DropTable(
-                name: "Pallets");
+                name: "Items");
 
             migrationBuilder.DropTable(
                 name: "PurchaseOrders");
 
             migrationBuilder.DropTable(
                 name: "Deliveries");
+
+            migrationBuilder.DropTable(
+                name: "Currency");
+
+            migrationBuilder.DropTable(
+                name: "Pallets");
+
+            migrationBuilder.DropTable(
+                name: "Units");
 
             migrationBuilder.DropTable(
                 name: "Vendors");

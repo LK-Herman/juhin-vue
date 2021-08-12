@@ -11,6 +11,7 @@ namespace JuhinAPI.Models
         [Key]
         [Required]
         public Guid PackedItemId { get; set; }
+        [Required]
         public int Quantity { get; set; }
 
 

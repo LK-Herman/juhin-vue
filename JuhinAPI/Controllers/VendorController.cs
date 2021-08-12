@@ -4,6 +4,7 @@ using JuhinAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -16,31 +17,29 @@ namespace JuhinAPI.Controllers
     [ApiController]
     public class VendorController : ControllerBase
     {
-        private readonly IRepository repository;
         private readonly ILogger<VendorController> logger;
+        private readonly ApplicationDbContext context;
 
-        public VendorController(IRepository repository, ILogger<VendorController> logger)
+        public VendorController(ILogger<VendorController> logger, ApplicationDbContext context)
         {
-            this.repository = repository;
             this.logger = logger;
+            this.context = context;
         }
         [HttpGet]
         //[ResponseCache(Duration = 60)] //caching response for 60 sec
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)] 
         //[ServiceFilter(typeof(MyActionFilter))]
-        public ActionResult<List<Vendor>> Get()
+        public async Task<ActionResult<List<Vendor>>> Get()
         {
-            return repository.GetAllVendors();
+            return await context.Vendors.ToListAsync();
         }
-        [HttpGet("vendorsId")]
-        public ActionResult<List<string>> GetVendorsId()
-        {
-            return repository.GetVendorsId();
-        }
+        
         [HttpGet("{id:Guid}", Name = "getVendor")]
-        public ActionResult<Vendor> GetVendorsId(Guid id)
+        public async Task<ActionResult<Vendor>> GetVendorsId(Guid id)
         {
-            var vendor = repository.GetVendorById(id);
+            var vendor = await context.Vendors
+                .Where(v => v.VendorId == id)
+                .FirstOrDefaultAsync();
             if (vendor == null)
             {
                 return NotFound();
@@ -49,9 +48,10 @@ namespace JuhinAPI.Controllers
         }
 
         [HttpPost]
-        public ActionResult Post([FromBody] Vendor vendor)
+        public async Task<ActionResult> Post([FromBody] Vendor vendor)
         {
-            repository.AddVendor(vendor);
+            context.Add(vendor);
+            await context.SaveChangesAsync();
 
             return new CreatedAtRouteResult("getVendor", new { id = vendor.VendorId }, vendor);
         }
