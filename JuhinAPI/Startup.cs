@@ -1,3 +1,4 @@
+using JuhinAPI.Data;
 using JuhinAPI.Filters;
 using JuhinAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -30,8 +31,10 @@ namespace JuhinAPI
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            //services.AddScoped<IRepository, DbRepository>();
             services.AddAutoMapper(typeof(Startup));
 
             services.AddControllers(options =>
@@ -39,7 +42,6 @@ namespace JuhinAPI
                 options.Filters.Add(typeof(MyExceptionFilter));
             }).AddXmlDataContractSerializerFormatters();
 
-            //services.AddSingleton<IRepository, InMemoryRepository>();
             services.AddTransient<Microsoft.Extensions.Hosting.IHostedService, WriteToFileHostedService>();
         }
 

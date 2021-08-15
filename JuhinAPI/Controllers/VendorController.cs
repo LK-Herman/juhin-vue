@@ -76,9 +76,16 @@ namespace JuhinAPI.Controllers
             await context.SaveChangesAsync();
             return NoContent();
         }
-        [HttpDelete]
-        public ActionResult Delete()
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(Guid id)
         {
+            var exists = await context.Vendors.AnyAsync(vendor => vendor.VendorId == id);
+            if (!exists)
+            {
+                return NotFound();
+            }
+            context.Remove(new Vendor() { VendorId = id });
+            await context.SaveChangesAsync();
             return NoContent();
         }
 

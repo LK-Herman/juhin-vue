@@ -83,3 +83,6 @@ C:\Projects\Juhin\JuhinAPI\obj\Debug\netcoreapp3.1\JuhinAPI.csproj.AssemblyRefer
 C:\Projects\Juhin\JuhinAPI\obj\Debug\netcoreapp3.1\JuhinAPI.GeneratedMSBuildEditorConfig.editorconfig
 C:\Projects\Juhin\JuhinAPI\bin\Debug\netcoreapp3.1\AutoMapper.dll
 C:\Projects\Juhin\JuhinAPI\bin\Debug\netcoreapp3.1\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Projects\Juhin\JuhinAPI\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.JsonPatch.dll
+C:\Projects\Juhin\JuhinAPI\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Projects\Juhin\JuhinAPI\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
