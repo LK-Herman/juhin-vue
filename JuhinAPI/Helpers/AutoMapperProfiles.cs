@@ -15,6 +15,7 @@ namespace JuhinAPI.Helpers
             CreateMap<Vendor, VendorDTO>().ReverseMap();
             CreateMap<VendorCreationDTO, Vendor>();
             CreateMap<PurchaseOrder, PurchaseOrderDTO>().ReverseMap();
+            CreateMap<PurchaseOrderCreationDTO, PurchaseOrder>();
         }
     }
 }
