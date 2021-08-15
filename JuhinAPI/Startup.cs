@@ -32,6 +32,8 @@ namespace JuhinAPI
 
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddControllers(options =>
             {
                 options.Filters.Add(typeof(MyExceptionFilter));

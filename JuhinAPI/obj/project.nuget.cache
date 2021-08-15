@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "ae57lcdLELXo44yKCqBN/Fr/KAjFt9V1Yzpub/FK0ZlUtwg8CM07JEl0osK+l5407CSUNe/gyd//oKP8J9gv4g==",
+  "dgSpecHash": "8/W9u/44YVPFvfI7Ia1IUcm99GxQFrgQBLAuOggBaqXCeU3aJxY/8TdifuriETLipF9u7Rdez8cfW2F8ngld6w==",
   "success": true,
   "projectFilePath": "C:\\Projects\\Juhin\\JuhinAPI\\JuhinAPI.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Hermanowy\\.nuget\\packages\\automapper\\10.1.1\\automapper.10.1.1.nupkg.sha512",
+    "C:\\Users\\Hermanowy\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\8.1.1\\automapper.extensions.microsoft.dependencyinjection.8.1.1.nupkg.sha512",
     "C:\\Users\\Hermanowy\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\3.1.18\\microsoft.aspnetcore.authentication.jwtbearer.3.1.18.nupkg.sha512",
     "C:\\Users\\Hermanowy\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\Hermanowy\\.nuget\\packages\\microsoft.bcl.hashcode\\1.1.1\\microsoft.bcl.hashcode.1.1.1.nupkg.sha512",
@@ -70,7 +72,7 @@
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.objectmodel\\4.3.0\\system.objectmodel.4.3.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.private.datacontractserialization\\4.3.0\\system.private.datacontractserialization.4.3.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.reflection\\4.3.0\\system.reflection.4.3.0.nupkg.sha512",
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.reflection.emit\\4.3.0\\system.reflection.emit.4.3.0.nupkg.sha512",
+    "C:\\Users\\Hermanowy\\.nuget\\packages\\system.reflection.emit\\4.7.0\\system.reflection.emit.4.7.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.reflection.emit.ilgeneration\\4.3.0\\system.reflection.emit.ilgeneration.4.3.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.reflection.emit.lightweight\\4.3.0\\system.reflection.emit.lightweight.4.3.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.reflection.extensions\\4.3.0\\system.reflection.extensions.4.3.0.nupkg.sha512",

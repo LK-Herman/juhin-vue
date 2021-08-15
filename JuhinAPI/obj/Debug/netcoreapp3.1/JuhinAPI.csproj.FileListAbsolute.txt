@@ -81,3 +81,5 @@ C:\Projects\Juhin\JuhinAPI\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.
 C:\Projects\Juhin\JuhinAPI\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
 C:\Projects\Juhin\JuhinAPI\obj\Debug\netcoreapp3.1\JuhinAPI.csproj.AssemblyReference.cache
 C:\Projects\Juhin\JuhinAPI\obj\Debug\netcoreapp3.1\JuhinAPI.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projects\Juhin\JuhinAPI\bin\Debug\netcoreapp3.1\AutoMapper.dll
+C:\Projects\Juhin\JuhinAPI\bin\Debug\netcoreapp3.1\AutoMapper.Extensions.Microsoft.DependencyInjection.dll

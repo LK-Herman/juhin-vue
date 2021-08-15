@@ -1,4 +1,6 @@
-﻿using JuhinAPI.Filters;
+﻿using AutoMapper;
+using JuhinAPI.DTOs;
+using JuhinAPI.Filters;
 using JuhinAPI.Models;
 using JuhinAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -19,23 +21,27 @@ namespace JuhinAPI.Controllers
     {
         private readonly ILogger<VendorController> logger;
         private readonly ApplicationDbContext context;
+        private readonly IMapper mapper;
 
-        public VendorController(ILogger<VendorController> logger, ApplicationDbContext context)
+        public VendorController(ILogger<VendorController> logger, ApplicationDbContext context, IMapper mapper)
         {
             this.logger = logger;
             this.context = context;
+            this.mapper = mapper;
         }
         [HttpGet]
         //[ResponseCache(Duration = 60)] //caching response for 60 sec
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)] 
         //[ServiceFilter(typeof(MyActionFilter))]
-        public async Task<ActionResult<List<Vendor>>> Get()
+        public async Task<ActionResult<List<VendorDTO>>> Get()
         {
-            return await context.Vendors.ToListAsync();
+            var vendors = await context.Vendors.ToListAsync();
+            var vendorsDTOs = mapper.Map<List<VendorDTO>>(vendors);
+            return vendorsDTOs;
         }
         
         [HttpGet("{id:Guid}", Name = "getVendor")]
-        public async Task<ActionResult<Vendor>> GetVendorsId(Guid id)
+        public async Task<ActionResult<VendorDTO>> GetVendorsId(Guid id)
         {
             var vendor = await context.Vendors
                 .Where(v => v.VendorId == id)
@@ -44,21 +50,30 @@ namespace JuhinAPI.Controllers
             {
                 return NotFound();
             }
-            return vendor;
+
+            var vendorDTO = mapper.Map<VendorDTO>(vendor);
+
+            return vendorDTO;
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] Vendor vendor)
+        public async Task<ActionResult> Post([FromBody] VendorCreationDTO vendorCreation)
         {
+            var vendor = mapper.Map<Vendor>(vendorCreation);
             context.Add(vendor);
             await context.SaveChangesAsync();
+            var vendorDTO = mapper.Map<VendorDTO>(vendor);
 
             //return new CreatedAtRouteResult("getVendor", new { id = vendor.VendorId }, vendor);
-            return new CreatedAtRouteResult("getVendor", vendor);
+            return new CreatedAtRouteResult("getVendor", vendorDTO);
         }
-        [HttpPut]
-        public ActionResult Put()
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Put(Guid id, [FromBody] VendorCreationDTO vendorCreation)
         {
+            var vendor = mapper.Map<Vendor>(vendorCreation);
+            vendor.VendorId = id;
+            context.Entry(vendor).State = EntityState.Modified;
+            await context.SaveChangesAsync();
             return NoContent();
         }
         [HttpDelete]
