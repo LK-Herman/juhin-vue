@@ -29,6 +29,9 @@ namespace JuhinAPI.Helpers
 
             CreateMap<Pallet, PalletDTO>().ReverseMap();
             CreateMap<PalletCreationDTO, Pallet>();
+
+            CreateMap<PackedItem, PackedItemDTO>().ReverseMap();
+            //CreateMap<PalletCreationDTO, Pallet>();
         }
     }
 }
