@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using JuhinAPI.DTOs;
 using JuhinAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,37 +24,39 @@ namespace JuhinAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Currency>>> Get()
+        public async Task<ActionResult<List<CurrencyDTO>>> Get()
         {
-            return await context.Currency.ToListAsync();
+            var currency = await context.Currency.ToListAsync();
+            return mapper.Map<List<CurrencyDTO>>(currency);
         }
 
         [HttpGet("{id}",Name = "GetCurrencyById")]
-        public async Task<ActionResult<Currency>> Get(int id)
+        public async Task<ActionResult<CurrencyDTO>> Get(int id)
         {
             var currency = await context.Currency
-                .Include(c => c.Items)
                 .Where(c => c.CurrencyId == id)
                 .FirstOrDefaultAsync();
             if (currency == null)
             {
                 return NotFound();
             }
-            return currency;
+            return mapper.Map<CurrencyDTO>(currency);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] Currency newCurrency)
+        public async Task<ActionResult> Post([FromBody] CurrencyCreationDTO newCurrency)
         {
-            context.Add(newCurrency);
+            var currency = mapper.Map<Currency>(newCurrency);
+            context.Add(currency);
             await context.SaveChangesAsync();
 
             return new CreatedAtRouteResult("GetCurrencyById", newCurrency);
         }
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, [FromBody] Currency updatedCurrency)
+        public async Task<ActionResult> Put(int id, [FromBody] CurrencyCreationDTO updatedCurrency)
         {
-            updatedCurrency.CurrencyId = id;
+            var currency = mapper.Map<Currency>(updatedCurrency);
+            currency.CurrencyId = id;
             context.Entry(updatedCurrency).State = EntityState.Modified;
             await context.SaveChangesAsync();
 

@@ -1,4 +1,6 @@
-﻿using JuhinAPI.Models;
+﻿using AutoMapper;
+using JuhinAPI.DTOs;
+using JuhinAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,29 +15,23 @@ namespace JuhinAPI.Controllers
     public class PalletController:ControllerBase
     {
         private readonly ApplicationDbContext context;
+        private readonly IMapper mapper;
 
-        public PalletController(ApplicationDbContext context)
+        public PalletController(ApplicationDbContext context, IMapper mapper)
         {
             this.context = context;
+            this.mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Pallet>>> Get() 
+        public async Task<ActionResult<List<PalletDTO>>> Get() 
         {
-            return await context.Pallets.ToListAsync();
-        }
-
-        [HttpGet]
-        [Route("/api/pallets/items")]
-        public async Task<ActionResult<List<Pallet>>> GetPalletsWithItems()
-        {
-            return await context.Pallets
-                .Include(p => p.Items)
-                .ToListAsync();
+            var pallets = await context.Pallets.ToListAsync();
+            return mapper.Map<List<PalletDTO>>(pallets);
         }
 
         [HttpGet("{id}", Name = "GetPalletById")]
-        public async Task<ActionResult<Pallet>> GetById(int id)
+        public async Task<ActionResult<PalletDTO>> GetById(int id)
         {
             var pallet = await context.Pallets
                 .Where(p => p.PalletId == id)
@@ -44,22 +40,25 @@ namespace JuhinAPI.Controllers
             {
                 return NotFound();
             }
-            return pallet;
+            return mapper.Map<PalletDTO>(pallet);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] Pallet pallet)
+        public async Task<ActionResult> Post([FromBody] PalletCreationDTO palletCreated)
         {
+            var pallet = mapper.Map<Pallet>(palletCreated);
             context.Add(pallet);
             await context.SaveChangesAsync();
-            return new CreatedAtRouteResult("GetPalletById", pallet);
+            var palletDTO = mapper.Map<PalletDTO>(pallet);
+            return new CreatedAtRouteResult("GetPalletById", palletDTO);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Pallet>> Put(int id, [FromBody] Pallet updatedPallet)
+        public async Task<ActionResult<Pallet>> Put(int id, [FromBody] PalletCreationDTO updatedPallet)
         {
-            updatedPallet.PalletId = id;
-            context.Entry(updatedPallet).State = EntityState.Modified;
+            var pallet = mapper.Map<Pallet>(updatedPallet);
+            pallet.PalletId = id;
+            context.Entry(pallet).State = EntityState.Modified;
             await context.SaveChangesAsync();
 
             return NoContent();

@@ -9,8 +9,7 @@ namespace JuhinAPI.DTOs
 {
     public class PurchaseOrderCreationDTO
     {
-        [Required]
-        public Guid OrderId { get; set; }
+        
         [Required]
         [StringLength(6)]
         public string OrderNumber { get; set; }

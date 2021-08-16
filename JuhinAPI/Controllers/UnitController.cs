@@ -1,4 +1,6 @@
-﻿using JuhinAPI.Models;
+﻿using AutoMapper;
+using JuhinAPI.DTOs;
+using JuhinAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,28 +15,24 @@ namespace JuhinAPI.Controllers
     public class UnitController:ControllerBase
     {
         private readonly ApplicationDbContext context;
+        private readonly IMapper mapper;
 
-        public UnitController(ApplicationDbContext context)
+        public UnitController(ApplicationDbContext context, IMapper mapper)
         {
             this.context = context;
+            this.mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Unit>>> Get()
+        public async Task<ActionResult<List<UnitDTO>>> Get()
         {
-            return await context.Units.ToListAsync();
+            var units = await context.Units.ToListAsync();
+            return mapper.Map<List<UnitDTO>>(units);
         }
 
-        [HttpGet]
-        [Route("/api/units/items")]
-        public async Task<ActionResult<List<Unit>>> GetUnitsWithItems()
-        {
-            return await context.Units
-                .Include(u => u.Items)
-                .ToListAsync();
-        }
+        
         [HttpGet("{id}", Name = "GetUnitById")]
-        public async Task<ActionResult<Unit>> GetById(int id)
+        public async Task<ActionResult<UnitDTO>> GetById(int id)
         {
             var unit = await context.Units
                 .Where(u => u.UnitId == id)
@@ -43,23 +41,24 @@ namespace JuhinAPI.Controllers
             {
                 return NotFound();
             }
-            return unit;
+            return mapper.Map<UnitDTO>(unit);
         }
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] Unit newUnit)
+        public async Task<ActionResult> Post([FromBody] UnitCreationDTO newUnit)
         {
-            context.Add(newUnit);
+            var unit = mapper.Map<Unit>(newUnit);
+            context.Add(unit);
             await context.SaveChangesAsync();
-
-            return new CreatedAtRouteResult("GetUnitById", newUnit);
+            var unitDTO = mapper.Map<UnitDTO>(unit);
+            return new CreatedAtRouteResult("GetUnitById", unitDTO);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, [FromBody] Unit updatedUnit)
+        public async Task<ActionResult> Put(int id, [FromBody] UnitCreationDTO updatedUnit)
         {
-           
-            updatedUnit.UnitId = id;
-            context.Entry(updatedUnit).State = EntityState.Modified;
+            var unit = mapper.Map<Unit>(updatedUnit);
+            unit.UnitId = id;
+            context.Entry(unit).State = EntityState.Modified;
             await context.SaveChangesAsync();
 
             return NoContent();
