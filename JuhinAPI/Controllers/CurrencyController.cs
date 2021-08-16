@@ -53,10 +53,10 @@ namespace JuhinAPI.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] Currency updatedCurrency)
         {
-            
             updatedCurrency.CurrencyId = id;
             context.Entry(updatedCurrency).State = EntityState.Modified;
             await context.SaveChangesAsync();
+
             return NoContent();
         }
         [HttpDelete("{id}")]
@@ -69,6 +69,7 @@ namespace JuhinAPI.Controllers
             }
             context.Remove(new Currency() { CurrencyId = id });
             await context.SaveChangesAsync();
+
             return NoContent();
         }
     }

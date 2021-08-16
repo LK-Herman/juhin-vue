@@ -4,14 +4,16 @@ using JuhinAPI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace JuhinAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210816161437_ItemExtension2")]
+    partial class ItemExtension2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -140,10 +142,7 @@ namespace JuhinAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsICP")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("MaxEuroPalQty")
+                    b.Property<int>("MaxPalletQty")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -165,6 +164,9 @@ namespace JuhinAPI.Migrations
 
                     b.Property<Guid>("VendorId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("isICP")
+                        .HasColumnType("bit");
 
                     b.HasKey("ItemId");
 
