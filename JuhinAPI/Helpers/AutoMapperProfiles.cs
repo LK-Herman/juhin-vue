@@ -32,6 +32,12 @@ namespace JuhinAPI.Helpers
 
             CreateMap<PackedItem, PackedItemDTO>().ReverseMap();
             CreateMap<PackedItemCreationDTO, PackedItem>();
+
+            CreateMap<Status, StatusDTO>().ReverseMap();
+            CreateMap<StatusCreationDTO, Status>();
+
+            CreateMap<Forwarder, ForwarderDTO>().ReverseMap();
+            CreateMap<ForwarderCreationDTO, Forwarder>();
         }
     }
 }
