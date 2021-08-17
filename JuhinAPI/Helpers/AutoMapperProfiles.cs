@@ -38,6 +38,9 @@ namespace JuhinAPI.Helpers
 
             CreateMap<Forwarder, ForwarderDTO>().ReverseMap();
             CreateMap<ForwarderCreationDTO, Forwarder>();
+
+            CreateMap<Delivery, DeliveryDTO>().ReverseMap();
+            //CreateMap<DeliveryCreationDTO, Delivery>();
         }
     }
 }
