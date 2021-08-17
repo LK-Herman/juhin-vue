@@ -16,10 +16,14 @@ namespace JuhinAPI.Models
 
 
         //PackedItem m-1 Delivery
+        [Required]
         public Guid DeliveryId { get; set; }
+        [Required]
         public Delivery Delivery { get; set; }
         //PackedItem 1-1 Item
+        [Required]
         public Guid ItemId { get; set; }
+        [Required]
         public Item Item { get; set; }
 
     }

@@ -21,13 +21,16 @@ namespace JuhinAPI.Models
         public int Price { get; set; }
 
         public int MaxEuroPalQty { get; set; }
+        [Required]
         public bool IsICP { get; set; }
 
         //Vendor 1-m Item 
+        [Required]
         public Guid VendorId { get; set; }
         public Vendor Vendor { get; set; }
 
         //Currency 1-m Item
+        [Required]
         public int CurrencyId { get; set; }
         public Currency Currency { get; set; }
 
@@ -39,6 +42,7 @@ namespace JuhinAPI.Models
         public PackedItem PackedItem { get; set; }
 
         //Item m-1 Unit
+        [Required]
         public int UnitId { get; set; }
         public Unit Unit { get; set; }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,6 +21,21 @@ namespace JuhinAPI.DTOs
         //public List<PurchaseOrder> PurchaseOrders { get; set; }
 
         //Vendor 1-m Item
-        //public List<Item> Items { get; set; }
+        [JsonIgnore]
+        public List<ItemDTO> Items { get; set; }
+
+        public List<string> VendorItems
+        {
+            get
+            {
+                List<string> tempItem = new List<string>();
+                foreach (var item in Items)
+                {
+                    tempItem.Add(item.Name);
+                }
+                return tempItem;
+            }
+        }
+
     }
 }

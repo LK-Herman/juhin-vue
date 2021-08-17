@@ -35,7 +35,9 @@ namespace JuhinAPI.Controllers
         //[ServiceFilter(typeof(MyActionFilter))]
         public async Task<ActionResult<List<VendorDTO>>> Get()
         {
-            var vendors = await context.Vendors.ToListAsync();
+            var vendors = await context.Vendors
+                .Include(v => v.Items)
+                .ToListAsync();
             var vendorsDTOs = mapper.Map<List<VendorDTO>>(vendors);
             return vendorsDTOs;
         }
@@ -48,6 +50,7 @@ namespace JuhinAPI.Controllers
                 .FirstOrDefaultAsync();
             if (vendor == null)
             {
+                logger.LogWarning($"Vendor with id: {id} not found");
                 return NotFound();
             }
 
