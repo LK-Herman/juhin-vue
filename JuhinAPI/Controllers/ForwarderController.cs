@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace JuhinAPI.Controllers
 {
     [ApiController]
-    [Route("api/forwarder")]
+    [Route("api/forwarders")]
     public class ForwarderController:ControllerBase
     {
         private readonly ApplicationDbContext context;

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace JuhinAPI.Controllers
 {
     [ApiController]
-    [Route("api/status")]
+    [Route("api/statuses")]
     public class StatusController : ControllerBase
     {
         private readonly ApplicationDbContext context;

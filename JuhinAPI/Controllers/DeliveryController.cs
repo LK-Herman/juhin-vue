@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace JuhinAPI.Controllers
 {
     [ApiController]
-    [Route("api/delivery")]
+    [Route("api/deliveries")]
     public class DeliveryController:ControllerBase
     {
         private readonly ApplicationDbContext context;

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace JuhinAPI.Controllers
 {
     [ApiController]
-    [Route("api/currency")]
+    [Route("api/currencies")]
     public class CurrencyController: ControllerBase
     {
         private readonly ApplicationDbContext context;

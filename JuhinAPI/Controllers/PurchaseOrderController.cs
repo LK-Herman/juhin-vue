@@ -27,6 +27,8 @@ namespace JuhinAPI.Controllers
         public async Task<ActionResult<List<PurchaseOrderDTO>>> Get()
         {
             var orders = await context.PurchaseOrders
+                .Include(o => o.PurchaseOrderDeliveries)
+                .ThenInclude(pod => pod.Delivery)
                 .Include(o => o.Vendor)
                 .ThenInclude(o => o.PurchaseOrders)
                 .OrderBy(o => o.OrderNumber)

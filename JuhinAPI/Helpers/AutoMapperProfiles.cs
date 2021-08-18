@@ -42,6 +42,9 @@ namespace JuhinAPI.Helpers
             CreateMap<Document, DocumentDTO>().ReverseMap();
             CreateMap<DocumentCreationDTO, Document>();
 
+            CreateMap<Subscription, SubscriptionDTO>().ReverseMap();
+            CreateMap<SubscriptionCreationDTO, Subscription>();
+
             CreateMap<Delivery, DeliveryDTO>().ReverseMap();
             //CreateMap<DeliveryCreationDTO, Delivery>();
         }

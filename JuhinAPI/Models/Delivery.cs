@@ -13,9 +13,9 @@ namespace JuhinAPI.Models
         public Guid DeliveryId { get; set; }
         [Required]
         public DateTime CreatedAt { get; set; }
-        [Required]
+        
         public DateTime ETADate { get; set; }
-        [Required]
+        
         public DateTime DeliveryDate { get; set; }
         
         public int Rating { get; set; }
@@ -41,6 +41,7 @@ namespace JuhinAPI.Models
 
         //Delivery m-m PurchaseOrder
         public List<PurchaseOrder_Delivery> PurchaseOrderDeliveries { get; set; }
+
 
     }
 }
