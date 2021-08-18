@@ -19,6 +19,7 @@ namespace JuhinAPI.Models
         public DateTime DeliveryDate { get; set; }
         
         public int Rating { get; set; }
+
         public string Comment { get; set; }
 
         //Delivery 1-m Document

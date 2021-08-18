@@ -1,4 +1,5 @@
 ﻿using JuhinAPI.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,20 +16,43 @@ namespace JuhinAPI.DTOs
         public int Price { get; set; }
         public int MaxEuroPalQty { get; set; }
         public bool IsICP { get; set; }
+        public string HSCode { get; set; }
+        public string HSCodeDescription { get; set; }
 
-        //Vendor 1-m Item 
+        //Vendor 1-m Item
+        [JsonIgnore]
         public VendorDTO Vendor { get; set; }
+        public Guid VendorId { get; set; }
+        public string VendorName
+        {
+            get { return Vendor.Name; }
+        }
 
         //Currency 1-m Item
+        [JsonIgnore]
         public CurrencyDTO Currency { get; set; }
+        public int CurrencyId { get; set; }
+        public string ItemCurrency
+        {
+            get { return Currency.Code; }
+        }
 
         //PalletType 1-m Item
+        [JsonIgnore]
         public PalletDTO Pallet { get; set; }
-
-        //Item 1-1 PackedItem *********************************** change to DTO
-        public PackedItem PackedItem { get; set; }
+        public int PalletId { get; set; }
+        public string ItemPallet 
+        { 
+            get { return Pallet.Name; }
+        }
 
         //Item m-1 Unit
+        [JsonIgnore]
         public UnitDTO Unit { get; set; }
+        public int UnitId { get; set; }
+        public string ItemUnit 
+        { 
+            get { return Unit.ShortName; }
+        }
     }
 }

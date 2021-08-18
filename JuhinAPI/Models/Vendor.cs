@@ -11,8 +11,10 @@ namespace JuhinAPI.Models
         [Key, Required]
         public Guid VendorId { get; set; }
         [Required(ErrorMessage ="Vendor code is required")]
+        [StringLength(5)]
         public string VendorCode { get; set; }
         [Required(ErrorMessage = "Short name is required")]
+        [StringLength(15)]
         public string ShortName { get; set; }
         [Required(ErrorMessage = "Vendor name is required")]
         public string Name { get; set; }
@@ -20,6 +22,7 @@ namespace JuhinAPI.Models
         public string Address { get; set; }
         [Required(ErrorMessage = "Vendor country is required")]
         public string Country { get; set; }
+
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         [Required(ErrorMessage = "Vendor active/inactive state is required")]

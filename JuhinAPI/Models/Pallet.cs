@@ -12,6 +12,7 @@ namespace JuhinAPI.Models
         [Required]
         public int PalletId { get; set; }
         [Required]
+        [StringLength(20)]
         public string Name { get; set; }
         [Required]
         public int Xdimension { get; set; }

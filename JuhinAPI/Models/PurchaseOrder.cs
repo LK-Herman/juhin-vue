@@ -13,9 +13,11 @@ namespace JuhinAPI.Models
         [Required]
         public Guid OrderId { get; set; }
         [Required]
+        [StringLength(50)]
         public string OrderNumber { get; set; }
         
         //PurchaseOrder m-1 Vendor
+        [Required]
         public Guid VendorId { get; set; }
         public Vendor Vendor { get; set; }
 

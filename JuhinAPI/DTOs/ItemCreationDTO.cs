@@ -20,6 +20,8 @@ namespace JuhinAPI.DTOs
         public int MaxEuroPalQty { get; set; }
         [Required]
         public bool IsICP { get; set; }
+        public string HSCode { get; set; }
+        public string HSCodeDescription { get; set; }
 
         //Vendor 1-m Item 
         [Required]

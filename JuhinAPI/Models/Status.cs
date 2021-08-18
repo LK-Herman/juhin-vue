@@ -12,7 +12,11 @@ namespace JuhinAPI.Models
         [Required]
         public int StatusId { get; set; }
         [Required]
+        [StringLength(20)]
         public string Name { get; set; }
+        [Required]
+        [StringLength(200)]
+        public string Description { get; set; }
 
         //Status 1-m Delivery
         public List<Delivery> Deliveries { get; set; }

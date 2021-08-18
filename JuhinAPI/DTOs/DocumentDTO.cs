@@ -1,27 +1,20 @@
-﻿using System;
+﻿using JuhinAPI.Models;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace JuhinAPI.Models
+namespace JuhinAPI.DTOs
 {
-    public class Document
+    public class DocumentDTO
     {
-        [Key]
-        [Required]
         public Guid DocumentId { get; set; }
-        [Required]
-        [StringLength(20)]
         public string Type { get; set; }
-        [Required]
-        [StringLength(30)]
         public string Number { get; set; }
         public string Url { get; set; }
 
         //Document m-1 Delivery
-        [Required]
         public Guid DeliveryId { get; set; }
-        public Delivery Delivery { get; set; }
     }
 }

@@ -4,13 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace JuhinAPI.Models
+namespace JuhinAPI.DTOs
 {
-    public class Document
+    public class DocumentCreationDTO
     {
-        [Key]
-        [Required]
-        public Guid DocumentId { get; set; }
         [Required]
         [StringLength(20)]
         public string Type { get; set; }
@@ -22,6 +19,5 @@ namespace JuhinAPI.Models
         //Document m-1 Delivery
         [Required]
         public Guid DeliveryId { get; set; }
-        public Delivery Delivery { get; set; }
     }
 }

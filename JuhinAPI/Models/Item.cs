@@ -12,10 +12,13 @@ namespace JuhinAPI.Models
         [Required]
         public Guid ItemId { get; set; }
         [Required]
+        [StringLength(16)]
         public string Name { get; set; }
         [Required]
+        [StringLength(50)]
         public string Description { get; set; }
         [Required]
+        [StringLength(5)]
         public string RevisionNumber { get; set; }
         [Required]
         public int Price { get; set; }
@@ -23,6 +26,8 @@ namespace JuhinAPI.Models
         public int MaxEuroPalQty { get; set; }
         [Required]
         public bool IsICP { get; set; }
+        public string HSCode { get; set; }
+        public string HSCodeDescription { get; set; }
 
         //Vendor 1-m Item 
         [Required]

@@ -12,8 +12,11 @@ namespace JuhinAPI.Models
         [Key]
         public int ForwarderId { get; set; }
         [Required]
+        [StringLength(100)]
         public string Name { get; set; }
+        [StringLength(18)]
         public string PhoneNumber { get; set; }
+        [StringLength(60)]
         public string Email { get; set; }
         public Double Rating { get; set; }
 
