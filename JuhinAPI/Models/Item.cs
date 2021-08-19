@@ -28,7 +28,14 @@ namespace JuhinAPI.Models
         public bool IsICP { get; set; }
         public string HSCode { get; set; }
         public string HSCodeDescription { get; set; }
-
+        public string CountryOfOrigin { get; set; }
+        public int PalletQty { get; set; }
+        [Required]
+        public bool IsActive { get; set; }
+        //Warehouse 1-m Item
+        //[Required]
+        public int WarehouseId { get; set; }
+        public Warehouse Warehouse { get; set; }
         //Vendor 1-m Item 
         [Required]
         public Guid VendorId { get; set; }

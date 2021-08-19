@@ -11,10 +11,14 @@ namespace JuhinAPI.DTOs
         public Guid PackedItemId { get; set; }
         [JsonIgnore]
         public ItemDTO Item;
-        
+        public Guid DeliveryId { get; set; }
         public string PartNumber
         {
             get { return Item.Name; }
+        }
+        public string NumberOfPallets
+        {
+            get { return Convert.ToString((Double)Quantity / Item.PalletQty); }
         }
         public string Revision
         {

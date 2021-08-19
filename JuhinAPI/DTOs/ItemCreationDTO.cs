@@ -22,6 +22,13 @@ namespace JuhinAPI.DTOs
         public bool IsICP { get; set; }
         public string HSCode { get; set; }
         public string HSCodeDescription { get; set; }
+        public string CountryOfOrigin { get; set; }
+        [Required]
+        public int PalletQty { get; set; }
+        [Required]
+        public bool IsActive { get; set; }
+        [Required]
+        public int WarehouseId { get; set; }
 
         //Vendor 1-m Item 
         [Required]
