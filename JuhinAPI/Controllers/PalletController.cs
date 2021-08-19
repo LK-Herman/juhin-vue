@@ -54,7 +54,7 @@ namespace JuhinAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Pallet>> Put(int id, [FromBody] PalletCreationDTO updatedPallet)
+        public async Task<ActionResult> Put(int id, [FromBody] PalletCreationDTO updatedPallet)
         {
             var pallet = mapper.Map<Pallet>(updatedPallet);
             pallet.PalletId = id;

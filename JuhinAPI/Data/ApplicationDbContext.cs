@@ -42,6 +42,8 @@ namespace JuhinAPI
         public DbSet<Vendor> Vendors { get; set; }
         public DbSet<PurchaseOrder_Delivery> PurchaseOrders_Deliveries { get; set; }
         public DbSet<Unit> Units { get; set; }
+        public DbSet<Warehouse> Warehouses { get; set; }
+        public DbSet<WarehouseVolumeInTime> WarehouseVolumes { get; set; }
 
 
     }

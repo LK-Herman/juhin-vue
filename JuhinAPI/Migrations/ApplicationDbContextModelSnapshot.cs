@@ -415,7 +415,7 @@ namespace JuhinAPI.Migrations
 
                     b.HasKey("WarehouseId");
 
-                    b.ToTable("Warehouse");
+                    b.ToTable("Warehouses");
                 });
 
             modelBuilder.Entity("JuhinAPI.Models.WarehouseVolumeInTime", b =>
@@ -437,7 +437,7 @@ namespace JuhinAPI.Migrations
 
                     b.HasIndex("WarehouseId");
 
-                    b.ToTable("WarehouseVolumeInTime");
+                    b.ToTable("WarehouseVolumes");
                 });
 
             modelBuilder.Entity("JuhinAPI.Models.Delivery", b =>

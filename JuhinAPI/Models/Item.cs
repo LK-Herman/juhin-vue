@@ -33,7 +33,7 @@ namespace JuhinAPI.Models
         [Required]
         public bool IsActive { get; set; }
         //Warehouse 1-m Item
-        //[Required]
+        [Required]
         public int WarehouseId { get; set; }
         public Warehouse Warehouse { get; set; }
         //Vendor 1-m Item 

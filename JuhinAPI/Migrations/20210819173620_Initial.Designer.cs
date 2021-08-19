@@ -10,14 +10,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JuhinAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210816161437_ItemExtension2")]
-    partial class ItemExtension2
+    [Migration("20210819173620_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.18")
+                .HasAnnotation("ProductVersion", "3.1.15")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -30,11 +30,13 @@ namespace JuhinAPI.Migrations
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(3)")
+                        .HasMaxLength(3);
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(40)")
+                        .HasMaxLength(40);
 
                     b.Property<int>("ValuePLN")
                         .HasColumnType("int");
@@ -89,12 +91,17 @@ namespace JuhinAPI.Migrations
                     b.Property<Guid>("DeliveryId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Number")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
 
                     b.Property<string>("Url")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("DocumentId");
@@ -112,17 +119,20 @@ namespace JuhinAPI.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(60)")
+                        .HasMaxLength(60);
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(18)")
+                        .HasMaxLength(18);
 
                     b.Property<double>("Rating")
                         .HasColumnType("float");
-
-                    b.Property<string>("phoneNumber")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ForwarderId");
 
@@ -135,21 +145,41 @@ namespace JuhinAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("CountryOfOrigin")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("CurrencyId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("HSCode")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("MaxPalletQty")
+                    b.Property<string>("HSCodeDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsICP")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("MaxEuroPalQty")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(16)")
+                        .HasMaxLength(16);
 
                     b.Property<int>("PalletId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PalletQty")
                         .HasColumnType("int");
 
                     b.Property<int>("Price")
@@ -157,7 +187,8 @@ namespace JuhinAPI.Migrations
 
                     b.Property<string>("RevisionNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(5)")
+                        .HasMaxLength(5);
 
                     b.Property<int>("UnitId")
                         .HasColumnType("int");
@@ -165,8 +196,8 @@ namespace JuhinAPI.Migrations
                     b.Property<Guid>("VendorId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("isICP")
-                        .HasColumnType("bit");
+                    b.Property<int>("WarehouseId")
+                        .HasColumnType("int");
 
                     b.HasKey("ItemId");
 
@@ -177,6 +208,8 @@ namespace JuhinAPI.Migrations
                     b.HasIndex("UnitId");
 
                     b.HasIndex("VendorId");
+
+                    b.HasIndex("WarehouseId");
 
                     b.ToTable("Items");
                 });
@@ -215,7 +248,8 @@ namespace JuhinAPI.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
 
                     b.Property<int>("Xdimension")
                         .HasColumnType("int");
@@ -236,7 +270,8 @@ namespace JuhinAPI.Migrations
 
                     b.Property<string>("OrderNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<Guid>("VendorId")
                         .HasColumnType("uniqueidentifier");
@@ -270,9 +305,15 @@ namespace JuhinAPI.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(200)")
+                        .HasMaxLength(200);
+
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
 
                     b.HasKey("StatusId");
 
@@ -303,10 +344,13 @@ namespace JuhinAPI.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
 
                     b.Property<string>("ShortName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(6)")
+                        .HasMaxLength(6);
 
                     b.HasKey("UnitId");
 
@@ -342,15 +386,60 @@ namespace JuhinAPI.Migrations
 
                     b.Property<string>("ShortName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(15)")
+                        .HasMaxLength(15);
 
                     b.Property<string>("VendorCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(5)")
+                        .HasMaxLength(5);
 
                     b.HasKey("VendorId");
 
                     b.ToTable("Vendors");
+                });
+
+            modelBuilder.Entity("JuhinAPI.Models.Warehouse", b =>
+                {
+                    b.Property<int>("WarehouseId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MaxPalletsQty")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ShortName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("WarehouseId");
+
+                    b.ToTable("Warehouses");
+                });
+
+            modelBuilder.Entity("JuhinAPI.Models.WarehouseVolumeInTime", b =>
+                {
+                    b.Property<Guid>("VolumeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PalletsVolume")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WarehouseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("VolumeId");
+
+                    b.HasIndex("WarehouseId");
+
+                    b.ToTable("WarehouseVolumes");
                 });
 
             modelBuilder.Entity("JuhinAPI.Models.Delivery", b =>
@@ -402,6 +491,12 @@ namespace JuhinAPI.Migrations
                         .HasForeignKey("VendorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("JuhinAPI.Models.Warehouse", "Warehouse")
+                        .WithMany("Items")
+                        .HasForeignKey("WarehouseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("JuhinAPI.Models.PackedItem", b =>
@@ -448,6 +543,15 @@ namespace JuhinAPI.Migrations
                     b.HasOne("JuhinAPI.Models.Delivery", "Delivery")
                         .WithMany("Subscriptions")
                         .HasForeignKey("DeliveryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("JuhinAPI.Models.WarehouseVolumeInTime", b =>
+                {
+                    b.HasOne("JuhinAPI.Models.Warehouse", "Warehouse")
+                        .WithMany("WarehouseVolumes")
+                        .HasForeignKey("WarehouseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
