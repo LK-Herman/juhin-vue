@@ -51,6 +51,9 @@ namespace JuhinAPI.Helpers
             CreateMap<Warehouse, WarehouseDTO>().ReverseMap();
             CreateMap<WarehouseCreationDTO, Warehouse>();
 
+            CreateMap<WarehouseVolumeInTime, WarehouseVolumeDTO>().ReverseMap();
+            CreateMap<WarehouseVolumeCreationDTO, WarehouseVolumeInTime>();
+
         }
     }
 }
