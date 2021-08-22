@@ -12,7 +12,7 @@ namespace JuhinAPI.Controllers
 {
     [ApiController]
     [Route("api/deliveries")]
-    public class DeliveryController:ControllerBase
+    public class DeliveryController : ControllerBase
     {
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
@@ -53,15 +53,21 @@ namespace JuhinAPI.Controllers
             }
             return mapper.Map<DeliveryDTO>(delivery);
         }
-        [HttpPost]
-        public async Task<ActionResult> Post([FromBody] DeliveryCreationDTO newDelivery)
+
+        [HttpPost("{purchaseOrderId:Guid}")]
+        public async Task<ActionResult> Post(Guid purchaseOrderId, [FromBody] DeliveryCreationDTO newDelivery)
         {
             var delivery = mapper.Map<Delivery>(newDelivery);
             context.Add(delivery);
+            var purchaseOrderDelivery = new PurchaseOrder_Delivery() {PurchaseOrderId = purchaseOrderId, DeliveryId = delivery.DeliveryId };
+            context.Add(purchaseOrderDelivery);
+            
             await context.SaveChangesAsync();
+            
             var deliveryDTO = mapper.Map<DeliveryDTO>(delivery);
             return new CreatedAtRouteResult("GetDelivery", deliveryDTO);
         }
+
 
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(Guid id, [FromBody] DeliveryCreationDTO updatedDelivery)
@@ -73,15 +79,27 @@ namespace JuhinAPI.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(Guid id)
+        [HttpDelete("{deliveryId}")]
+        public async Task<ActionResult> Delete(Guid deliveryId, [FromBody] Guid purchaseOrderId )
         {
-            var exist = await context.Deliveries.AnyAsync(d => d.DeliveryId == id);
-            if (!exist)
+            var deliveryExist = await context.Deliveries.AnyAsync(d => d.DeliveryId == deliveryId);
+            if (!deliveryExist)
             {
                 return NotFound();
             }
-            context.Remove(new Delivery() { DeliveryId = id });
+            var purchaseOrderDelivery = await context.PurchaseOrders_Deliveries
+                .Where(pod => pod.DeliveryId == deliveryId)
+                .Where(pod => pod.PurchaseOrderId == purchaseOrderId)
+                .FirstOrDefaultAsync();
+            if (purchaseOrderDelivery == null)
+            {
+                return NotFound();
+            }
+
+            //context.Remove(new PurchaseOrder_Delivery() { DeliveryId = deliveryId, PurchaseOrderId = purchaseOrderId });
+            context.Remove(purchaseOrderDelivery);
+            await context.SaveChangesAsync();
+            context.Remove(new Delivery() { DeliveryId = deliveryId });
             await context.SaveChangesAsync();
 
             return NoContent();

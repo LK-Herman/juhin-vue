@@ -11,6 +11,6 @@ namespace JuhinAPI.Models
         public PurchaseOrder PurchaseOrder { get; set; }
         public Guid DeliveryId { get; set; }
         public Delivery Delivery { get; set; }
-
+        
     }
 }
