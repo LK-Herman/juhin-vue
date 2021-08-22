@@ -60,6 +60,16 @@ namespace JuhinAPI.Controllers
             return new CreatedAtRouteResult("GetById", itemDTO);
         }
 
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Put(Guid id, [FromBody] PackedItemCreationDTO updatedPackedItem)
+        {
+            var packedItem = mapper.Map<PackedItem>(updatedPackedItem);
+            packedItem.PackedItemId = id;
+            context.Entry(packedItem).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+            return NoContent();
+        }
+
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(Guid id)
         {

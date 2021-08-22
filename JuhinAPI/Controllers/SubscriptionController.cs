@@ -49,6 +49,17 @@ namespace JuhinAPI.Controllers
             var subscriptionDTO = mapper.Map<SubscriptionDTO>(subscription);
             return new CreatedAtRouteResult("GetSubscription", subscriptionDTO);
         }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Put(Guid id, [FromBody] SubscriptionCreationDTO updatedSubscription)
+        {
+            var subscription = mapper.Map<Subscription>(updatedSubscription);
+            subscription.SubscriptionId = id;
+            context.Entry(subscription).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+            return NoContent();
+        }
+
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(Guid id)
         {

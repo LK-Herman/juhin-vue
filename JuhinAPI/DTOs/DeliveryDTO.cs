@@ -21,35 +21,24 @@ namespace JuhinAPI.DTOs
         //Delivery 1-m PackedItem
 
         //Delivery m-1 Forwarder
-        [JsonIgnore]
-        public ForwarderDTO Forwarder { get; set; }
+        public int ForwarderId { get; set; }
 
         //Delivery m-1 Status
-        [JsonIgnore]
-        public StatusDTO Status { get; set; }
+        public int StatusId { get; set; }
+        
+        //[JsonIgnore]
+        //public List<PurchaseOrder_Delivery> PurchaseOrderDeliveries { get; set; }
 
-        public string DeliveryStatus
-        {
-            get { return Status.Name; }
-        }
+        //public IEnumerable<string> Orders
+        //{
+        //    get { return PurchaseOrderDeliveries.Select(x => x.PurchaseOrder.OrderNumber); }
 
-        public string DeliveryForwarder
-        {
-            get { return Forwarder.Name; }
-        }
-        [JsonIgnore]
-        public List<PurchaseOrder_Delivery> PurchaseOrderDeliveries { get; set; }
+        //}
+        //public IEnumerable<string> Vendors
+        //{
+        //    get { return PurchaseOrderDeliveries.Select(x => x.PurchaseOrder.Vendor.ShortName); }
 
-        public IEnumerable<string> Orders
-        {
-            get { return PurchaseOrderDeliveries.Select(x => x.PurchaseOrder.OrderNumber); }
-
-        }
-        public IEnumerable<string> Vendors
-        {
-            get { return PurchaseOrderDeliveries.Select(x => x.PurchaseOrder.Vendor.ShortName); }
-
-        }
+        //}
         
         // public List<PurchaseOrderDTO> PurchaseOrders { get; set; }
         // public VendorDTO Vendor { get; set; }

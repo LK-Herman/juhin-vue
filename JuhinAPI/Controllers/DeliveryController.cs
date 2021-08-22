@@ -63,6 +63,16 @@ namespace JuhinAPI.Controllers
             return new CreatedAtRouteResult("GetDelivery", deliveryDTO);
         }
 
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Put(Guid id, [FromBody] DeliveryCreationDTO updatedDelivery)
+        {
+            var delivery = mapper.Map<Delivery>(updatedDelivery);
+            delivery.DeliveryId = id;
+            context.Entry(delivery).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+            return NoContent();
+        }
+
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(Guid id)
         {

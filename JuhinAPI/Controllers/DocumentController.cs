@@ -50,6 +50,15 @@ namespace JuhinAPI.Controllers
             var documentDTO = mapper.Map<DocumentDTO>(document);
             return new CreatedAtRouteResult("GetDocument", documentDTO);
         }
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Put(Guid id, [FromBody] DocumentCreationDTO updatedDocument)
+        {
+            var document = mapper.Map<Document>(updatedDocument);
+            document.DocumentId = id;
+            context.Entry(document).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+            return NoContent();
+        }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(Guid id)

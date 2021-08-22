@@ -57,7 +57,7 @@ namespace JuhinAPI.Controllers
         {
             var currency = mapper.Map<Currency>(updatedCurrency);
             currency.CurrencyId = id;
-            context.Entry(updatedCurrency).State = EntityState.Modified;
+            context.Entry(currency).State = EntityState.Modified;
             await context.SaveChangesAsync();
 
             return NoContent();

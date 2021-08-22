@@ -52,6 +52,16 @@ namespace JuhinAPI.Controllers
             var forwarderDTO = mapper.Map<ForwarderDTO>(forwarder);
             return new CreatedAtRouteResult("GetForwarderById", forwarderDTO);
         }
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Put(int id, [FromBody] ForwarderCreationDTO updatedForwarder)
+        {
+            var forwarder = mapper.Map<Forwarder>(updatedForwarder);
+            forwarder.ForwarderId = id;
+            context.Entry(forwarder).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+
+            return NoContent();
+        }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)

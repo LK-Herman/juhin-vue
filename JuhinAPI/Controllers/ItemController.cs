@@ -58,7 +58,8 @@ namespace JuhinAPI.Controllers
             context.Add(item);
             await context.SaveChangesAsync();
             var itemDTO = mapper.Map<ItemDTO>(item);
-            return new CreatedAtRouteResult("GetItemById", itemDTO);
+            
+            return new CreatedAtRouteResult("GetItemById", new { id = item.ItemId }, itemDTO);
         }
 
         [HttpPut("{id}")]

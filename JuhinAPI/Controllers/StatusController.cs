@@ -56,6 +56,16 @@ namespace JuhinAPI.Controllers
             return new CreatedAtRouteResult("GetStatusById", statusDTO);
         }
 
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Put(int id, [FromBody] StatusCreationDTO updatedStatus)
+        {
+            var status = mapper.Map<Status>(updatedStatus);
+            status.StatusId = id;
+            context.Entry(status).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+            return NoContent();
+        }
+
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
