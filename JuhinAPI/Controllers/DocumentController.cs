@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using JuhinAPI.DTOs;
 using JuhinAPI.Models;
+using JuhinAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,11 +17,14 @@ namespace JuhinAPI.Controllers
     {
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
+        private readonly IFileStorageService fileStorageService;
+        private readonly string containerName = "documents";
 
-        public DocumentController(ApplicationDbContext context, IMapper mapper)
+        public DocumentController(ApplicationDbContext context, IMapper mapper, IFileStorageService fileStorageService)
         {
             this.context = context;
             this.mapper = mapper;
+            this.fileStorageService = fileStorageService;
         }
 
         [HttpGet]
@@ -42,9 +47,22 @@ namespace JuhinAPI.Controllers
             return mapper.Map<DocumentDTO>(document);
         }
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] DocumentCreationDTO newDocument)
+        public async Task<ActionResult> Post([FromForm] DocumentCreationDTO newDocument)
         {
             var document = mapper.Map<Document>(newDocument);
+
+            if (newDocument.DocumentFile != null)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await newDocument.DocumentFile.CopyToAsync(memoryStream);
+                    var content = memoryStream.ToArray();
+                    var extension = Path.GetExtension(newDocument.DocumentFile.FileName);
+                    document.DocumentFile =
+                        await fileStorageService.SaveFile(content, extension, containerName, newDocument.DocumentFile.ContentType);
+                }
+            }
+             
             context.Add(document);
             await context.SaveChangesAsync();
             var documentDTO = mapper.Map<DocumentDTO>(document);

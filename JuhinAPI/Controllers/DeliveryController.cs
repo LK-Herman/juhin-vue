@@ -40,18 +40,40 @@ namespace JuhinAPI.Controllers
         public async Task<ActionResult<DeliveryDTO>> GetDeliveryById(Guid id)
         {
             var delivery = await context.Deliveries
+                .Where(d => d.DeliveryId == id)
                 .Include(d => d.Forwarder)
                 .Include(d => d.Status)
                 .Include(d => d.PurchaseOrderDeliveries)
                 .ThenInclude(p => p.PurchaseOrder)
                 .ThenInclude(p => p.Vendor)
-                .Where(d => d.DeliveryId == id)
                 .FirstOrDefaultAsync();
             if (delivery == null)
             {
                 return NotFound();
             }
             return mapper.Map<DeliveryDTO>(delivery);
+        }
+
+        [HttpGet("{deliveryId:Guid}", Name = "GetDetailed")]
+        public async Task<ActionResult<Delivery>> GetDeliveryByIdDetailed(Guid deliveryId)
+        {
+            var delivery = await context.Deliveries
+                .Where(d => d.DeliveryId == deliveryId)
+                .Include(d => d.Forwarder)
+                .Include(d => d.PackedItems)
+                .ThenInclude(p => p.Item)
+                .ThenInclude(i => i.Unit)
+                .Include(d => d.Status)
+                .Include(d => d.PurchaseOrderDeliveries)
+                .ThenInclude(p => p.PurchaseOrder)
+                .ThenInclude(p => p.Vendor)
+                .FirstOrDefaultAsync();
+            if (delivery == null)
+            {
+                return NotFound();
+            }
+            return delivery;
+            //return new Object() { } create new DTO ??
         }
 
         [HttpPost("{purchaseOrderId:Guid}")]
@@ -95,8 +117,7 @@ namespace JuhinAPI.Controllers
             {
                 return NotFound();
             }
-
-            //context.Remove(new PurchaseOrder_Delivery() { DeliveryId = deliveryId, PurchaseOrderId = purchaseOrderId });
+            
             context.Remove(purchaseOrderDelivery);
             await context.SaveChangesAsync();
             context.Remove(new Delivery() { DeliveryId = deliveryId });

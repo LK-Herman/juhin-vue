@@ -12,7 +12,7 @@ namespace JuhinAPI.DTOs
         public Guid DocumentId { get; set; }
         public string Type { get; set; }
         public string Number { get; set; }
-        public string Url { get; set; }
+        public string DocumentFile { get; set; }
 
         //Document m-1 Delivery
         public Guid DeliveryId { get; set; }

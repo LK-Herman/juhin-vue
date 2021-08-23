@@ -17,7 +17,7 @@ namespace JuhinAPI.Models
         [Required]
         [StringLength(30)]
         public string Number { get; set; }
-        public string Url { get; set; }
+        public string DocumentFile { get; set; }
 
         //Document m-1 Delivery
         [Required]

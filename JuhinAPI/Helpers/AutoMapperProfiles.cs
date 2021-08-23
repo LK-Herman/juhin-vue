@@ -40,7 +40,8 @@ namespace JuhinAPI.Helpers
             CreateMap<ForwarderCreationDTO, Forwarder>();
 
             CreateMap<Document, DocumentDTO>().ReverseMap();
-            CreateMap<DocumentCreationDTO, Document>();
+            CreateMap<DocumentCreationDTO, Document>()
+                .ForMember(x => x.DocumentFile, options => options.Ignore());
 
             CreateMap<Subscription, SubscriptionDTO>().ReverseMap();
             CreateMap<SubscriptionCreationDTO, Subscription>();

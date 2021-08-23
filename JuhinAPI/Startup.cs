@@ -38,6 +38,8 @@ namespace JuhinAPI
             //services.AddScoped<IRepository, DbRepository>();
             services.AddAutoMapper(typeof(Startup));
 
+            services.AddTransient<IFileStorageService, AzureStorageService>();
+
             services.AddControllers(options =>
             {
                 options.Filters.Add(typeof(MyExceptionFilter));
