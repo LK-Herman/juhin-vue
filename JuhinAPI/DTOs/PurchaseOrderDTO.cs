@@ -16,14 +16,14 @@ namespace JuhinAPI.DTOs
         public Guid VendorId { get; set; }
 
         //PurchaseOrder m-m Deliveries
-        [JsonIgnore]
-        public List<PurchaseOrder_Delivery> PurchaseOrderDeliveries { get; set; }
+        //[JsonIgnore]
+        //public List<PurchaseOrder_Delivery> PurchaseOrderDeliveries { get; set; }
 
-        public IEnumerable<Guid> Deliveries
-        {
-            get { return PurchaseOrderDeliveries.Select(x => x.Delivery.DeliveryId); }
+        //public IEnumerable<Guid> Deliveries
+        //{
+        //    get { return PurchaseOrderDeliveries.Select(x => x.Delivery.DeliveryId); }
 
-        }
+        //}
       
 
     }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using JuhinAPI.DTOs;
+using JuhinAPI.Helpers;
 using JuhinAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,17 +24,20 @@ namespace JuhinAPI.Controllers
             this.mapper = mapper;
         }
         [HttpGet]
-        public async Task<ActionResult<List<ItemDTO>>> Get()
+        public async Task<ActionResult<List<ItemDTO>>> Get([FromQuery] PaginationDTO pagination)
         {
-            var items = await context.Items
+            var queryable = context.Items
                 .Include(i => i.Currency)
                 .Include(i => i.Pallet)
                 .Include(i => i.Unit)
                 .Include(i => i.Vendor)
-                .ToListAsync();
+                .AsQueryable();
+            await HttpContext.InsertPaginationParametersInResponse(queryable, pagination.RecordsPerPage);
+            var items = await queryable.Paginate(pagination).ToListAsync();
 
             return mapper.Map<List<ItemDTO>>(items);
         }
+
         [HttpGet("{id}", Name = "GetItemById")]
         public async Task<ActionResult<ItemDTO>> GetItem(Guid id)
         {

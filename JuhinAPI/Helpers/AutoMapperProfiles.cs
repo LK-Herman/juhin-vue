@@ -55,6 +55,29 @@ namespace JuhinAPI.Helpers
             CreateMap<WarehouseVolumeInTime, WarehouseVolumeDTO>().ReverseMap();
             CreateMap<WarehouseVolumeCreationDTO, WarehouseVolumeInTime>();
 
+            CreateMap<Delivery, DeliveryDetailsDTO>()
+                .ForMember(x => x.PurchaseOrders, options => options.MapFrom(MapDeliveryPurchaseOrders))
+                .ForMember(y => y.PackedItems, options => options.MapFrom(MapDeliveryPackedItems));
+
+        }
+
+        private List<PurchaseOrderDTO> MapDeliveryPurchaseOrders(Delivery delivery, DeliveryDetailsDTO deliveryDetails)
+        {
+            var result = new List<PurchaseOrderDTO>();
+            foreach (var deliveryOrder in delivery.PurchaseOrderDeliveries)
+            {
+                result.Add(new PurchaseOrderDTO() { OrderId = deliveryOrder.PurchaseOrderId, OrderNumber = deliveryOrder.PurchaseOrder.OrderNumber, VendorId = deliveryOrder.PurchaseOrder.VendorId });
+            }
+            return result;
+        }
+        private List<PackedItemDTO> MapDeliveryPackedItems(Delivery delivery, DeliveryDetailsDTO deliveryDetails)
+        {
+            var result = new List<PackedItemDTO>();
+            foreach (var deliveryPackedItem in delivery.PackedItems)
+            {
+                result.Add(new PackedItemDTO() { DeliveryId = deliveryPackedItem.DeliveryId, PackedItemId = deliveryPackedItem.PackedItemId, ItemId = deliveryPackedItem.ItemId, Quantity = deliveryPackedItem.Quantity });
+            }
+            return result;
         }
     }
 }

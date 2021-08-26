@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using JuhinAPI.DTOs;
 using JuhinAPI.Filters;
+using JuhinAPI.Helpers;
 using JuhinAPI.Models;
 using JuhinAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -33,13 +34,16 @@ namespace JuhinAPI.Controllers
         //[ResponseCache(Duration = 60)] //caching response for 60 sec
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)] 
         //[ServiceFilter(typeof(MyActionFilter))]
-        public async Task<ActionResult<List<VendorDTO>>> Get()
+        public async Task<ActionResult<List<VendorDTO>>> Get([FromQuery] PaginationDTO pagination)
         {
-            var vendors = await context.Vendors
+            var queryable = context.Vendors
                 .Include(v => v.Items)
-                .ToListAsync();
-            var vendorsDTOs = mapper.Map<List<VendorDTO>>(vendors);
-            return vendorsDTOs;
+                .AsQueryable();
+            
+            await HttpContext.InsertPaginationParametersInResponse(queryable, pagination.RecordsPerPage);
+            var vendors = await queryable.Paginate(pagination).ToListAsync();
+            
+            return mapper.Map<List<VendorDTO>>(vendors); ;
         }
         
         [HttpGet("{id:Guid}", Name = "getVendor")]

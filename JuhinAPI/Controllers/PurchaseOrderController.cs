@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using JuhinAPI.DTOs;
+using JuhinAPI.Helpers;
 using JuhinAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,18 +25,22 @@ namespace JuhinAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<PurchaseOrderDTO>>> Get()
+        public async Task<ActionResult<List<PurchaseOrderDTO>>> Get([FromQuery] PaginationDTO pagination)
         {
-            var orders = await context.PurchaseOrders
+            var queryable = context.PurchaseOrders
                 .Include(o => o.PurchaseOrderDeliveries)
                 .ThenInclude(pod => pod.Delivery)
                 .Include(o => o.Vendor)
                 .ThenInclude(o => o.PurchaseOrders)
                 .OrderBy(o => o.OrderNumber)
-                .ToListAsync();
-
+                .AsQueryable();
+            
+            await HttpContext.InsertPaginationParametersInResponse(queryable, pagination.RecordsPerPage);
+            var orders = await queryable.Paginate(pagination).ToListAsync();
+            
             return mapper.Map<List<PurchaseOrderDTO>>(orders);
         }
+
         [HttpGet("{id}", Name = "GetPurchaseOrder")]
         public async Task<ActionResult<PurchaseOrderDTO>> GetById(Guid id)
         {

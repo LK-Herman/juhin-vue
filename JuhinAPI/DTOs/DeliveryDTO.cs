@@ -25,23 +25,9 @@ namespace JuhinAPI.DTOs
 
         //Delivery m-1 Status
         public int StatusId { get; set; }
-        
-        //[JsonIgnore]
-        //public List<PurchaseOrder_Delivery> PurchaseOrderDeliveries { get; set; }
 
-        //public IEnumerable<string> Orders
-        //{
-        //    get { return PurchaseOrderDeliveries.Select(x => x.PurchaseOrder.OrderNumber); }
+        public List<PurchaseOrderDTO> PurchaseOrders { get; set; }
 
-        //}
-        //public IEnumerable<string> Vendors
-        //{
-        //    get { return PurchaseOrderDeliveries.Select(x => x.PurchaseOrder.Vendor.ShortName); }
-
-        //}
-        
-        // public List<PurchaseOrderDTO> PurchaseOrders { get; set; }
-        // public VendorDTO Vendor { get; set; }
 
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using JuhinAPI.DTOs;
+using JuhinAPI.Helpers;
 using JuhinAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,18 +25,100 @@ namespace JuhinAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<DeliveryDTO>>> Get()
+        public async Task<ActionResult<List<DeliveryDetailsDTO>>> Get([FromQuery] PaginationDTO pagination)
         {
-            var deliveries = await context.Deliveries
+            var queryable = context.Deliveries
                 .Include(d => d.Forwarder)
+                .Include(d => d.PackedItems)
                 .Include(d => d.Status)
                 .Include(d => d.PurchaseOrderDeliveries)
                 .ThenInclude(p => p.PurchaseOrder)
                 .ThenInclude(p => p.Vendor)
+                .AsQueryable();
+            
+            await HttpContext.InsertPaginationParametersInResponse(queryable, pagination.RecordsPerPage);
+            var deliveries = await queryable.Paginate(pagination).ToListAsync();
+            
+            return mapper.Map<List<DeliveryDetailsDTO>>(deliveries);
+        }
+
+        [HttpGet]
+        [Route("upcoming")]
+        public async Task<ActionResult<List<DeliveryDetailsDTO>>> GetUpcomingDeliveries()
+        {
+            var weekAhead = DateTime.Today.AddDays(7);
+            
+            var upcomingDeliveries = await context.Deliveries
+                .Include(x => x.PackedItems)
+                .ThenInclude(i => i.Item)
+                .Include(x => x.PurchaseOrderDeliveries)
+                .ThenInclude(pod => pod.PurchaseOrder)
+                .ThenInclude(p => p.Vendor)
+                .Include(x => x.Forwarder)
+                .Where(d => d.ETADate < weekAhead)
+                .Where(s => s.StatusId == 1 )
+                .OrderBy(d => d.ETADate)
                 .ToListAsync();
 
-            return mapper.Map<List<DeliveryDTO>>(deliveries);
+            return mapper.Map<List<DeliveryDetailsDTO>>(upcomingDeliveries);
         }
+
+        [HttpGet("filter")]
+        public async Task<ActionResult<List<DeliveryDetailsDTO>>> GetFiltered([FromQuery] FilterDeliveriesDTO filterDeliveriesDTO)
+        {
+            var nullDate = new DateTime();
+            var nullGuid = new Guid();
+            var deliveriesQueryable = context.Deliveries
+                .Include(x => x.PackedItems)
+                .ThenInclude(i => i.Item)
+                .Include(x => x.PurchaseOrderDeliveries)
+                .ThenInclude(pod => pod.PurchaseOrder)
+                .ThenInclude(p => p.Vendor)
+                .AsQueryable();
+
+            if (filterDeliveriesDTO.StatusId != 0)
+            {
+                deliveriesQueryable = deliveriesQueryable.Where(s => s.StatusId == filterDeliveriesDTO.StatusId);
+            }
+            
+            if (filterDeliveriesDTO.Date != nullDate)
+            {
+                deliveriesQueryable = deliveriesQueryable
+                    .Where(d => d.ETADate > filterDeliveriesDTO.Date.AddDays(-10))
+                    .Where(d => d.ETADate < filterDeliveriesDTO.Date.AddDays(10));
+            }
+
+            if (filterDeliveriesDTO.OrderId != nullGuid)
+            {
+                deliveriesQueryable = deliveriesQueryable
+                    .Where(x => x.PurchaseOrderDeliveries.Select(y => y.PurchaseOrderId)
+                    .Contains(filterDeliveriesDTO.OrderId));
+            }
+
+            if (!string.IsNullOrWhiteSpace(filterDeliveriesDTO.OrderNumber))
+            {
+                deliveriesQueryable = deliveriesQueryable
+                    .Where(x => x.PurchaseOrderDeliveries.Select(y => y.PurchaseOrder)
+                    .Select(z => z.OrderNumber)
+                    .Contains(filterDeliveriesDTO.OrderNumber));
+            }
+
+            if (!string.IsNullOrWhiteSpace(filterDeliveriesDTO.PartNumber))
+            {
+                deliveriesQueryable = deliveriesQueryable
+                    .Where(x => x.PackedItems.Select(y => y.Item)
+                    .Select(z => z.Name)
+                    .Contains(filterDeliveriesDTO.PartNumber));
+            }
+
+            await HttpContext.InsertPaginationParametersInResponse(deliveriesQueryable, filterDeliveriesDTO.RecordsPerPage);
+            var deliveries = await deliveriesQueryable.Paginate(filterDeliveriesDTO.Pagination).ToListAsync();
+
+            return mapper.Map<List<DeliveryDetailsDTO>>(deliveries);
+        }
+
+
+
         [HttpGet("{id}", Name = "GetDelivery")]
         public async Task<ActionResult<DeliveryDTO>> GetDeliveryById(Guid id)
         {
@@ -55,14 +138,12 @@ namespace JuhinAPI.Controllers
         }
 
         [HttpGet("{deliveryId:Guid}", Name = "GetDetailed")]
-        public async Task<ActionResult<Delivery>> GetDeliveryByIdDetailed(Guid deliveryId)
+        public async Task<ActionResult<DeliveryDetailsDTO>> GetDeliveryByIdDetailed(Guid deliveryId)
         {
             var delivery = await context.Deliveries
                 .Where(d => d.DeliveryId == deliveryId)
                 .Include(d => d.Forwarder)
                 .Include(d => d.PackedItems)
-                .ThenInclude(p => p.Item)
-                .ThenInclude(i => i.Unit)
                 .Include(d => d.Status)
                 .Include(d => d.PurchaseOrderDeliveries)
                 .ThenInclude(p => p.PurchaseOrder)
@@ -72,8 +153,7 @@ namespace JuhinAPI.Controllers
             {
                 return NotFound();
             }
-            return delivery;
-            //return new Object() { } create new DTO ??
+            return mapper.Map<DeliveryDetailsDTO>(delivery);
         }
 
         [HttpPost("{purchaseOrderId:Guid}")]

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using JuhinAPI.DTOs;
+using JuhinAPI.Helpers;
 using JuhinAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,10 +25,13 @@ namespace JuhinAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<ForwarderDTO>>> Get()
+        public async Task<ActionResult<List<ForwarderDTO>>> Get([FromQuery] PaginationDTO pagination)
         {
-            var forwarder = await context.Forwarders.ToListAsync();
-            return mapper.Map<List<ForwarderDTO>>(forwarder);
+            var queryable = context.Forwarders.AsQueryable();
+            await HttpContext.InsertPaginationParametersInResponse(queryable, pagination.RecordsPerPage);
+            var forwarders = await queryable.Paginate(pagination).ToListAsync();
+
+            return mapper.Map<List<ForwarderDTO>>(forwarders);
         }
 
         [HttpGet("{id}", Name = "GetForwarderById")]

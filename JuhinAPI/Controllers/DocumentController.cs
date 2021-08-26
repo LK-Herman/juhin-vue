@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using JuhinAPI.DTOs;
+using JuhinAPI.Helpers;
 using JuhinAPI.Models;
 using JuhinAPI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -28,12 +29,15 @@ namespace JuhinAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<DocumentDTO>>> Get()
+        public async Task<ActionResult<List<DocumentDTO>>> Get([FromQuery] PaginationDTO pagination)
         {
-            var documents = await context.Documents
-                .ToListAsync();
+            var queryable = context.Documents.AsQueryable();
+            await HttpContext.InsertPaginationParametersInResponse(queryable, pagination.RecordsPerPage);
+            var documents = await queryable.Paginate(pagination).ToListAsync();
+            
             return mapper.Map<List<DocumentDTO>>(documents);
         }
+
         [HttpGet("{id}", Name = "GetDocument")]
         public async Task<ActionResult<DocumentDTO>> GetDocumentById(Guid id)
         {
@@ -62,18 +66,35 @@ namespace JuhinAPI.Controllers
                         await fileStorageService.SaveFile(content, extension, containerName, newDocument.DocumentFile.ContentType);
                 }
             }
-             
             context.Add(document);
             await context.SaveChangesAsync();
             var documentDTO = mapper.Map<DocumentDTO>(document);
             return new CreatedAtRouteResult("GetDocument", documentDTO);
         }
+
+
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(Guid id, [FromBody] DocumentCreationDTO updatedDocument)
+        public async Task<ActionResult> Put(Guid id, [FromForm] DocumentCreationDTO updatedDocument)
         {
-            var document = mapper.Map<Document>(updatedDocument);
-            document.DocumentId = id;
-            context.Entry(document).State = EntityState.Modified;
+            var documentFromDB = await context.Documents.FirstOrDefaultAsync(d => d.DocumentId == id);
+            if (documentFromDB == null) 
+            {
+                return NotFound();
+            };
+            documentFromDB = mapper.Map(updatedDocument, documentFromDB);
+
+            if (updatedDocument.DocumentFile != null)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await updatedDocument.DocumentFile.CopyToAsync(memoryStream);
+                    var content = memoryStream.ToArray();
+                    var extension = Path.GetExtension(updatedDocument.DocumentFile.FileName);
+                    documentFromDB.DocumentFile =
+                        await fileStorageService.EditFile( 
+                            content, extension, containerName, documentFromDB.DocumentFile, updatedDocument.DocumentFile.ContentType);
+                }
+            }
             await context.SaveChangesAsync();
             return NoContent();
         }
@@ -81,13 +102,21 @@ namespace JuhinAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(Guid id)
         {
-            var exist = await context.Documents.AnyAsync(d => d.DocumentId == id);
-            if (!exist)
+            var documentFromDB = await context.Documents.FirstOrDefaultAsync(d => d.DocumentId == id);
+            if (documentFromDB == null)
             {
                 return NotFound();
             }
-            context.Remove(new Document() { DocumentId = id });
+            var fileRoute = documentFromDB.DocumentFile;
+            if (fileRoute != null) 
+            {
+                await fileStorageService.DeleteFile(fileRoute, containerName);
+            }
+            
+            context.Remove(documentFromDB);
             await context.SaveChangesAsync();
+
+
             return NoContent();
         }
 
