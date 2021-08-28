@@ -20,5 +20,7 @@ namespace JuhinAPI.DTOs
         public Guid OrderId { get; set; }
         public string OrderNumber { get; set; }
         public string PartNumber { get; set; }
+        public string OrderingField { get; set; }
+        public bool AscendingOrder { get; set; } = true;
     }
 }

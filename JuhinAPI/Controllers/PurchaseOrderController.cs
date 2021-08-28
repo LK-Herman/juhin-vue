@@ -25,7 +25,7 @@ namespace JuhinAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<PurchaseOrderDTO>>> Get([FromQuery] PaginationDTO pagination)
+        public async Task<ActionResult<List<PurchaseOrderDetailsDTO>>> Get([FromQuery] PaginationDTO pagination)
         {
             var queryable = context.PurchaseOrders
                 .Include(o => o.PurchaseOrderDeliveries)
@@ -38,7 +38,7 @@ namespace JuhinAPI.Controllers
             await HttpContext.InsertPaginationParametersInResponse(queryable, pagination.RecordsPerPage);
             var orders = await queryable.Paginate(pagination).ToListAsync();
             
-            return mapper.Map<List<PurchaseOrderDTO>>(orders);
+            return mapper.Map<List<PurchaseOrderDetailsDTO>>(orders);
         }
 
         [HttpGet("{id}", Name = "GetPurchaseOrder")]

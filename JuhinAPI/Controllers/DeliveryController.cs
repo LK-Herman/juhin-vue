@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Linq.Dynamic.Core;
+using Microsoft.Extensions.Logging;
 
 namespace JuhinAPI.Controllers
 {
@@ -17,11 +19,13 @@ namespace JuhinAPI.Controllers
     {
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
+        private readonly ILogger<DeliveryController> logger;
 
-        public DeliveryController(ApplicationDbContext context, IMapper mapper)
+        public DeliveryController(ApplicationDbContext context, IMapper mapper, ILogger<DeliveryController> logger)
         {
             this.context = context;
             this.mapper = mapper;
+            this.logger = logger;
         }
 
         [HttpGet]
@@ -30,6 +34,8 @@ namespace JuhinAPI.Controllers
             var queryable = context.Deliveries
                 .Include(d => d.Forwarder)
                 .Include(d => d.PackedItems)
+                .ThenInclude(x => x.Item)
+                .ThenInclude(y => y.Unit)
                 .Include(d => d.Status)
                 .Include(d => d.PurchaseOrderDeliveries)
                 .ThenInclude(p => p.PurchaseOrder)
@@ -109,6 +115,31 @@ namespace JuhinAPI.Controllers
                     .Where(x => x.PackedItems.Select(y => y.Item)
                     .Select(z => z.Name)
                     .Contains(filterDeliveriesDTO.PartNumber));
+            }
+
+            if (!string.IsNullOrWhiteSpace(filterDeliveriesDTO.OrderingField))
+            {
+                //switch (filterDeliveriesDTO.OrderingField.ToUpper())
+                //{
+                //    case "ETADATE":
+                //        break;
+                //    case "DELIVERYDATE":
+                //        break;
+                //    case "RATING":
+                //        break;
+                //    default:
+                //        filterDeliveriesDTO.OrderingField = "";
+                //        break;
+                //}
+                try
+                {
+                    deliveriesQueryable = deliveriesQueryable
+                        .OrderBy($"{filterDeliveriesDTO.OrderingField} {(filterDeliveriesDTO.AscendingOrder ? "ascending" : "descending")}" );
+                }
+                catch
+                {
+                    logger.LogWarning("Could not order by field " + filterDeliveriesDTO.OrderingField);
+                }
             }
 
             await HttpContext.InsertPaginationParametersInResponse(deliveriesQueryable, filterDeliveriesDTO.RecordsPerPage);

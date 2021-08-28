@@ -32,8 +32,8 @@ namespace JuhinAPI.Controllers
         }
         [HttpGet]
         //[ResponseCache(Duration = 60)] //caching response for 60 sec
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)] 
         //[ServiceFilter(typeof(MyActionFilter))]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)] 
         public async Task<ActionResult<List<VendorDTO>>> Get([FromQuery] PaginationDTO pagination)
         {
             var queryable = context.Vendors

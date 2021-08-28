@@ -26,7 +26,7 @@ namespace JuhinAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<PackedItemDTO>>> Get([FromQuery] PaginationDTO pagination)
+        public async Task<ActionResult<List<PackedItemDetailsDTO>>> Get([FromQuery] PaginationDTO pagination)
         {
             var queryable = context.PackedItems
                 .Include(p => p.Item)
@@ -34,7 +34,7 @@ namespace JuhinAPI.Controllers
                 .AsQueryable();
             await HttpContext.InsertPaginationParametersInResponse(queryable, pagination.RecordsPerPage);
             var packedItems = await queryable.Paginate(pagination).ToListAsync();
-            return mapper.Map<List<PackedItemDTO>>(packedItems);
+            return mapper.Map<List<PackedItemDetailsDTO>>(packedItems);
         }
 
         [HttpGet("{id}", Name = "GetById")]

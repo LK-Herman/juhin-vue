@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace JuhinAPI.DTOs
 {
-    public class DeliveryDetailsDTO: DeliveryDTO
+    public class UserToken
     {
-        public List<PackedItemDetailsDTO> PackedItems { get; set; }
-
+        public string Token { get; set; }
+        public DateTime Expiration { get; set; }
     }
 }

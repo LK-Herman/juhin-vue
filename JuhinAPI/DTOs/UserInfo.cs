@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 
 namespace JuhinAPI.DTOs
 {
-    public class SubscriptionCreationDTO
+    public class UserInfo
     {
         [Required]
-        public Guid DeliveryId { get; set; }
-
-        //Subscription 1-m User
+        [EmailAddress]
+        public string EmailAddress { get; set; }
         [Required]
-        public string UserId { get; set; }
+        public string Password { get; set; }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using JuhinAPI.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace JuhinAPI
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext
     {
         public ApplicationDbContext([NotNullAttribute] DbContextOptions options) : base(options)
         {
@@ -26,6 +28,16 @@ namespace JuhinAPI
                 .HasOne(pod => pod.PurchaseOrder)
                 .WithMany(po => po.PurchaseOrderDeliveries)
                 .HasForeignKey(pod => pod.PurchaseOrderId);
+            modelBuilder.Entity<IdentityUser>(b =>
+                b.HasMany<PurchaseOrder>().WithOne().HasForeignKey(po => po.UserId).IsRequired()
+            );
+            modelBuilder.Entity<IdentityUser>(b =>
+                b.HasMany<Subscription>().WithOne().HasForeignKey(po => po.UserId).IsRequired()
+            );
+
+
+
+            base.OnModelCreating(modelBuilder);
         }
 
 

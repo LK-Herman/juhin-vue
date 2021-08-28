@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -16,7 +17,9 @@ namespace JuhinAPI.Models
         public Delivery Delivery { get; set; }
 
         //Subscription 1-m User
-
+        [Required]
+        public string UserId { get; set; }
+        //public IdentityUser User { get; set; }
 
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using JuhinAPI.DTOs;
 using JuhinAPI.Models;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace JuhinAPI.Helpers
             CreateMap<VendorCreationDTO, Vendor>();
 
             CreateMap<PurchaseOrder, PurchaseOrderDTO>().ReverseMap();
+            CreateMap<PurchaseOrder, PurchaseOrderDetailsDTO>();
             CreateMap<PurchaseOrderCreationDTO, PurchaseOrder>();
 
             CreateMap<Item, ItemDTO>().ReverseMap();
@@ -59,6 +61,29 @@ namespace JuhinAPI.Helpers
                 .ForMember(x => x.PurchaseOrders, options => options.MapFrom(MapDeliveryPurchaseOrders))
                 .ForMember(y => y.PackedItems, options => options.MapFrom(MapDeliveryPackedItems));
 
+            CreateMap<PackedItem, PackedItemDetailsDTO>()
+                .ForMember(x => x.PartNumber, options => options.MapFrom(MapPackedItemToItem))
+                .ForMember(y => y.UnitMeasure, options => options.MapFrom(MapPackedItemtoUnit));
+
+                
+        }
+        
+
+        //private VendorDTO MapOrderToVendor(PurchaseOrder purchaseOrder, PurchaseOrderDetailsDTO purchaseOrderDetails)
+        //{
+        //    return new VendorDTO() { Name = purchaseOrderDetails.VendorName, ShortName = purchaseOrderDetails.VendorShortName };
+        //}
+
+        private string MapPackedItemToItem(PackedItem packedItem, PackedItemDetailsDTO detailedPackedItem)
+        {
+            var itemDTO = new ItemDTO() { Name = detailedPackedItem.Item.Name };
+            return itemDTO.Name;
+
+        }
+        private string MapPackedItemtoUnit(PackedItem packedItem, PackedItemDetailsDTO detailedPackedItem)
+        {
+            var  unitDTO = new UnitDTO() { ShortName = detailedPackedItem.Item.Unit.ShortName };
+            return unitDTO.ShortName;
         }
 
         private List<PurchaseOrderDTO> MapDeliveryPurchaseOrders(Delivery delivery, DeliveryDetailsDTO deliveryDetails)
@@ -70,12 +95,18 @@ namespace JuhinAPI.Helpers
             }
             return result;
         }
-        private List<PackedItemDTO> MapDeliveryPackedItems(Delivery delivery, DeliveryDetailsDTO deliveryDetails)
+        private List<PackedItemDetailsDTO> MapDeliveryPackedItems(Delivery delivery, DeliveryDetailsDTO deliveryDetails)
         {
-            var result = new List<PackedItemDTO>();
+            var result = new List<PackedItemDetailsDTO>();
             foreach (var deliveryPackedItem in delivery.PackedItems)
             {
-                result.Add(new PackedItemDTO() { DeliveryId = deliveryPackedItem.DeliveryId, PackedItemId = deliveryPackedItem.PackedItemId, ItemId = deliveryPackedItem.ItemId, Quantity = deliveryPackedItem.Quantity });
+                result.Add(new PackedItemDetailsDTO() { 
+                    DeliveryId = deliveryPackedItem.DeliveryId, 
+                    PackedItemId = deliveryPackedItem.PackedItemId, 
+                    ItemId = deliveryPackedItem.ItemId, 
+                    Quantity = deliveryPackedItem.Quantity, 
+                    PartNumber = deliveryPackedItem.Item.Name, 
+                    UnitMeasure = deliveryPackedItem.Item.Unit.ShortName });
             }
             return result;
         }

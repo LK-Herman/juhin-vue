@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -20,6 +21,11 @@ namespace JuhinAPI.Models
         [Required]
         public Guid VendorId { get; set; }
         public Vendor Vendor { get; set; }
+        
+        //PurchaseOrder m -1 User
+        [Required]
+        public string UserId { get; set; }
+        //public IdentityUser User { get; set; }
 
         //PurchaseOrder m-m Deliveries
         public List<PurchaseOrder_Delivery> PurchaseOrderDeliveries { get; set; }

@@ -12,5 +12,6 @@ namespace JuhinAPI.DTOs
         //public Delivery Delivery { get; set; }
 
         //Subscription 1-m User
+        public string UserId { get; set; }
     }
 }

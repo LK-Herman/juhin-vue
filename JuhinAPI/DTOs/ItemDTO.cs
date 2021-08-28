@@ -22,6 +22,8 @@ namespace JuhinAPI.DTOs
         public int PalletQty { get; set; }
         public bool IsActive { get; set; }
         public int WarehouseId { get; set; }
+        [JsonIgnore]
+        public UnitDTO Unit { get; set; }
 
         //Vendor 1-m Item
         public Guid VendorId { get; set; }
@@ -34,6 +36,7 @@ namespace JuhinAPI.DTOs
         
         //Item m-1 Unit
         public int UnitId { get; set; }
+
         
     }
 }
