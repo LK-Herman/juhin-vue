@@ -23,7 +23,11 @@ namespace JuhinAPI.Controllers
             this.context = context;
             this.mapper = mapper;
         }
-
+        /// <summary>
+        /// Shows all available currency records
+        /// </summary>
+        /// <param name="pagination"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<List<CurrencyDTO>>> Get([FromQuery] PaginationDTO pagination)
         {
@@ -33,7 +37,11 @@ namespace JuhinAPI.Controllers
 
             return mapper.Map<List<CurrencyDTO>>(currency);
         }
-
+        /// <summary>
+        /// Gets the currency by Id
+        /// </summary>
+        /// <param name="id">The Id of the currency</param>
+        /// <returns></returns>
         [HttpGet("{id}",Name = "GetCurrencyById")]
         public async Task<ActionResult<CurrencyDTO>> Get(int id)
         {
@@ -46,7 +54,11 @@ namespace JuhinAPI.Controllers
             }
             return mapper.Map<CurrencyDTO>(currency);
         }
-
+        /// <summary>
+        /// Adds new currency to database
+        /// </summary>
+        /// <param name="newCurrency"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] CurrencyCreationDTO newCurrency)
         {
@@ -56,6 +68,12 @@ namespace JuhinAPI.Controllers
 
             return new CreatedAtRouteResult("GetCurrencyById", newCurrency);
         }
+        /// <summary>
+        /// Edits the currency record with requested Id
+        /// </summary>
+        /// <param name="id">The Id of the requested currency</param>
+        /// <param name="updatedCurrency">Currency data. Example name: American dollar, code: USD, valuePLN: 3952 (value * 1000)</param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] CurrencyCreationDTO updatedCurrency)
         {
@@ -66,6 +84,11 @@ namespace JuhinAPI.Controllers
 
             return NoContent();
         }
+        /// <summary>
+        /// Deletes the currency record with requested Id
+        /// </summary>
+        /// <param name="id">Requested currency Id</param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {

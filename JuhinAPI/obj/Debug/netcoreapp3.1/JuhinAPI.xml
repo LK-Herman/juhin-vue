@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>JuhinAPI</name>
+    </assembly>
+    <members>
+        <member name="M:JuhinAPI.Controllers.AccountsController.Get(JuhinAPI.DTOs.PaginationDTO)">
+            <summary>
+            Shows the list of all users (with pagination)
+            </summary>
+            <param name="paginationDTO">Sets the maximum records per page and the page numberr to show</param>
+            <returns></returns>
+        </member>
+        <member name="M:JuhinAPI.Controllers.AccountsController.GetRoles">
+            <summary>
+            Shows all available roles in system
+            </summary>
+            <returns>string</returns>
+        </member>
+        <member name="M:JuhinAPI.Controllers.AccountsController.AssignRole(JuhinAPI.DTOs.EditRoleDTO)">
+            <summary>
+            Assigns the user Role in system (Admin, Specialist, ..)
+            </summary>
+            <param name="editRoleDTO"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JuhinAPI.Controllers.AccountsController.RemoveRole(JuhinAPI.DTOs.EditRoleDTO)">
+            <summary>
+            Removes the user Role in system (Roles: Admin)
+            </summary>
+            <param name="editRoleDTO"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JuhinAPI.Controllers.AccountsController.CreateUser(JuhinAPI.DTOs.UserInfo)">
+            <summary>
+            Create a user account with email address and password
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JuhinAPI.Controllers.AccountsController.Login(JuhinAPI.DTOs.UserInfo)">
+            <summary>
+            Login action (returns JwtBearer token)
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JuhinAPI.Controllers.AccountsController.Renew">
+            <summary>
+            Action to renew the token (to be used at client side)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:JuhinAPI.Controllers.CurrencyController.Get(JuhinAPI.DTOs.PaginationDTO)">
+            <summary>
+            Shows all available currency records
+            </summary>
+            <param name="pagination"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JuhinAPI.Controllers.CurrencyController.Get(System.Int32)">
+            <summary>
+            Gets the currency by Id
+            </summary>
+            <param name="id">The Id of the currency</param>
+            <returns></returns>
+        </member>
+        <member name="M:JuhinAPI.Controllers.CurrencyController.Post(JuhinAPI.DTOs.CurrencyCreationDTO)">
+            <summary>
+            Adds new currency to database
+            </summary>
+            <param name="newCurrency"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JuhinAPI.Controllers.CurrencyController.Put(System.Int32,JuhinAPI.DTOs.CurrencyCreationDTO)">
+            <summary>
+            Edits the currency record with requested Id
+            </summary>
+            <param name="id">The Id of the requested currency</param>
+            <param name="updatedCurrency">Currency data. Example name: American dollar, code: USD, valuePLN: 3952 (value * 1000)</param>
+            <returns></returns>
+        </member>
+        <member name="M:JuhinAPI.Controllers.CurrencyController.Delete(System.Int32)">
+            <summary>
+            Deletes the currency record with requested Id
+            </summary>
+            <param name="id">Requested currency Id</param>
+            <returns></returns>
+        </member>
+        <member name="M:JuhinAPI.Controllers.DeliveryController.Get(JuhinAPI.DTOs.PaginationDTO)">
+            <summary>
+            Gets all deliveries records from database
+            </summary>
+            <param name="pagination">(Page - page number to show / RecordsPerPage - How many records to show in one page.)</param>
+            <returns></returns>
+        </member>
+        <member name="M:JuhinAPI.Controllers.DeliveryController.GetUpcomingDeliveries">
+            <summary>
+            Shows only upcoming deliveries for next week (7 days) from today 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:JuhinAPI.Controllers.DeliveryController.GetFiltered(JuhinAPI.DTOs.FilterDeliveriesDTO)">
+            <summary>
+            Shows the deliveries after filtering by ETAdate, 
+            OrderNumber or PartNumber. Displayed in ascending order by ETADate.
+            </summary>
+            <param name="filterDeliveriesDTO"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JuhinAPI.Controllers.DeliveryController.GetDeliveryById(System.Guid)">
+            <summary>
+            Gets the delivery data requested by Id
+            </summary>
+            <param name="id">Requested Id of delivery record</param>
+            <returns></returns>
+        </member>
+        <member name="M:JuhinAPI.Controllers.DeliveryController.GetDeliveryByIdDetailed(System.Guid)">
+            <summary>
+            Gets detailed delivery data requested by Id
+            </summary>
+            <param name="deliveryId">Requested delivery Id </param>
+            <returns></returns>
+        </member>
+        <member name="M:JuhinAPI.Controllers.DeliveryController.Post(System.Guid,JuhinAPI.DTOs.DeliveryCreationDTO)">
+            <summary>
+            Creates new delivery 
+            </summary>
+            <param name="purchaseOrderId">The Id of the Purchase Order related to the delivery</param>
+            <param name="newDelivery">New delivery data</param>
+            <returns></returns>
+        </member>
+        <member name="M:JuhinAPI.Controllers.DeliveryController.Put(System.Guid,JuhinAPI.DTOs.DeliveryCreationDTO)">
+            <summary>
+            Edits the delivery data requested by Id
+            </summary>
+            <param name="id"></param>
+            <param name="updatedDelivery"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JuhinAPI.Controllers.DeliveryController.Delete(System.Guid,System.Guid)">
+            <summary>
+            Deletes the delivery record requested by Id
+            </summary>
+            <param name="deliveryId"></param>
+            <param name="purchaseOrderId"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

@@ -64,7 +64,10 @@ namespace JuhinAPI.Helpers
             CreateMap<PackedItem, PackedItemDetailsDTO>()
                 .ForMember(x => x.PartNumber, options => options.MapFrom(MapPackedItemToItem))
                 .ForMember(y => y.UnitMeasure, options => options.MapFrom(MapPackedItemtoUnit));
-
+            CreateMap<IdentityUser, UserDTO>()
+                .ForMember(x => x.EmailAddress, options => options.MapFrom(x => x.Email))
+                .ForMember(x => x.UserId, options => options.MapFrom(x => x.Id));
+                
                 
         }
         

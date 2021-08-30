@@ -1,9 +1,12 @@
 ﻿
+using AutoMapper;
 using JuhinAPI.DTOs;
+using JuhinAPI.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -23,38 +26,111 @@ namespace JuhinAPI.Controllers
         private readonly UserManager<IdentityUser> userManager;
         private readonly SignInManager<IdentityUser> signInManager;
         private readonly IConfiguration configuration;
+        private readonly ApplicationDbContext context;
+        private readonly IMapper mapper;
+
         public AccountsController(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
-            IConfiguration configuration
+            IConfiguration configuration,
+            ApplicationDbContext context,
+            IMapper mapper
             )
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.configuration = configuration;
+            this.context = context;
+            this.mapper = mapper;
         }
-        
-        [HttpGet]
-        public ActionResult<List<IdentityUser>> Get()
+        /// <summary>
+        /// Shows the list of all users (with pagination)
+        /// </summary>
+        /// <param name="paginationDTO">Sets the maximum records per page and the page numberr to show</param>
+        /// <returns></returns>
+        [HttpGet("Users")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        public async Task<ActionResult<List<UserDTO>>> Get([FromQuery] PaginationDTO paginationDTO)
         {
-            return userManager.Users.ToList();
+            var queryable = context.Users.AsQueryable();
+            queryable = queryable.OrderBy(x => x.Email);
+
+            await HttpContext.InsertPaginationParametersInResponse(queryable, paginationDTO.RecordsPerPage);
+            var users = await queryable.Paginate(paginationDTO).ToListAsync();
+
+            return mapper.Map<List<UserDTO>>(users);
+        }
+        /// <summary>
+        /// Shows all available roles in system
+        /// </summary>
+        /// <returns>string</returns>
+        [HttpGet("Roles")]
+        public async Task<ActionResult<List<string>>> GetRoles()
+        {
+            return await context.Roles.Select(x => x.Name).ToListAsync();
+        }
+        /// <summary>
+        /// Assigns the user Role in system (Admin, Specialist, ..)
+        /// </summary>
+        /// <param name="editRoleDTO"></param>
+        /// <returns></returns>
+        [HttpPost("AssignRole")]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(200)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        public async Task<ActionResult> AssignRole(EditRoleDTO editRoleDTO)
+        {
+            var user = await userManager.FindByIdAsync(editRoleDTO.UserId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            await userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, editRoleDTO.RoleName));
+            return NoContent();
+        }
+        /// <summary>
+        /// Removes the user Role in system (Roles: Admin)
+        /// </summary>
+        /// <param name="editRoleDTO"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveRole")]
+        [ProducesResponseType(404)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        public async Task<ActionResult> RemoveRole(EditRoleDTO editRoleDTO)
+        {
+            var user = await userManager.FindByIdAsync(editRoleDTO.UserId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            await userManager.RemoveClaimAsync(user, new Claim(ClaimTypes.Role, editRoleDTO.RoleName));
+            
+            return NoContent();
         }
 
+        /// <summary>
+        /// Create a user account with email address and password
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [ProducesResponseType(400)]
+        [ProducesResponseType(typeof(UserToken), 200)]
         [HttpPost("Create")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<ActionResult<UserToken>> CreateUser([FromBody] UserInfo model)
         {
             var user = new IdentityUser { UserName = model.EmailAddress, Email = model.EmailAddress };
             var result = await userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                return BuildToken(model);
+                return await BuildToken (model);
             }
             else
             {
                 return BadRequest(result.Errors);
             }
         }
-            private UserToken BuildToken(UserInfo userInfo)
+            private async Task<UserToken> BuildToken(UserInfo userInfo)
             {
                 var claims = new List<Claim>()
                 {
@@ -62,6 +138,11 @@ namespace JuhinAPI.Controllers
                     new Claim(ClaimTypes.Email, userInfo.EmailAddress),
                     new Claim("mykey", "whatever value I want")
                 };
+
+                var identityUser = await userManager.FindByEmailAsync(userInfo.EmailAddress);
+                var claimsDB = await userManager.GetClaimsAsync(identityUser);
+
+                claims.AddRange(claimsDB);
 
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:key"]));
                 var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -82,29 +163,37 @@ namespace JuhinAPI.Controllers
                 };
             }
 
+        /// <summary>
+        /// Login action (returns JwtBearer token)
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost("Login")]
         public async Task<ActionResult<UserToken>> Login([FromBody] UserInfo model)
         {
             var result = await signInManager.PasswordSignInAsync(model.EmailAddress, model.Password, isPersistent: false, lockoutOnFailure: false);
             if (result.Succeeded)
             {
-                return BuildToken(model);
+                return await BuildToken(model);
             }
             else
             {
                 return BadRequest("Invalid login attempt");
             }
         }
-
+        /// <summary>
+        /// Action to renew the token (to be used at client side)
+        /// </summary>
+        /// <returns></returns>
         [HttpPost("RenewToken")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public ActionResult<UserToken> Renew()
+        public async Task<ActionResult<UserToken>> Renew()
         {
             var userInfo = new UserInfo
             {
                 EmailAddress = HttpContext.User.Identity.Name
             };
-            return BuildToken(userInfo);
+            return await BuildToken(userInfo);
         }
 
 

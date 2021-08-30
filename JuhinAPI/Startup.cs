@@ -16,7 +16,9 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -34,13 +36,14 @@ namespace JuhinAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(); 
             services.AddLogging();
             services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             //services.AddScoped<IRepository, DbRepository>();
             services.AddAutoMapper(typeof(Startup));
-
+            services.AddDataProtection();
             services.AddTransient<IFileStorageService, AzureStorageService>();
 
             services.AddIdentity<IdentityUser, IdentityRole>()
@@ -68,20 +71,28 @@ namespace JuhinAPI
 
             services.AddTransient<Microsoft.Extensions.Hosting.IHostedService, WriteToFileHostedService>();
 
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(config =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo
+                config.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "JuhinAPI",
                     Version = "v1",
                     Description = "Warehouse management API.",
-                    //Contact = new OpenApiContact
-                    //{
-                    //    Name = "Hermano",
-                    //    Email = string.Empty,
-                    //    Url = new Uri("https://coderjony.com/"),
-                    //},
+                    License = new OpenApiLicense()
+                    {
+                        Name = "MIT"
+                    },
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Hermano",
+                        Email = "lkuczma@gmail.com"
+                        //Url = new Uri("https://coderjony.com/"),
+                    },
                 });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                config.IncludeXmlComments(xmlPath);
             });
 
         }
@@ -97,7 +108,7 @@ namespace JuhinAPI
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "JuhinAPI V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "JuhinAPI");
                 c.RoutePrefix = string.Empty;
             });
 
@@ -105,9 +116,16 @@ namespace JuhinAPI
 
             app.UseRouting();
 
+            app.UseCors(builder => builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        );
+
             app.UseAuthentication();
 
             app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {

@@ -27,7 +27,11 @@ namespace JuhinAPI.Controllers
             this.mapper = mapper;
             this.logger = logger;
         }
-
+        /// <summary>
+        /// Gets all deliveries records from database
+        /// </summary>
+        /// <param name="pagination">(Page - page number to show / RecordsPerPage - How many records to show in one page.)</param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<List<DeliveryDetailsDTO>>> Get([FromQuery] PaginationDTO pagination)
         {
@@ -47,7 +51,10 @@ namespace JuhinAPI.Controllers
             
             return mapper.Map<List<DeliveryDetailsDTO>>(deliveries);
         }
-
+        /// <summary>
+        /// Shows only upcoming deliveries for next week (7 days) from today 
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("upcoming")]
         public async Task<ActionResult<List<DeliveryDetailsDTO>>> GetUpcomingDeliveries()
@@ -68,7 +75,12 @@ namespace JuhinAPI.Controllers
 
             return mapper.Map<List<DeliveryDetailsDTO>>(upcomingDeliveries);
         }
-
+        /// <summary>
+        /// Shows the deliveries after filtering by ETAdate, 
+        /// OrderNumber or PartNumber. Displayed in ascending order by ETADate.
+        /// </summary>
+        /// <param name="filterDeliveriesDTO"></param>
+        /// <returns></returns>
         [HttpGet("filter")]
         public async Task<ActionResult<List<DeliveryDetailsDTO>>> GetFiltered([FromQuery] FilterDeliveriesDTO filterDeliveriesDTO)
         {
@@ -149,7 +161,11 @@ namespace JuhinAPI.Controllers
         }
 
 
-
+        /// <summary>
+        /// Gets the delivery data requested by Id
+        /// </summary>
+        /// <param name="id">Requested Id of delivery record</param>
+        /// <returns></returns>
         [HttpGet("{id}", Name = "GetDelivery")]
         public async Task<ActionResult<DeliveryDTO>> GetDeliveryById(Guid id)
         {
@@ -167,7 +183,11 @@ namespace JuhinAPI.Controllers
             }
             return mapper.Map<DeliveryDTO>(delivery);
         }
-
+        /// <summary>
+        /// Gets detailed delivery data requested by Id
+        /// </summary>
+        /// <param name="deliveryId">Requested delivery Id </param>
+        /// <returns></returns>
         [HttpGet("{deliveryId:Guid}", Name = "GetDetailed")]
         public async Task<ActionResult<DeliveryDetailsDTO>> GetDeliveryByIdDetailed(Guid deliveryId)
         {
@@ -186,7 +206,12 @@ namespace JuhinAPI.Controllers
             }
             return mapper.Map<DeliveryDetailsDTO>(delivery);
         }
-
+        /// <summary>
+        /// Creates new delivery 
+        /// </summary>
+        /// <param name="purchaseOrderId">The Id of the Purchase Order related to the delivery</param>
+        /// <param name="newDelivery">New delivery data</param>
+        /// <returns></returns>
         [HttpPost("{purchaseOrderId:Guid}")]
         public async Task<ActionResult> Post(Guid purchaseOrderId, [FromBody] DeliveryCreationDTO newDelivery)
         {
@@ -201,7 +226,12 @@ namespace JuhinAPI.Controllers
             return new CreatedAtRouteResult("GetDelivery", deliveryDTO);
         }
 
-
+        /// <summary>
+        /// Edits the delivery data requested by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="updatedDelivery"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(Guid id, [FromBody] DeliveryCreationDTO updatedDelivery)
         {
@@ -211,7 +241,12 @@ namespace JuhinAPI.Controllers
             await context.SaveChangesAsync();
             return NoContent();
         }
-
+        /// <summary>
+        /// Deletes the delivery record requested by Id
+        /// </summary>
+        /// <param name="deliveryId"></param>
+        /// <param name="purchaseOrderId"></param>
+        /// <returns></returns>
         [HttpDelete("{deliveryId}")]
         public async Task<ActionResult> Delete(Guid deliveryId, [FromBody] Guid purchaseOrderId )
         {
