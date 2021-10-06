@@ -16,7 +16,9 @@ namespace JuhinAPI.DTOs
         public string Country { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
-        
+
+        //public List<Link> Links { get; set; } = new List<Link>();
+
         //Vendor 1-m PurchaseOrder
         //public List<PurchaseOrder> PurchaseOrders { get; set; }
 

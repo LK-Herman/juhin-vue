@@ -23,7 +23,11 @@ namespace JuhinAPI.Controllers
             this.context = context;
             this.mapper = mapper;
         }
-
+        /// <summary>
+        /// Gets all the pallets types
+        /// </summary>
+        /// <param name="pagination"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<List<PalletDTO>>> Get([FromQuery] PaginationDTO pagination) 
         {
@@ -33,7 +37,11 @@ namespace JuhinAPI.Controllers
 
             return mapper.Map<List<PalletDTO>>(pallets);
         }
-
+        /// <summary>
+        /// Gets the pallet type by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}", Name = "GetPalletById")]
         public async Task<ActionResult<PalletDTO>> GetById(int id)
         {
@@ -46,7 +54,11 @@ namespace JuhinAPI.Controllers
             }
             return mapper.Map<PalletDTO>(pallet);
         }
-
+        /// <summary>
+        /// Adds new pallet type
+        /// </summary>
+        /// <param name="palletCreated"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] PalletCreationDTO palletCreated)
         {
@@ -56,7 +68,12 @@ namespace JuhinAPI.Controllers
             var palletDTO = mapper.Map<PalletDTO>(pallet);
             return new CreatedAtRouteResult("GetPalletById", palletDTO);
         }
-
+        /// <summary>
+        /// Edits specific pallet type by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="updatedPallet"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] PalletCreationDTO updatedPallet)
         {
@@ -67,7 +84,11 @@ namespace JuhinAPI.Controllers
 
             return NoContent();
         }
-
+        /// <summary>
+        /// Removes the pallet type by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {

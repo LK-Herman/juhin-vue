@@ -23,7 +23,11 @@ namespace JuhinAPI.Controllers
             this.context = context;
             this.mapper = mapper;
         }
-
+        /// <summary>
+        /// Gets the list of all forwarders
+        /// </summary>
+        /// <param name="pagination"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<List<ForwarderDTO>>> Get([FromQuery] PaginationDTO pagination)
         {
@@ -33,7 +37,11 @@ namespace JuhinAPI.Controllers
 
             return mapper.Map<List<ForwarderDTO>>(forwarders);
         }
-
+        /// <summary>
+        /// Gets the forwarder info by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}", Name = "GetForwarderById")]
         public async Task<ActionResult<ForwarderDTO>> GetForwarderById(int id)
         {
@@ -46,7 +54,11 @@ namespace JuhinAPI.Controllers
             }
             return mapper.Map<ForwarderDTO>(forwarder);
         }
-
+        /// <summary>
+        /// Posts the new forwarder data
+        /// </summary>
+        /// <param name="newForwarder"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] ForwarderCreationDTO newForwarder)
         {
@@ -56,6 +68,12 @@ namespace JuhinAPI.Controllers
             var forwarderDTO = mapper.Map<ForwarderDTO>(forwarder);
             return new CreatedAtRouteResult("GetForwarderById", forwarderDTO);
         }
+        /// <summary>
+        /// Edits the forwarder info by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="updatedForwarder"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] ForwarderCreationDTO updatedForwarder)
         {
@@ -66,7 +84,11 @@ namespace JuhinAPI.Controllers
 
             return NoContent();
         }
-
+        /// <summary>
+        /// Removes the forwarder data by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {

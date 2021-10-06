@@ -23,6 +23,11 @@ namespace JuhinAPI.Controllers
             this.context = context;
             this.mapper = mapper;
         }
+        /// <summary>
+        /// Gets the list of all subscriptions
+        /// </summary>
+        /// <param name="pagination"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<List<SubscriptionDTO>>> Get([FromQuery] PaginationDTO pagination)
         {
@@ -32,7 +37,11 @@ namespace JuhinAPI.Controllers
             
             return mapper.Map<List<SubscriptionDTO>>(subscriptions);
         }
-
+        /// <summary>
+        /// Gets the information about specific subscription by Id
+        /// </summary>
+        /// <param name="id">The Id of subscription</param>
+        /// <returns></returns>
         [HttpGet("{id}", Name = "GetSubscription")]
         public async Task<ActionResult<SubscriptionDTO>> GetSubscriptionById(Guid id)
         {
@@ -45,6 +54,11 @@ namespace JuhinAPI.Controllers
             }
             return mapper.Map<SubscriptionDTO>(subscription);
         }
+        /// <summary>
+        /// Adds new subscription
+        /// </summary>
+        /// <param name="newSubscription"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] SubscriptionCreationDTO newSubscription)
         {
@@ -54,7 +68,12 @@ namespace JuhinAPI.Controllers
             var subscriptionDTO = mapper.Map<SubscriptionDTO>(subscription);
             return new CreatedAtRouteResult("GetSubscription", subscriptionDTO);
         }
-
+        /// <summary>
+        /// Edits the existing subscription data
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="updatedSubscription"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(Guid id, [FromBody] SubscriptionCreationDTO updatedSubscription)
         {
@@ -64,7 +83,11 @@ namespace JuhinAPI.Controllers
             await context.SaveChangesAsync();
             return NoContent();
         }
-
+        /// <summary>
+        /// Removes the subscription by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(Guid id)
         {

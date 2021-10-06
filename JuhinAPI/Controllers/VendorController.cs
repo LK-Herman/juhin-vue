@@ -30,21 +30,35 @@ namespace JuhinAPI.Controllers
             this.context = context;
             this.mapper = mapper;
         }
-        [HttpGet]
+        /// <summary>
+        /// Gets the list of all vendors/suppliers
+        /// </summary>
+        /// <param name="pagination"></param>
+        /// <returns></returns>
+        [HttpGet(Name ="getVendors")]
         //[ResponseCache(Duration = 60)] //caching response for 60 sec
         //[ServiceFilter(typeof(MyActionFilter))]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)] 
-        public async Task<ActionResult<List<VendorDTO>>> Get([FromQuery] PaginationDTO pagination)
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Specialist, Warehouseman, Guest")] 
+        [ProducesResponseType(typeof(List<VendorDTO>), 200)]
+        public async Task<IActionResult> Get([FromQuery] PaginationDTO pagination)
         {
             var queryable = context.Vendors
                 .Include(v => v.Items)
                 .AsQueryable();
             
             await HttpContext.InsertPaginationParametersInResponse(queryable, pagination.RecordsPerPage);
-            var vendors = await queryable.Paginate(pagination).ToListAsync();
             
-            return mapper.Map<List<VendorDTO>>(vendors); ;
+            var vendors = await queryable.Paginate(pagination).ToListAsync();
+            var vendorsDTOs = mapper.Map<List<VendorDTO>>(vendors);
+                        
+            return Ok(vendorsDTOs);
         }
+
+        /// <summary>
+        /// Gets the vendor data by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         
         [HttpGet("{id:Guid}", Name = "getVendor")]
         public async Task<ActionResult<VendorDTO>> GetVendorsId(Guid id)
@@ -57,13 +71,16 @@ namespace JuhinAPI.Controllers
                 logger.LogWarning($"Vendor with id: {id} not found");
                 return NotFound();
             }
-
             var vendorDTO = mapper.Map<VendorDTO>(vendor);
-
+            
             return vendorDTO;
         }
-
-        [HttpPost]
+        /// <summary>
+        /// Adds new vendor data
+        /// </summary>
+        /// <param name="vendorCreation"></param>
+        /// <returns></returns>
+        [HttpPost(Name = "postVendor")]
         public async Task<ActionResult> Post([FromBody] VendorCreationDTO vendorCreation)
         {
             var vendor = mapper.Map<Vendor>(vendorCreation);
@@ -74,7 +91,14 @@ namespace JuhinAPI.Controllers
             //return new CreatedAtRouteResult("getVendor", new { id = vendor.VendorId }, vendor);
             return new CreatedAtRouteResult("getVendor", vendorDTO);
         }
-        [HttpPut("{id}")]
+
+        /// <summary>
+        /// Edits existing vendor data by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="vendorCreation"></param>
+        /// <returns></returns>
+        [HttpPut("{id}", Name = "putVendor")]
         public async Task<ActionResult> Put(Guid id, [FromBody] VendorCreationDTO vendorCreation)
         {
             var vendor = mapper.Map<Vendor>(vendorCreation);
@@ -83,7 +107,12 @@ namespace JuhinAPI.Controllers
             await context.SaveChangesAsync();
             return NoContent();
         }
-        [HttpDelete("{id}")]
+        /// <summary>
+        /// Removes the existing vendor data
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("{id}", Name = "deleteVendor")]
         public async Task<ActionResult> Delete(Guid id)
         {
             var exists = await context.Vendors.AnyAsync(vendor => vendor.VendorId == id);

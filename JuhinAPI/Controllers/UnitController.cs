@@ -23,7 +23,11 @@ namespace JuhinAPI.Controllers
             this.context = context;
             this.mapper = mapper;
         }
-
+        /// <summary>
+        /// Gets the list of all units of measure 
+        /// </summary>
+        /// <param name="pagination"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<List<UnitDTO>>> Get([FromQuery] PaginationDTO pagination)
         {
@@ -34,7 +38,11 @@ namespace JuhinAPI.Controllers
             return mapper.Map<List<UnitDTO>>(units);
         }
 
-        
+        /// <summary>
+        /// Gets the unit by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}", Name = "GetUnitById")]
         public async Task<ActionResult<UnitDTO>> GetById(int id)
         {
@@ -47,6 +55,12 @@ namespace JuhinAPI.Controllers
             }
             return mapper.Map<UnitDTO>(unit);
         }
+
+        /// <summary>
+        /// Adds new unit
+        /// </summary>
+        /// <param name="newUnit"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] UnitCreationDTO newUnit)
         {
@@ -56,7 +70,12 @@ namespace JuhinAPI.Controllers
             var unitDTO = mapper.Map<UnitDTO>(unit);
             return new CreatedAtRouteResult("GetUnitById", unitDTO);
         }
-
+        /// <summary>
+        /// Edits existing unit data by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="updatedUnit"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] UnitCreationDTO updatedUnit)
         {
@@ -67,6 +86,11 @@ namespace JuhinAPI.Controllers
 
             return NoContent();
         }
+        /// <summary>
+        /// Removes the existing unit
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {

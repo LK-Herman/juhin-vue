@@ -23,7 +23,11 @@ namespace JuhinAPI.Controllers
             this.context = context;
             this.mapper = mapper;
         }
-
+        /// <summary>
+        /// Gets the list of all purchase orders
+        /// </summary>
+        /// <param name="pagination"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<List<PurchaseOrderDetailsDTO>>> Get([FromQuery] PaginationDTO pagination)
         {
@@ -40,7 +44,11 @@ namespace JuhinAPI.Controllers
             
             return mapper.Map<List<PurchaseOrderDetailsDTO>>(orders);
         }
-
+        /// <summary>
+        /// Gets the purchase order by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}", Name = "GetPurchaseOrder")]
         public async Task<ActionResult<PurchaseOrderDTO>> GetById(Guid id)
         {
@@ -55,7 +63,11 @@ namespace JuhinAPI.Controllers
             }
             return mapper.Map<PurchaseOrderDTO>(order);
         }
-      
+        /// <summary>
+        /// Adds new purchase order related to specific vendor
+        /// </summary>
+        /// <param name="purchaseOrderCreation"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] PurchaseOrderCreationDTO purchaseOrderCreation)
         {
@@ -66,7 +78,12 @@ namespace JuhinAPI.Controllers
 
             return new CreatedAtRouteResult("GetPurchaseOrder", new { id = order.OrderId }, orderDTO);
         }
-
+        /// <summary>
+        /// Edits specific purchase order by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="orderCreation"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(Guid id, [FromBody] PurchaseOrderCreationDTO orderCreation)
         {
@@ -76,6 +93,11 @@ namespace JuhinAPI.Controllers
             await context.SaveChangesAsync();
             return NoContent();
         }
+        /// <summary>
+        /// Removes the purchase order by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(Guid id)
         {

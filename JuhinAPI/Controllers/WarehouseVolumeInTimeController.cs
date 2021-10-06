@@ -24,6 +24,11 @@ namespace JuhinAPI.Controllers
             this.mapper = mapper;
         }
         //with PAGINATION implemented ------------------------------------------------------PAGINATION GET-----
+        /// <summary>
+        /// Gets the list of information about the warehouse volume (qty of pallets) in specific point of time 
+        /// </summary>
+        /// <param name="pagination"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<List<WarehouseVolumeDTO>>> Get([FromQuery] PaginationDTO pagination)
         {
@@ -33,7 +38,11 @@ namespace JuhinAPI.Controllers
             //var warehouseVolumes = await context.WarehouseVolumes.ToListAsync();
             return mapper.Map<List<WarehouseVolumeDTO>>(warehouseVolumes);
         }
-
+        /// <summary>
+        /// Gets the info about warehouse volume by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}", Name = "GetVolumeById")]
         public async Task<ActionResult<WarehouseVolumeDTO>> Get(Guid id)
         {
@@ -46,7 +55,11 @@ namespace JuhinAPI.Controllers
             }
             return mapper.Map<WarehouseVolumeDTO>(warehouseVolume);
         }
-
+        /// <summary>
+        /// Adds new warehouse volume in time (should be added once per 4 hours)
+        /// </summary>
+        /// <param name="newWarehouseVolume"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] WarehouseVolumeCreationDTO newWarehouseVolume)
         {
@@ -62,7 +75,12 @@ namespace JuhinAPI.Controllers
 
             return new CreatedAtRouteResult("GetVolumeById", volumeDTO);
         }
-
+        /// <summary>
+        /// Edits the warehouse volume in time by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="updatedWarehouseVolume"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(Guid id, [FromBody] WarehouseVolumeCreationDTO updatedWarehouseVolume)
         {
@@ -72,7 +90,11 @@ namespace JuhinAPI.Controllers
             await context.SaveChangesAsync();
             return NoContent();
         }
-
+        /// <summary>
+        /// Removes the volume by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(Guid id)
         {

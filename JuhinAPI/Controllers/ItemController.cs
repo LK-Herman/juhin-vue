@@ -23,6 +23,11 @@ namespace JuhinAPI.Controllers
             this.context = context;
             this.mapper = mapper;
         }
+        /// <summary>
+        /// Gets the list of all the components
+        /// </summary>
+        /// <param name="pagination"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<List<ItemDTO>>> Get([FromQuery] PaginationDTO pagination)
         {
@@ -37,7 +42,11 @@ namespace JuhinAPI.Controllers
 
             return mapper.Map<List<ItemDTO>>(items);
         }
-
+        /// <summary>
+        /// Gets the component info by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}", Name = "GetItemById")]
         public async Task<ActionResult<ItemDTO>> GetItem(Guid id)
         {
@@ -54,7 +63,11 @@ namespace JuhinAPI.Controllers
             }
             return mapper.Map<ItemDTO>(item);
         }
-
+        /// <summary>
+        /// Posts the new component
+        /// </summary>
+        /// <param name="newItem"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] ItemCreationDTO newItem)
         {
@@ -65,7 +78,12 @@ namespace JuhinAPI.Controllers
             
             return new CreatedAtRouteResult("GetItemById", new { id = item.ItemId }, itemDTO);
         }
-
+        /// <summary>
+        /// Edits the existing component info by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="updatedItem"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(Guid id, [FromBody] ItemCreationDTO updatedItem)
         {
@@ -76,7 +94,11 @@ namespace JuhinAPI.Controllers
 
             return NoContent();
         }
-
+        /// <summary>
+        /// Removes the component by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(Guid id)
         {

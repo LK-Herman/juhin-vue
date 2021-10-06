@@ -27,7 +27,11 @@ namespace JuhinAPI.Controllers
             this.mapper = mapper;
             this.fileStorageService = fileStorageService;
         }
-
+        /// <summary>
+        /// Gets the list of all documents
+        /// </summary>
+        /// <param name="pagination"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<List<DocumentDTO>>> Get([FromQuery] PaginationDTO pagination)
         {
@@ -37,7 +41,11 @@ namespace JuhinAPI.Controllers
             
             return mapper.Map<List<DocumentDTO>>(documents);
         }
-
+        /// <summary>
+        /// Gets the specific document by Guid Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}", Name = "GetDocument")]
         public async Task<ActionResult<DocumentDTO>> GetDocumentById(Guid id)
         {
@@ -50,6 +58,11 @@ namespace JuhinAPI.Controllers
             }
             return mapper.Map<DocumentDTO>(document);
         }
+        /// <summary>
+        /// Posts the document file to file storage service
+        /// </summary>
+        /// <param name="newDocument"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> Post([FromForm] DocumentCreationDTO newDocument)
         {
@@ -72,7 +85,12 @@ namespace JuhinAPI.Controllers
             return new CreatedAtRouteResult("GetDocument", documentDTO);
         }
 
-
+        /// <summary>
+        /// Edits the document by Guid Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="updatedDocument"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(Guid id, [FromForm] DocumentCreationDTO updatedDocument)
         {
@@ -98,7 +116,11 @@ namespace JuhinAPI.Controllers
             await context.SaveChangesAsync();
             return NoContent();
         }
-
+        /// <summary>
+        /// Removes the document by Guid Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(Guid id)
         {
