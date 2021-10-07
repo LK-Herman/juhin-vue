@@ -56,6 +56,23 @@ namespace JuhinAPI.Controllers
             return mapper.Map<WarehouseVolumeDTO>(warehouseVolume);
         }
         /// <summary>
+        /// Gets the warehouse volume by given time value
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        [HttpGet("{date}", Name = "GetVolumeByDate")]
+        public async Task<ActionResult<WarehouseVolumeDTO>> Get(DateTime date)
+        {
+            var warehouseVolume = await context.WarehouseVolumes
+                .Where(wv => wv.Date == date)
+                .FirstOrDefaultAsync();
+            if (warehouseVolume == null)
+            {
+                return NotFound();
+            }
+            return mapper.Map<WarehouseVolumeDTO>(warehouseVolume);
+        }
+        /// <summary>
         /// Adds new warehouse volume in time (should be added once per 4 hours)
         /// </summary>
         /// <param name="newWarehouseVolume"></param>

@@ -177,3 +177,7 @@ C:\Projects\Juhin\JuhinAPI\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2
 C:\Projects\Juhin\JuhinAPI\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\Projects\Juhin\JuhinAPI\bin\Debug\netcoreapp3.1\JuhinAPI.xml
 C:\Projects\Juhin\JuhinAPI\obj\Debug\netcoreapp3.1\JuhinAPI.xml
+C:\Projects\Juhin\JuhinAPI\bin\Debug\netcoreapp3.1\Azure.Identity.dll
+C:\Projects\Juhin\JuhinAPI\bin\Debug\netcoreapp3.1\Azure.Storage.Files.Shares.dll
+C:\Projects\Juhin\JuhinAPI\bin\Debug\netcoreapp3.1\Azure.Storage.Queues.dll
+C:\Projects\Juhin\JuhinAPI\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Azure.dll

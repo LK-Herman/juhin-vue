@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="IIS Web Application Name" description="" value="JuhinAPI" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Projects\\Juhin\\JuhinAPI\\obj\\Release\\netcoreapp3\.1\\PubTmp\\Out\\$" />
+  </parameter>
+  <parameter name="JuhinAPI.ApplicationDbContext" description="" value="Server=tcp:juhinapidbserver.database.windows.net,1433;Initial Catalog=JuhinAPI_db;Persist Security Info=False;User ID=lkuczma@gmail.com@juhinapidbserver;Password=Herm@nJuhin11;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" tags="dbfullsql">
+    <parameterEntry kind="ProviderPath" scope="dbfullsql" match="^C:\\Projects\\Juhin\\JuhinAPI\\obj\\Release\\netcoreapp3\.1\\PubTmp\\EFSQLScripts\\JuhinAPI\.ApplicationDbContext\.sql$" />
+  </parameter>
+</parameters>

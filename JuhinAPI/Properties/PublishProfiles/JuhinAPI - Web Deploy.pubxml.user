@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAxCKEy2GHp0KGSQr05UcAvQAAAAACAAAAAAAQZgAAAAEAACAAAADjpritr4TfLaC414Kbc2w0Uq2Crkfxviib0BYkwoW8kAAAAAAOgAAAAAIAACAAAABgHJZX5zzMwDap717KKcqQLABcf5UG83JKtD5ItNJuyIAAAAAajsDniBmxQTRXO/rXMmslqiBC2GEDMortnGX9Nf2jxpBUewqokdetwC1HaHNSNgIZUr0pUvil6LnL4aAM51rbFjf3fX6HHruP+ZypAq9OSFL+M4cTOITqCYfqyKPwmQf537HvQ+tOYg25JB1CJoc+J0jjv9YRmfJH8vSIvv+Eq0AAAADiT7/kVdGAdBs6zRGS2998/QP8INRyJ7+2gstYgkoYxds60dbgPDDpm2neH1pY99eC6YQ3yQe28p+4VdEQOD5s</EncryptedPassword>
+    <History>True|2021-10-07T17:23:46.0081243Z;False|2021-10-07T19:20:45.1828347+02:00;True|2021-10-07T19:02:50.5126666+02:00;</History>
+  </PropertyGroup>
+  <ItemGroup>
+    <EFMigrations Include="JuhinAPI.ApplicationDbContext">
+      <Value>Server=tcp:juhinapidbserver.database.windows.net,1433%3bInitial Catalog=JuhinAPI_db%3bPersist Security Info=False%3bUser ID=lkuczma%40gmail.com%40juhinapidbserver%3bPassword=Herm%40nJuhin11%3bMultipleActiveResultSets=False%3bEncrypt=True%3bTrustServerCertificate=False%3bConnection Timeout=30%3b</Value>
+    </EFMigrations>
+  </ItemGroup>
+</Project>

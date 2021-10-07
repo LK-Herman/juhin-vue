@@ -562,6 +562,13 @@
             <param name="id"></param>
             <returns></returns>
         </member>
+        <member name="M:JuhinAPI.Controllers.WarehouseVolumeInTimeController.Get(System.DateTime)">
+            <summary>
+            Gets the warehouse volume by given time value
+            </summary>
+            <param name="date"></param>
+            <returns></returns>
+        </member>
         <member name="M:JuhinAPI.Controllers.WarehouseVolumeInTimeController.Post(JuhinAPI.DTOs.WarehouseVolumeCreationDTO)">
             <summary>
             Adds new warehouse volume in time (should be added once per 4 hours)
