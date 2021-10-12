@@ -50,6 +50,7 @@ C:\Projects\Juhin\JuhinAPI\bin\Release\netcoreapp3.1\Microsoft.Extensions.Loggin
 C:\Projects\Juhin\JuhinAPI\bin\Release\netcoreapp3.1\Microsoft.Extensions.Options.dll
 C:\Projects\Juhin\JuhinAPI\bin\Release\netcoreapp3.1\Microsoft.Extensions.Primitives.dll
 C:\Projects\Juhin\JuhinAPI\bin\Release\netcoreapp3.1\Microsoft.Identity.Client.dll
+C:\Projects\Juhin\JuhinAPI\bin\Release\netcoreapp3.1\Microsoft.Identity.Client.Extensions.Msal.dll
 C:\Projects\Juhin\JuhinAPI\bin\Release\netcoreapp3.1\Microsoft.IdentityModel.JsonWebTokens.dll
 C:\Projects\Juhin\JuhinAPI\bin\Release\netcoreapp3.1\Microsoft.IdentityModel.Logging.dll
 C:\Projects\Juhin\JuhinAPI\bin\Release\netcoreapp3.1\Microsoft.IdentityModel.Protocols.dll
@@ -161,3 +162,6 @@ C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\JuhinAPI.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\JuhinAPI.xml
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\JuhinAPI.pdb
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\JuhinAPI.genruntimeconfig.cache
+C:\Projects\Juhin\JuhinAPI\bin\Release\netcoreapp3.1\MailKit.dll
+C:\Projects\Juhin\JuhinAPI\bin\Release\netcoreapp3.1\MimeKit.dll
+C:\Projects\Juhin\JuhinAPI\bin\Release\netcoreapp3.1\BouncyCastle.Crypto.dll

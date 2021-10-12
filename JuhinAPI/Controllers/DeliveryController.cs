@@ -10,6 +10,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Linq.Dynamic.Core;
 using Microsoft.Extensions.Logging;
+using JuhinAPI.Services;
+using JuhinAPI.Data;
 
 namespace JuhinAPI.Controllers
 {
@@ -20,19 +22,21 @@ namespace JuhinAPI.Controllers
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
         private readonly ILogger<DeliveryController> logger;
+        private readonly IEmailService emailService;
 
-        public DeliveryController(ApplicationDbContext context, IMapper mapper, ILogger<DeliveryController> logger)
+        public DeliveryController(ApplicationDbContext context, IMapper mapper, ILogger<DeliveryController> logger, IEmailService emailService)
         {
             this.context = context;
             this.mapper = mapper;
             this.logger = logger;
+            this.emailService = emailService;
         }
         /// <summary>
         /// Gets all deliveries records from database
         /// </summary>
         /// <param name="pagination">(Page - page number to show / RecordsPerPage - How many records to show in one page.)</param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet(Name = "getDeliveries")]
         public async Task<ActionResult<List<DeliveryDetailsDTO>>> Get([FromQuery] PaginationDTO pagination)
         {
             var queryable = context.Deliveries
@@ -235,10 +239,52 @@ namespace JuhinAPI.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(Guid id, [FromBody] DeliveryCreationDTO updatedDelivery)
         {
+            var lastDeliveryData = await context.Deliveries
+                .Where(d => d.DeliveryId == id)
+                .Include(s => s.Forwarder)
+                .Include(s => s.Status)
+                .Include(s => s.PurchaseOrderDeliveries)
+                    .ThenInclude(y => y.PurchaseOrder)
+                    .ThenInclude(y => y.Vendor)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
+
+
             var delivery = mapper.Map<Delivery>(updatedDelivery);
             delivery.DeliveryId = id;
+            if(delivery.StatusId == 3)
+            {
+                delivery.DeliveryDate = DateTime.Now;
+            }else
+            {
+                delivery.DeliveryDate = delivery.ETADate;
+            }
             context.Entry(delivery).State = EntityState.Modified;
             await context.SaveChangesAsync();
+
+            var newStatus = await context.Statuses
+                .Where(s => s.StatusId == delivery.StatusId)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
+
+            if (delivery.StatusId != lastDeliveryData.StatusId)
+            {
+                var message = new EmailMessage();
+                message.Subject = "JuhinAPI Status Notification";
+                message.Content = 
+                    "<div><h2> DELIVERY SUBSCRIPTION NOTICE</h2><h3>Status of your delivery has been updated.</h3></div>" +
+                    "<div><p><b>Supplier</b>: " + lastDeliveryData.PurchaseOrderDeliveries[0].PurchaseOrder.Vendor.Name + "</p>" +
+                    "<p><b>PO Number</b>: " + lastDeliveryData.PurchaseOrderDeliveries[0].PurchaseOrder.OrderNumber.ToString() + " </p>" +
+                    "<p><b>Forwarder</b>: " + lastDeliveryData.Forwarder.Name.ToString() + " </p>" +
+                    "<p><b>Delivery date</b>: " + delivery.DeliveryDate.ToLocalTime().ToString() + " </p>" +
+                    "<p><b>ETA</b>: " + delivery.ETADate.ToLocalTime().ToString() + " </p>" +
+                    "<p>Delivery status was changed from <b><i>" + lastDeliveryData.Status.Name + "</i></b> to <b><i>"+ newStatus.Name + "</i></b>.</p>></div>";
+                message.FromAddress.Name = "JuhinAPI Software";
+                message.FromAddress.Address = "pipsitestemail@gmail.com";
+                message.ToAddresses.Add(new EmailAddress { Name = "Herman", Address = "lkuczma@gmail.com" });
+                emailService.Send(message);
+            }
+
             return NoContent();
         }
         /// <summary>

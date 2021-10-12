@@ -29,6 +29,8 @@ namespace JuhinAPI.Controllers
             links.Add(new Link(href: Url.Link("loginUser", new { }), rel: "login", method: "POST"));
             links.Add(new Link(href: Url.Link("renewToken", new { }), rel: "renew-token", method: "POST"));
 
+            links.Add(new Link(href: Url.Link("getRoot", new { }), rel: "self", method: "GET"));
+            links.Add(new Link(href: Url.Link("getDeliveries", new { }), rel: "self", method: "GET"));
             return links;
         }
     }

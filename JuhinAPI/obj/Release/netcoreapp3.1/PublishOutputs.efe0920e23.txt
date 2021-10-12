@@ -47,6 +47,7 @@ C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\Microsoft.Extens
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\Microsoft.Extensions.Options.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\Microsoft.Extensions.Primitives.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\Microsoft.Identity.Client.dll
+C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\Microsoft.Identity.Client.Extensions.Msal.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\Microsoft.IdentityModel.JsonWebTokens.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\Microsoft.IdentityModel.Logging.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\Microsoft.IdentityModel.Protocols.dll

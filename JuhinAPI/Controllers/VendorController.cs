@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using JuhinAPI.Data;
 using JuhinAPI.DTOs;
 using JuhinAPI.Filters;
 using JuhinAPI.Helpers;
@@ -50,7 +51,8 @@ namespace JuhinAPI.Controllers
             
             var vendors = await queryable.Paginate(pagination).ToListAsync();
             var vendorsDTOs = mapper.Map<List<VendorDTO>>(vendors);
-                        
+
+                            
             return Ok(vendorsDTOs);
         }
 
