@@ -49,7 +49,7 @@ namespace JuhinAPI.Controllers
         /// <param name="paginationDTO">Sets the maximum records per page and the page numberr to show</param>
         /// <returns></returns>
         [HttpGet("Users", Name = "getUsers")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<ActionResult<List<UserDTO>>> Get([FromQuery] PaginationDTO paginationDTO)
         {
             var queryable = context.Users.AsQueryable();
@@ -77,7 +77,7 @@ namespace JuhinAPI.Controllers
         [HttpPost("AssignRole", Name = "assignRole")]
         [ProducesResponseType(404)]
         [ProducesResponseType(200)]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<ActionResult> AssignRole(EditRoleDTO editRoleDTO)
         {
             var user = await userManager.FindByIdAsync(editRoleDTO.UserId);
@@ -95,7 +95,7 @@ namespace JuhinAPI.Controllers
         /// <returns></returns>
         [HttpPost("RemoveRole", Name = "removeRole")]
         [ProducesResponseType(404)]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<ActionResult> RemoveRole(EditRoleDTO editRoleDTO)
         {
             var user = await userManager.FindByIdAsync(editRoleDTO.UserId);
@@ -130,7 +130,36 @@ namespace JuhinAPI.Controllers
                 return BadRequest(result.Errors);
             }
         }
-            private async Task<UserToken> BuildToken(UserInfo userInfo)
+        /// <summary>
+        /// Resets the password / for testing only / to be removed
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        [HttpPost("{userName},{password}", Name = "resetPassword")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        public async Task<ActionResult> ResetPassword(string userName, string password)
+        {
+            //UserInfo model
+            //var user = new IdentityUser { UserName = model.EmailAddress, Email = model.EmailAddress };
+            var user = await userManager.FindByNameAsync(userName);
+            if (user != null)
+            {
+                var token = await userManager.GeneratePasswordResetTokenAsync(user);
+                var result = await userManager.ResetPasswordAsync(user, token, password);
+
+                if (result.Succeeded)
+                {
+                    return Ok("Password changed succesfully.");
+                }
+                else
+                {
+                    return BadRequest(result.Errors);
+                }
+            }
+            return NotFound();
+        }
+        private async Task<UserToken> BuildToken(UserInfo userInfo)
             {
                 var claims = new List<Claim>()
                 {

@@ -269,6 +269,12 @@ namespace JuhinAPI.Controllers
 
             if (delivery.StatusId != lastDeliveryData.StatusId)
             {
+                var subscribersIds = await context.Subscriptions
+                    .Where(s => s.DeliveryId == delivery.DeliveryId)
+                    .Select(x => x.UserId)
+                    .AsNoTracking()
+                    .ToListAsync();
+                
                 var message = new EmailMessage();
                 message.Subject = "JuhinAPI Status Notification";
                 message.Content = 
@@ -281,7 +287,14 @@ namespace JuhinAPI.Controllers
                     "<p>Delivery status was changed from <b><i>" + lastDeliveryData.Status.Name + "</i></b> to <b><i>"+ newStatus.Name + "</i></b>.</p>></div>";
                 message.FromAddress.Name = "JuhinAPI Software";
                 message.FromAddress.Address = "pipsitestemail@gmail.com";
-                message.ToAddresses.Add(new EmailAddress { Name = "Herman", Address = "lkuczma@gmail.com" });
+                foreach (var subId in subscribersIds)
+                {
+                    var email = context.Users
+                        .Where(x => x.Id == subId)
+                        .Select(y => y.Email)
+                        .FirstOrDefault();
+                    message.ToAddresses.Add(new EmailAddress { Name = "Dear Subscriber", Address = email });
+                }
                 emailService.Send(message);
             }
 
