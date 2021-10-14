@@ -229,10 +229,11 @@ namespace JuhinAPI.Controllers
             var deliveryDTO = mapper.Map<DeliveryDTO>(delivery);
             return new CreatedAtRouteResult("GetDelivery", deliveryDTO);
         }
-
-        public async void SendStatusChangeEmail(Guid deliveryId, int statusId) 
+        
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public void SendStatusChangeEmail(Guid deliveryId, int previousStatusId) 
         {
-            var delivery = await context.Deliveries
+            var delivery = context.Deliveries
                .Where(d => d.DeliveryId == deliveryId)
                .Include(s => s.Forwarder)
                .Include(s => s.Status)
@@ -240,34 +241,37 @@ namespace JuhinAPI.Controllers
                    .ThenInclude(y => y.PurchaseOrder)
                    .ThenInclude(y => y.Vendor)
                .AsNoTracking()
-               .FirstOrDefaultAsync();
+               .FirstOrDefault();
             
 
-            if (delivery.StatusId != statusId)
+            if (delivery.StatusId != previousStatusId)
             {
-                var newStatus = await context.Statuses
+                var actualStatus =  context.Statuses
                     .Where(s => s.StatusId == delivery.StatusId)
                     .AsNoTracking()
-                    .FirstOrDefaultAsync();
+                    .FirstOrDefault();
 
-                var subscribersIds = await context.Subscriptions
+                var subscribersIds =  context.Subscriptions
                     .Where(s => s.DeliveryId == delivery.DeliveryId)
                     .Select(x => x.UserId)
                     .AsNoTracking()
-                    .ToListAsync();
+                    .ToList();
 
                 var message = new EmailMessage();
                 message.Subject = "JuhinAPI Status Notification";
                 message.Content =
-                    "<div><h2> DELIVERY SUBSCRIPTION NOTICE</h2><h3>Status of your delivery has been updated.</h3></div>" +
+                    "<div style=\"margin:10px; width:400px; padding-left:10px; font-family: Calibri; font-size:14px;\">" +
+                    "<div style=\"background-color:#2763a3; border-radius:5px; text-align:center; padding:10px; margin:0px; color:white; font-size:16px;\">" +
+                    "<h2> DELIVERY SUBSCRIPTION NOTICE</h2><h3 style=\"font-size:14px; \">Status of your delivery has been updated.</h3></div>" +
                     "<div><p><b>Supplier</b>: " + delivery.PurchaseOrderDeliveries[0].PurchaseOrder.Vendor.Name + "</p>" +
                     "<p><b>PO Number</b>: " + delivery.PurchaseOrderDeliveries[0].PurchaseOrder.OrderNumber.ToString() + " </p>" +
                     "<p><b>Forwarder</b>: " + delivery.Forwarder.Name.ToString() + " </p>" +
                     "<p><b>Delivery date</b>: " + delivery.DeliveryDate.ToLocalTime().ToString() + " </p>" +
                     "<p><b>ETA</b>: " + delivery.ETADate.ToLocalTime().ToString() + " </p>" +
-                    "<p>Delivery status was changed to <b><i>" + newStatus.Name + "</i></b>.</p>></div>";
+                    "<p style=\"background-color:#616161; color:white; text-align:center; border-radius:5px; padding:10px; margin:0px;\">Delivery status was changed to <b>" + actualStatus.Name.ToUpper() + "</b>.</p>></div>" +
+                    "</div>";
                 message.FromAddress.Name = "JuhinAPI Software";
-                message.FromAddress.Address = "pipsitestemail@gmail.com";
+                message.FromAddress.Address = "juhinapi@juhin.com";
                 foreach (var subId in subscribersIds)
                 {
                     var email = context.Users
@@ -290,7 +294,11 @@ namespace JuhinAPI.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(Guid id, [FromBody] DeliveryCreationDTO updatedDelivery)
         {
-           
+            var oldStatusId = await context.Deliveries
+                 .Where(d => d.DeliveryId == id)
+                 .Select(si => si.StatusId)
+                 .FirstOrDefaultAsync();
+
             var delivery = mapper.Map<Delivery>(updatedDelivery);
             delivery.DeliveryId = id;
             if(delivery.StatusId == 3)
@@ -303,7 +311,7 @@ namespace JuhinAPI.Controllers
             context.Entry(delivery).State = EntityState.Modified;
             await context.SaveChangesAsync();
 
-            SendStatusChangeEmail(id, updatedDelivery.StatusId);
+            SendStatusChangeEmail(id, oldStatusId);
 
             return NoContent();
         }
