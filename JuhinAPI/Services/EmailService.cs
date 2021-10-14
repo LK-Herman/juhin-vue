@@ -19,7 +19,7 @@ namespace JuhinAPI.Services
             _emailConfiguration = emailConfiguration;
         }
 
-        public List<EmailMessage> ReceiveEmail(int maxCount = 10)
+        public List<EmailMessage> ReceiveEmail(int maxCount = 20)
         {
             throw new NotImplementedException();
         }

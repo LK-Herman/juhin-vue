@@ -1,5 +1,4 @@
 C:\Projects\Juhin\JuhinAPI\bin\Release\netcoreapp3.1\appsettings.Development.json
-C:\Projects\Juhin\JuhinAPI\bin\Release\netcoreapp3.1\appsettings.json
 C:\Projects\Juhin\JuhinAPI\bin\Release\netcoreapp3.1\JuhinAPI.exe
 C:\Projects\Juhin\JuhinAPI\bin\Release\netcoreapp3.1\JuhinAPI.deps.json
 C:\Projects\Juhin\JuhinAPI\bin\Release\netcoreapp3.1\JuhinAPI.runtimeconfig.json
@@ -165,3 +164,4 @@ C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\JuhinAPI.genruntimeconfig.c
 C:\Projects\Juhin\JuhinAPI\bin\Release\netcoreapp3.1\MailKit.dll
 C:\Projects\Juhin\JuhinAPI\bin\Release\netcoreapp3.1\MimeKit.dll
 C:\Projects\Juhin\JuhinAPI\bin\Release\netcoreapp3.1\BouncyCastle.Crypto.dll
+C:\Projects\Juhin\JuhinAPI\bin\Release\netcoreapp3.1\appsettings.json

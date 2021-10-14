@@ -230,61 +230,42 @@ namespace JuhinAPI.Controllers
             return new CreatedAtRouteResult("GetDelivery", deliveryDTO);
         }
 
-        /// <summary>
-        /// Edits the delivery data requested by Id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="updatedDelivery"></param>
-        /// <returns></returns>
-        [HttpPut("{id}")]
-        public async Task<ActionResult> Put(Guid id, [FromBody] DeliveryCreationDTO updatedDelivery)
+        public async void SendStatusChangeEmail(Guid deliveryId, int statusId) 
         {
-            var lastDeliveryData = await context.Deliveries
-                .Where(d => d.DeliveryId == id)
-                .Include(s => s.Forwarder)
-                .Include(s => s.Status)
-                .Include(s => s.PurchaseOrderDeliveries)
-                    .ThenInclude(y => y.PurchaseOrder)
-                    .ThenInclude(y => y.Vendor)
-                .AsNoTracking()
-                .FirstOrDefaultAsync();
+            var delivery = await context.Deliveries
+               .Where(d => d.DeliveryId == deliveryId)
+               .Include(s => s.Forwarder)
+               .Include(s => s.Status)
+               .Include(s => s.PurchaseOrderDeliveries)
+                   .ThenInclude(y => y.PurchaseOrder)
+                   .ThenInclude(y => y.Vendor)
+               .AsNoTracking()
+               .FirstOrDefaultAsync();
+            
 
-
-            var delivery = mapper.Map<Delivery>(updatedDelivery);
-            delivery.DeliveryId = id;
-            if(delivery.StatusId == 3)
+            if (delivery.StatusId != statusId)
             {
-                delivery.DeliveryDate = DateTime.Now;
-            }else
-            {
-                delivery.DeliveryDate = delivery.ETADate;
-            }
-            context.Entry(delivery).State = EntityState.Modified;
-            await context.SaveChangesAsync();
+                var newStatus = await context.Statuses
+                    .Where(s => s.StatusId == delivery.StatusId)
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync();
 
-            var newStatus = await context.Statuses
-                .Where(s => s.StatusId == delivery.StatusId)
-                .AsNoTracking()
-                .FirstOrDefaultAsync();
-
-            if (delivery.StatusId != lastDeliveryData.StatusId)
-            {
                 var subscribersIds = await context.Subscriptions
                     .Where(s => s.DeliveryId == delivery.DeliveryId)
                     .Select(x => x.UserId)
                     .AsNoTracking()
                     .ToListAsync();
-                
+
                 var message = new EmailMessage();
                 message.Subject = "JuhinAPI Status Notification";
-                message.Content = 
+                message.Content =
                     "<div><h2> DELIVERY SUBSCRIPTION NOTICE</h2><h3>Status of your delivery has been updated.</h3></div>" +
-                    "<div><p><b>Supplier</b>: " + lastDeliveryData.PurchaseOrderDeliveries[0].PurchaseOrder.Vendor.Name + "</p>" +
-                    "<p><b>PO Number</b>: " + lastDeliveryData.PurchaseOrderDeliveries[0].PurchaseOrder.OrderNumber.ToString() + " </p>" +
-                    "<p><b>Forwarder</b>: " + lastDeliveryData.Forwarder.Name.ToString() + " </p>" +
+                    "<div><p><b>Supplier</b>: " + delivery.PurchaseOrderDeliveries[0].PurchaseOrder.Vendor.Name + "</p>" +
+                    "<p><b>PO Number</b>: " + delivery.PurchaseOrderDeliveries[0].PurchaseOrder.OrderNumber.ToString() + " </p>" +
+                    "<p><b>Forwarder</b>: " + delivery.Forwarder.Name.ToString() + " </p>" +
                     "<p><b>Delivery date</b>: " + delivery.DeliveryDate.ToLocalTime().ToString() + " </p>" +
                     "<p><b>ETA</b>: " + delivery.ETADate.ToLocalTime().ToString() + " </p>" +
-                    "<p>Delivery status was changed from <b><i>" + lastDeliveryData.Status.Name + "</i></b> to <b><i>"+ newStatus.Name + "</i></b>.</p>></div>";
+                    "<p>Delivery status was changed to <b><i>" + newStatus.Name + "</i></b>.</p>></div>";
                 message.FromAddress.Name = "JuhinAPI Software";
                 message.FromAddress.Address = "pipsitestemail@gmail.com";
                 foreach (var subId in subscribersIds)
@@ -298,8 +279,35 @@ namespace JuhinAPI.Controllers
                 emailService.Send(message);
             }
 
+        }
+
+        /// <summary>
+        /// Edits the delivery data requested by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="updatedDelivery"></param>
+        /// <returns></returns>
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Put(Guid id, [FromBody] DeliveryCreationDTO updatedDelivery)
+        {
+           
+            var delivery = mapper.Map<Delivery>(updatedDelivery);
+            delivery.DeliveryId = id;
+            if(delivery.StatusId == 3)
+            {
+                delivery.DeliveryDate = DateTime.Now;
+            }else
+            {
+                delivery.DeliveryDate = delivery.ETADate;
+            }
+            context.Entry(delivery).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+
+            SendStatusChangeEmail(id, updatedDelivery.StatusId);
+
             return NoContent();
         }
+
         /// <summary>
         /// Deletes the delivery record requested by Id
         /// </summary>
