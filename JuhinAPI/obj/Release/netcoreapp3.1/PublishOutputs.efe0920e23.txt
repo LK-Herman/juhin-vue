@@ -13,6 +13,7 @@ C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\Azure.Storage.Bl
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\Azure.Storage.Common.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\Azure.Storage.Files.Shares.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\Azure.Storage.Queues.dll
+C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\MailKit.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\Microsoft.AspNetCore.Cryptography.Internal.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
@@ -62,9 +63,11 @@ C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\Microsoft.Visual
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\Microsoft.VisualStudio.Web.CodeGeneration.Templating.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\Microsoft.VisualStudio.Web.CodeGeneration.Utils.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll
+C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\MimeKit.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\Newtonsoft.Json.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\Newtonsoft.Json.Bson.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\NuGet.Frameworks.dll
+C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\BouncyCastle.Crypto.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\Swashbuckle.AspNetCore.Swagger.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerUI.dll

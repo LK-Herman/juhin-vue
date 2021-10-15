@@ -242,7 +242,6 @@ namespace JuhinAPI.Controllers
                    .ThenInclude(y => y.Vendor)
                .AsNoTracking()
                .FirstOrDefault();
-            
 
             if (delivery.StatusId != previousStatusId)
             {
@@ -260,15 +259,20 @@ namespace JuhinAPI.Controllers
                 var message = new EmailMessage();
                 message.Subject = "JuhinAPI Status Notification";
                 message.Content =
-                    "<div style=\"margin:10px; width:400px; padding-left:10px; font-family: Calibri; font-size:14px;\">" +
-                    "<div style=\"background-color:#2763a3; border-radius:5px; text-align:center; padding:10px; margin:0px; color:white; font-size:16px;\">" +
-                    "<h2> DELIVERY SUBSCRIPTION NOTICE</h2><h3 style=\"font-size:14px; \">Status of your delivery has been updated.</h3></div>" +
-                    "<div><p><b>Supplier</b>: " + delivery.PurchaseOrderDeliveries[0].PurchaseOrder.Vendor.Name + "</p>" +
-                    "<p><b>PO Number</b>: " + delivery.PurchaseOrderDeliveries[0].PurchaseOrder.OrderNumber.ToString() + " </p>" +
-                    "<p><b>Forwarder</b>: " + delivery.Forwarder.Name.ToString() + " </p>" +
-                    "<p><b>Delivery date</b>: " + delivery.DeliveryDate.ToLocalTime().ToString() + " </p>" +
-                    "<p><b>ETA</b>: " + delivery.ETADate.ToLocalTime().ToString() + " </p>" +
-                    "<p style=\"background-color:#616161; color:white; text-align:center; border-radius:5px; padding:10px; margin:0px;\">Delivery status was changed to <b>" + actualStatus.Name.ToUpper() + "</b>.</p>></div>" +
+                    "<div style=\"margin: 10px; width:400px; font-family: Calibri; font-size:16px; border-radius:26px; overflow:hidden; background-image: linear-gradient(#161f24, #727272, #969696);\">" +
+                        "<div style=\"border-radius:0px; text-align:center; padding:2px; margin:0px; color:white; font-size:20px; background-image: linear-gradient(#009fbb,#009084, #005474, #004562);\">" +
+                            "<p style=\"margin-bottom: 2px;\"> DELIVERY SUBSCRIPTION NOTICE</p>" +
+                            "<p style=\"font-size:16px; margin-top: 2px;\">Status of your delivery has been updated.</p>" +
+                        "</div>" +
+                        "<div style=\"padding:5px 10px 5px 40px; color: #e3e3e3\">" +
+                            "<p style=\"color:#e3e3e3\"><b>Supplier</b>: " + delivery.PurchaseOrderDeliveries[0].PurchaseOrder.Vendor.Name + "</p>" +
+                            "<p style=\"color:#e3e3e3\"><b>PO Number</b>: " + delivery.PurchaseOrderDeliveries[0].PurchaseOrder.OrderNumber.ToString() + " </p>" +
+                            "<p style=\"color:#e3e3e3\"><b>Forwarder</b>: " + delivery.Forwarder.Name.ToString() + " </p>" +
+                            "<p style=\"color:#e3e3e3\"><b>Delivery date</b>: " + delivery.DeliveryDate.ToLocalTime().ToString() + " </p>" +
+                            "<p style=\"color:#e3e3e3\"><b>ETA</b>: " + delivery.ETADate.ToLocalTime().ToString() + " </p>" +
+                            "<p style=\"color:#e3e3e3\"><b>Comment</b>: <span style=\"color:#73e3c3\">" + delivery.Comment.ToString() + "</span> </p>" +
+                        "</div>" +
+                        "<p style=\"width: 380px; font-size:20px; background-color:#ffde7c; color:#262626; text-align:center; padding:10px; margin:0px; transform: matrix(1,-0.3,0.3,1,100, -18); background-image: linear-gradient(#ffde7c, #ffae4c);\"><b>" + actualStatus.Name.ToUpper() + "</b></p>" +
                     "</div>";
                 message.FromAddress.Name = "JuhinAPI Software";
                 message.FromAddress.Address = "juhinapi@juhin.com";
