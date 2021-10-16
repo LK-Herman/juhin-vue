@@ -220,6 +220,7 @@ namespace JuhinAPI.Controllers
         public async Task<ActionResult> Post(Guid purchaseOrderId, [FromBody] DeliveryCreationDTO newDelivery)
         {
             var delivery = mapper.Map<Delivery>(newDelivery);
+            delivery.StatusId = 1;
             context.Add(delivery);
             var purchaseOrderDelivery = new PurchaseOrder_Delivery() {PurchaseOrderId = purchaseOrderId, DeliveryId = delivery.DeliveryId };
             context.Add(purchaseOrderDelivery);
@@ -235,6 +236,9 @@ namespace JuhinAPI.Controllers
         {
             var delivery = context.Deliveries
                .Where(d => d.DeliveryId == deliveryId)
+               .Include(s => s.PackedItems)
+                    .ThenInclude(i => i.Item)
+                    .ThenInclude(u => u.Unit)
                .Include(s => s.Forwarder)
                .Include(s => s.Status)
                .Include(s => s.PurchaseOrderDeliveries)
@@ -256,11 +260,32 @@ namespace JuhinAPI.Controllers
                     .AsNoTracking()
                     .ToList();
 
+                string statusColorDark = "#ffae4c";
+                string statusColorBright = "#ffde7c";
+                if(actualStatus.Name.ToUpper() == "DELIVERED")
+                {
+                    statusColorBright = "#91ff37";
+                    statusColorDark = "#63ac00";
+                }
+                string packingList = "";
+                int i = 0;
+                if (delivery.PackedItems == null) 
+                { 
+                    packingList = "<p style=\"color:#c93337\">Packing list is empty (no parts added)</p>"; 
+                }else
+                {
+                    foreach (var packedItem in delivery.PackedItems)
+                    {
+                        i++;
+                        packingList = packingList + "<p style=\"color:#e3e3e3\">" + i+")   " +packedItem.Item.Name.ToString() + " - " + packedItem.Quantity.ToString() + " " + packedItem.Item.Unit.ShortName + "</p>";
+                    }
+                }
+
                 var message = new EmailMessage();
                 message.Subject = "JuhinAPI Status Notification";
                 message.Content =
-                    "<div style=\"margin: 10px; width:400px; font-family: Calibri; font-size:16px; border-radius:26px; overflow:hidden; background-image: linear-gradient(#161f24, #727272, #969696);\">" +
-                        "<div style=\"border-radius:0px; text-align:center; padding:2px; margin:0px; color:white; font-size:20px; background-image: linear-gradient(#009fbb,#009084, #005474, #004562);\">" +
+                    "<div style=\"margin: 10px; width:400px; font-family: Calibri; font-size:16px; border-radius:16px; overflow:hidden; background-image: linear-gradient(#161f24, #727272, #969696);\">" +
+                        "<div style=\"border-radius:0px; text-align:center; padding:2px; margin:0px; color:white; font-size:20px; background-image: linear-gradient(#00cfeb,#008fa8,#006f88, #006f88, #005f78);\">" +
                             "<p style=\"margin-bottom: 2px;\"> DELIVERY SUBSCRIPTION NOTICE</p>" +
                             "<p style=\"font-size:16px; margin-top: 2px;\">Status of your delivery has been updated.</p>" +
                         "</div>" +
@@ -270,9 +295,10 @@ namespace JuhinAPI.Controllers
                             "<p style=\"color:#e3e3e3\"><b>Forwarder</b>: " + delivery.Forwarder.Name.ToString() + " </p>" +
                             "<p style=\"color:#e3e3e3\"><b>Delivery date</b>: " + delivery.DeliveryDate.ToLocalTime().ToString() + " </p>" +
                             "<p style=\"color:#e3e3e3\"><b>ETA</b>: " + delivery.ETADate.ToLocalTime().ToString() + " </p>" +
+                            "<p style=\"color:#e3e3e3\"><b>Packing list</b>: </p>" + packingList +  
                             "<p style=\"color:#e3e3e3\"><b>Comment</b>: <span style=\"color:#73e3c3\">" + delivery.Comment.ToString() + "</span> </p>" +
                         "</div>" +
-                        "<p style=\"width: 380px; font-size:20px; background-color:#ffde7c; color:#262626; text-align:center; padding:10px; margin:0px; transform: matrix(1,-0.3,0.3,1,100, -18); background-image: linear-gradient(#ffde7c, #ffae4c);\"><b>" + actualStatus.Name.ToUpper() + "</b></p>" +
+                        "<p style=\"width: 380px; font-size:20px; color:#262626; text-align:center; padding:10px; margin:0px; transform: matrix(1,-0.3,0.3,1,100, -18); background-image: linear-gradient("+ statusColorBright+ ", "+ statusColorDark +");\"><b>" + actualStatus.Name.ToUpper() + "</b></p>" +
                     "</div>";
                 message.FromAddress.Name = "JuhinAPI Software";
                 message.FromAddress.Address = "juhinapi@juhin.com";

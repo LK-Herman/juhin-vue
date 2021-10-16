@@ -136,6 +136,8 @@ namespace JuhinAPI.Controllers
         /// <param name="userName"></param>
         /// <param name="password"></param>
         /// <returns></returns>
+
+        [ApiExplorerSettings(IgnoreApi = true)]
         [HttpPost("{userName},{password}", Name = "resetPassword")]
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<ActionResult> ResetPassword(string userName, string password)
