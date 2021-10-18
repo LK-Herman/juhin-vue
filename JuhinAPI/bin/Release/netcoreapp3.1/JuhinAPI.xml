@@ -148,7 +148,7 @@
         </member>
         <member name="M:JuhinAPI.Controllers.DeliveryController.Delete(System.Guid,System.Guid)">
             <summary>
-            Deletes the delivery record requested by Id
+            
             </summary>
             <param name="deliveryId"></param>
             <param name="purchaseOrderId"></param>

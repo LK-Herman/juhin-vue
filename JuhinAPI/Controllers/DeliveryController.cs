@@ -275,13 +275,11 @@ namespace JuhinAPI.Controllers
                     statusColorBright = "#91ff37";
                     statusColorDark = "#63ac00";
                 }
-                string packingList = "";
+                string packingList = "<p style=\"color:#c93337\">Packing list is empty (no parts added)</p>";
                 int i = 0;
-                if (delivery.PackedItems == null) 
-                { 
-                    packingList = "<p style=\"color:#c93337\">Packing list is empty (no parts added)</p>"; 
-                }else
+                if (delivery.PackedItems != null) 
                 {
+                    packingList = "";
                     foreach (var packedItem in delivery.PackedItems)
                     {
                         i++;
@@ -355,14 +353,14 @@ namespace JuhinAPI.Controllers
             return NoContent();
         }
 
-        /// <summary>
-        /// Deletes the delivery record requested by Id
-        /// </summary>
-        /// <param name="deliveryId"></param>
-        /// <param name="purchaseOrderId"></param>
-        /// <returns></returns>
-        [HttpDelete("{deliveryId}")]
-        public async Task<ActionResult> Delete(Guid deliveryId, [FromBody] Guid purchaseOrderId )
+       /// <summary>
+       /// 
+       /// </summary>
+       /// <param name="deliveryId"></param>
+       /// <param name="purchaseOrderId"></param>
+       /// <returns></returns>
+        [HttpDelete("{deliveryId},{purchaseOrderId}")]
+        public async Task<ActionResult> Delete(Guid deliveryId, Guid purchaseOrderId )
         {
             var deliveryExist = await context.Deliveries.AnyAsync(d => d.DeliveryId == deliveryId);
             if (!deliveryExist)

@@ -15,6 +15,12 @@
       "type": "storage.azure",
       "connectionId": "ConnectionStrings:AzureStorageConnection",
       "secretStore": "AzureAppSettings"
+    },
+    "mssql2": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/juhinapidbserver/databases/HangfireAzureDB",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:HangfireConnectionAzure",
+      "secretStore": "AzureAppSettings"
     }
   }
 }

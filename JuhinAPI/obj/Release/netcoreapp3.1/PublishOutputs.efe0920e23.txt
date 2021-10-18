@@ -1,5 +1,4 @@
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\JuhinAPI.exe
-C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\File 1 .txt
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\appsettings.Development.json
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\appsettings.json
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\JuhinAPI.dll
