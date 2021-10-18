@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "wByzs2MJ8YT1TX9s1WDtgkITzZum/MjiU5oiYww+EM8+S9wHzfS+/7fxtZnx+YcKxR4mBuURU4BsxW+NORS9tg==",
+  "dgSpecHash": "0xaXLUpoJzn3VU7ULfjx9RQLJAlZ+YKw6a8Z/N323SbMuQrq5IvDqpPYP7BWxywR8q+fNytzII7krjUL01oKYg==",
   "success": true,
   "projectFilePath": "C:\\Projects\\Juhin\\JuhinAPI\\JuhinAPI.csproj",
   "expectedPackageFiles": [
@@ -12,6 +12,9 @@
     "C:\\Users\\Hermanowy\\.nuget\\packages\\azure.storage.common\\12.8.0\\azure.storage.common.12.8.0.nupkg.sha512",
     "C:\\Users\\Hermanowy\\.nuget\\packages\\azure.storage.files.shares\\12.1.0\\azure.storage.files.shares.12.1.0.nupkg.sha512",
     "C:\\Users\\Hermanowy\\.nuget\\packages\\azure.storage.queues\\12.2.0\\azure.storage.queues.12.2.0.nupkg.sha512",
+    "C:\\Users\\Hermanowy\\.nuget\\packages\\hangfire.aspnetcore\\1.7.25\\hangfire.aspnetcore.1.7.25.nupkg.sha512",
+    "C:\\Users\\Hermanowy\\.nuget\\packages\\hangfire.core\\1.7.25\\hangfire.core.1.7.25.nupkg.sha512",
+    "C:\\Users\\Hermanowy\\.nuget\\packages\\hangfire.sqlserver\\1.7.25\\hangfire.sqlserver.1.7.25.nupkg.sha512",
     "C:\\Users\\Hermanowy\\.nuget\\packages\\mailkit\\2.15.0\\mailkit.2.15.0.nupkg.sha512",
     "C:\\Users\\Hermanowy\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\3.1.9\\microsoft.aspnetcore.authentication.jwtbearer.3.1.9.nupkg.sha512",
     "C:\\Users\\Hermanowy\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\3.1.9\\microsoft.aspnetcore.cryptography.internal.3.1.9.nupkg.sha512",
@@ -119,6 +122,7 @@
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.composition.typedparts\\1.0.31\\system.composition.typedparts.1.0.31.nupkg.sha512",
     "C:\\Users\\Hermanowy\\.nuget\\packages\\system.configuration.configurationmanager\\4.5.0\\system.configuration.configurationmanager.4.5.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.console\\4.3.0\\system.console.4.3.0.nupkg.sha512",
+    "C:\\Users\\Hermanowy\\.nuget\\packages\\system.data.sqlclient\\4.4.0\\system.data.sqlclient.4.4.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.diagnostics.debug\\4.3.0\\system.diagnostics.debug.4.3.0.nupkg.sha512",
     "C:\\Users\\Hermanowy\\.nuget\\packages\\system.diagnostics.diagnosticsource\\4.7.1\\system.diagnostics.diagnosticsource.4.7.1.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.diagnostics.tools\\4.3.0\\system.diagnostics.tools.4.3.0.nupkg.sha512",

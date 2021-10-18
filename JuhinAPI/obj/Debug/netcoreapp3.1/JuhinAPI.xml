@@ -38,6 +38,14 @@
             <param name="model"></param>
             <returns></returns>
         </member>
+        <member name="M:JuhinAPI.Controllers.AccountsController.ResetPassword(System.String,System.String)">
+            <summary>
+            Resets the password / for testing only / to be removed
+            </summary>
+            <param name="userName"></param>
+            <param name="password"></param>
+            <returns></returns>
+        </member>
         <member name="M:JuhinAPI.Controllers.AccountsController.Login(JuhinAPI.DTOs.UserInfo)">
             <summary>
             Login action (returns JwtBearer token)

@@ -13,6 +13,9 @@ C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\Azure.Storage.Bl
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\Azure.Storage.Common.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\Azure.Storage.Files.Shares.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\Azure.Storage.Queues.dll
+C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\Hangfire.AspNetCore.dll
+C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\Hangfire.Core.dll
+C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\Hangfire.SqlServer.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\MailKit.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\Microsoft.AspNetCore.Cryptography.Internal.dll
@@ -78,6 +81,7 @@ C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\System.Compositi
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\System.Composition.Runtime.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\System.Composition.TypedParts.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\System.Configuration.ConfigurationManager.dll
+C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\System.Data.SqlClient.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\System.Diagnostics.DiagnosticSource.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\System.IdentityModel.Tokens.Jwt.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\System.Linq.Dynamic.Core.dll
@@ -86,6 +90,18 @@ C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\System.Runtime.C
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\System.Security.Cryptography.ProtectedData.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\System.Text.Encodings.Web.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\Microsoft.WindowsAzure.Storage.dll
+C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\ca\Hangfire.Core.resources.dll
+C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\de\Hangfire.Core.resources.dll
+C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\es\Hangfire.Core.resources.dll
+C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\fa\Hangfire.Core.resources.dll
+C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\fr\Hangfire.Core.resources.dll
+C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\nb\Hangfire.Core.resources.dll
+C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\nl\Hangfire.Core.resources.dll
+C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\pt-BR\Hangfire.Core.resources.dll
+C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\pt-PT\Hangfire.Core.resources.dll
+C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\pt\Hangfire.Core.resources.dll
+C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\zh-TW\Hangfire.Core.resources.dll
+C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\zh\Hangfire.Core.resources.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\cs\Microsoft.CodeAnalysis.resources.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\de\Microsoft.CodeAnalysis.resources.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\es\Microsoft.CodeAnalysis.resources.dll
@@ -143,6 +159,8 @@ C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\runtimes\win\lib
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\runtimes\win-arm64\native\sni.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\runtimes\win-x64\native\sni.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\runtimes\win-x86\native\sni.dll
+C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\runtimes\unix\lib\netstandard2.0\System.Data.SqlClient.dll
+C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\runtimes\win\lib\netstandard2.0\System.Data.SqlClient.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\runtimes\unix\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\runtimes\win\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\PubTmp\Out\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll

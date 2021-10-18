@@ -34,7 +34,8 @@ namespace JuhinAPI
             modelBuilder.Entity<IdentityUser>(b =>
                 b.HasMany<Subscription>().WithOne().HasForeignKey(po => po.UserId).IsRequired()
             );
-
+            modelBuilder.Entity<PurchaseOrder>()
+                .HasIndex(x => x.OrderNumber).IsUnique();
 
 
             base.OnModelCreating(modelBuilder);

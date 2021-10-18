@@ -71,6 +71,12 @@ namespace JuhinAPI.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] PurchaseOrderCreationDTO purchaseOrderCreation)
         {
+            var exists = await context.PurchaseOrders.AnyAsync(order => order.OrderNumber == purchaseOrderCreation.OrderNumber);
+            if (exists)
+            {
+                return BadRequest( "Duplicate Purchase Order Number"  );
+            }
+
             var order = mapper.Map<PurchaseOrder>(purchaseOrderCreation);
             context.Add(order);
             await context.SaveChangesAsync();
@@ -87,6 +93,11 @@ namespace JuhinAPI.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(Guid id, [FromBody] PurchaseOrderCreationDTO orderCreation)
         {
+            var exists = await context.PurchaseOrders.AnyAsync(order => order.OrderNumber == orderCreation.OrderNumber);
+            if (exists)
+            {
+                return BadRequest("Duplicate Purchase Order Number");
+            }
             var order = mapper.Map<PurchaseOrder>(orderCreation);
             order.OrderId = id;
             context.Entry(order).State = EntityState.Modified;

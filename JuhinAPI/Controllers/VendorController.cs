@@ -85,6 +85,11 @@ namespace JuhinAPI.Controllers
         [HttpPost(Name = "postVendor")]
         public async Task<ActionResult> Post([FromBody] VendorCreationDTO vendorCreation)
         {
+            var exists = await context.Vendors.AnyAsync(v => v.VendorCode == vendorCreation.VendorCode);
+            if (exists)
+            {
+                return BadRequest("Duplicate Vendor Code (already exists)");
+            }
             var vendor = mapper.Map<Vendor>(vendorCreation);
             context.Add(vendor);
             await context.SaveChangesAsync();
@@ -103,6 +108,11 @@ namespace JuhinAPI.Controllers
         [HttpPut("{id}", Name = "putVendor")]
         public async Task<ActionResult> Put(Guid id, [FromBody] VendorCreationDTO vendorCreation)
         {
+            var exists = await context.Vendors.AnyAsync(v => v.VendorCode == vendorCreation.VendorCode);
+            if (exists)
+            {
+                return BadRequest("Duplicate Vendor Code (already exists)");
+            }
             var vendor = mapper.Map<Vendor>(vendorCreation);
             vendor.VendorId = id;
             context.Entry(vendor).State = EntityState.Modified;

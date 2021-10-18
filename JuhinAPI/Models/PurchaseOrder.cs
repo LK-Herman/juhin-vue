@@ -14,6 +14,7 @@ namespace JuhinAPI.Models
         [Required]
         public Guid OrderId { get; set; }
         [Required]
+        // Made unique manually via Fluent API
         [StringLength(50)]
         public string OrderNumber { get; set; }
         

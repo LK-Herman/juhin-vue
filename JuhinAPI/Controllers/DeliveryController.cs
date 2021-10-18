@@ -12,6 +12,7 @@ using System.Linq.Dynamic.Core;
 using Microsoft.Extensions.Logging;
 using JuhinAPI.Services;
 using JuhinAPI.Data;
+using Hangfire;
 
 namespace JuhinAPI.Controllers
 {
@@ -23,13 +24,20 @@ namespace JuhinAPI.Controllers
         private readonly IMapper mapper;
         private readonly ILogger<DeliveryController> logger;
         private readonly IEmailService emailService;
+        private readonly IBackgroundJobClient backgroundJobs;
 
-        public DeliveryController(ApplicationDbContext context, IMapper mapper, ILogger<DeliveryController> logger, IEmailService emailService)
+        public DeliveryController(
+            ApplicationDbContext context, 
+            IMapper mapper, 
+            ILogger<DeliveryController> logger, 
+            IEmailService emailService, 
+            IBackgroundJobClient backgroundJobs)
         {
             this.context = context;
             this.mapper = mapper;
             this.logger = logger;
             this.emailService = emailService;
+            this.backgroundJobs = backgroundJobs;
         }
         /// <summary>
         /// Gets all deliveries records from database
@@ -310,7 +318,8 @@ namespace JuhinAPI.Controllers
                         .FirstOrDefault();
                     message.ToAddresses.Add(new EmailAddress { Name = "Dear Subscriber", Address = email });
                 }
-                emailService.Send(message);
+                backgroundJobs.Enqueue(() => emailService.Send(message));
+                //emailService.Send(message);
             }
 
         }
