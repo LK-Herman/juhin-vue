@@ -91,7 +91,7 @@ namespace JuhinAPI
                 options.Filters.Add(typeof(MyExceptionFilter));
             }).AddXmlDataContractSerializerFormatters();
 
-            services.AddTransient<Microsoft.Extensions.Hosting.IHostedService, WriteToFileHostedService>();
+            //services.AddTransient<Microsoft.Extensions.Hosting.IHostedService, WriteToFileHostedService>();
 
             services.AddSwaggerGen(config =>
             {
