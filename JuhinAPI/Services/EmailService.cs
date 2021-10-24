@@ -1,6 +1,5 @@
 ﻿using JuhinAPI.Data;
 using MimeKit;
-using MailKit;
 using MailKit.Net.Smtp;
 using System;
 using System.Collections.Generic;
@@ -19,12 +18,12 @@ namespace JuhinAPI.Services
             _emailConfiguration = emailConfiguration;
         }
 
-        public List<EmailMessage> ReceiveEmail(int maxCount = 20)
+        public List<EmailMessage> ReceiveEmail(int maxCount)
         {
             throw new NotImplementedException();
         }
 
-        public void Send(EmailMessage emailMessage)
+        public async Task Send(EmailMessage emailMessage)
         {
 			var message = new MimeMessage();
 			message.To.AddRange(emailMessage.ToAddresses.Select(x => new MailboxAddress(x.Name, x.Address)));
@@ -44,11 +43,11 @@ namespace JuhinAPI.Services
 				    emailClient.Connect(_emailConfiguration.SmtpServer, _emailConfiguration.SmtpPort, true);
 				    emailClient.AuthenticationMechanisms.Remove("XOAUTH2");
 				    emailClient.Authenticate(_emailConfiguration.SmtpUsername, _emailConfiguration.SmtpPassword);
-				    emailClient.Send(message);
+				    await emailClient.SendAsync(message);
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    Console.WriteLine("EMAIL CLIENT EXCEPTION: "+ex.Message);
                 }
                 finally
                 {

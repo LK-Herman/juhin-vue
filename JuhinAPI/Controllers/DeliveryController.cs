@@ -307,17 +307,35 @@ namespace JuhinAPI.Controllers
                         "<p style=\"width: 380px; font-size:20px; color:#262626; text-align:center; padding:10px; margin:0px; transform: matrix(1,-0.3,0.3,1,100, -18); background-image: linear-gradient("+ statusColorBright+ ", "+ statusColorDark +");\"><b>" + actualStatus.Name.ToUpper() + "</b></p>" +
                     "</div>";
                 message.FromAddress.Name = "JuhinAPI Software";
-                message.FromAddress.Address = "juhinapi@juhin.com";
+                message.FromAddress.Address = "pipsitestemail@gmail.com";
+                
                 foreach (var subId in subscribersIds)
                 {
                     var email = context.Users
                         .Where(x => x.Id == subId)
-                        .Select(y => y.Email)
+                        .AsNoTracking()
                         .FirstOrDefault();
-                    message.ToAddresses.Add(new EmailAddress { Name = "Dear Subscriber", Address = email });
+                        //.Select(y => y.Email)
+                        //.FirstOrDefault();
+                    message.ToAddresses.Add(new EmailAddress { Name = "Dear "+email.UserName.ToLower(), Address = email.Email });
                 }
-                backgroundJobs.Enqueue(() => emailService.Send(message));
-                //emailService.Send(message);
+                try
+                {
+                    backgroundJobs.Enqueue(() => emailService.Send(message));
+                }
+                catch (Exception ex)
+                {
+
+                    Console.WriteLine(ex.Message);
+                    var errorMessage = new EmailMessage();
+                    errorMessage.Content = "<p>ERROR MESSAGE: " + ex.Message + " / " + ex.TargetSite.Name.ToString() + "</p>";
+                    errorMessage.Subject = "JuhinAPI ERROR/EXCEPTION Notification";
+                    errorMessage.FromAddress.Name = "JuhinAPI Software";
+                    errorMessage.ToAddresses.Add(new EmailAddress { Name = "Hermano", Address = "lkuczma@gmail.com" });
+                    errorMessage.FromAddress.Address = "pipsitestemail@gmail.com";
+                    emailService.Send(errorMessage);
+                }
+               // emailService.Send(message);
             }
 
         }
