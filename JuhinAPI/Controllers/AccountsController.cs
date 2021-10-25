@@ -49,7 +49,7 @@ namespace JuhinAPI.Controllers
         /// <param name="paginationDTO">Sets the maximum records per page and the page numberr to show</param>
         /// <returns></returns>
         [HttpGet("Users", Name = "getUsers")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<ActionResult<List<UserDTO>>> Get([FromQuery] PaginationDTO paginationDTO)
         {
             var queryable = context.Users.AsQueryable();
@@ -65,6 +65,7 @@ namespace JuhinAPI.Controllers
         /// </summary>
         /// <returns>string</returns>
         [HttpGet("Roles", Name = "getRoles")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<ActionResult<List<string>>> GetRoles()
         {
             return await context.Roles.Select(x => x.Name).ToListAsync();
@@ -77,7 +78,7 @@ namespace JuhinAPI.Controllers
         [HttpPost("AssignRole", Name = "assignRole")]
         [ProducesResponseType(404)]
         [ProducesResponseType(200)]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<ActionResult> AssignRole(EditRoleDTO editRoleDTO)
         {
             var user = await userManager.FindByIdAsync(editRoleDTO.UserId);
@@ -95,7 +96,7 @@ namespace JuhinAPI.Controllers
         /// <returns></returns>
         [HttpPost("RemoveRole", Name = "removeRole")]
         [ProducesResponseType(404)]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<ActionResult> RemoveRole(EditRoleDTO editRoleDTO)
         {
             var user = await userManager.FindByIdAsync(editRoleDTO.UserId);
@@ -116,7 +117,7 @@ namespace JuhinAPI.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(typeof(UserToken), 200)]
         [HttpPost("Create", Name = "createAccount")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<ActionResult<UserToken>> CreateUser([FromBody] UserInfo model)
         {
             var user = new IdentityUser { UserName = model.EmailAddress, Email = model.EmailAddress };
@@ -139,7 +140,7 @@ namespace JuhinAPI.Controllers
 
         [ApiExplorerSettings(IgnoreApi = true)]
         [HttpPost("{userName},{password}", Name = "resetPassword")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<ActionResult> ResetPassword(string userName, string password)
         {
             //UserInfo model
@@ -226,8 +227,5 @@ namespace JuhinAPI.Controllers
             };
             return await BuildToken(userInfo);
         }
-
-
-
     }
 }

@@ -2,6 +2,8 @@
 using JuhinAPI.DTOs;
 using JuhinAPI.Helpers;
 using JuhinAPI.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -29,6 +31,7 @@ namespace JuhinAPI.Controllers
         /// <param name="pagination"></param>
         /// <returns></returns>
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist,Warehouseman,Guest")]
         public async Task<ActionResult<List<PurchaseOrderDetailsDTO>>> Get([FromQuery] PaginationDTO pagination)
         {
             var queryable = context.PurchaseOrders
@@ -50,6 +53,7 @@ namespace JuhinAPI.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}", Name = "GetPurchaseOrder")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist,Warehouseman,Guest")]
         public async Task<ActionResult<PurchaseOrderDTO>> GetById(Guid id)
         {
             var order = await context.PurchaseOrders
@@ -69,6 +73,7 @@ namespace JuhinAPI.Controllers
         /// <param name="purchaseOrderCreation"></param>
         /// <returns></returns>
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist")]
         public async Task<ActionResult> Post([FromBody] PurchaseOrderCreationDTO purchaseOrderCreation)
         {
             var exists = await context.PurchaseOrders.AnyAsync(order => order.OrderNumber == purchaseOrderCreation.OrderNumber);
@@ -91,6 +96,7 @@ namespace JuhinAPI.Controllers
         /// <param name="orderCreation"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist")]
         public async Task<ActionResult> Put(Guid id, [FromBody] PurchaseOrderCreationDTO orderCreation)
         {
             var exists = await context.PurchaseOrders.AnyAsync(order => order.OrderNumber == orderCreation.OrderNumber);
@@ -110,6 +116,7 @@ namespace JuhinAPI.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist")]
         public async Task<ActionResult> Delete(Guid id)
         {
             var exists = await context.PurchaseOrders.AnyAsync(order => order.OrderId == id);

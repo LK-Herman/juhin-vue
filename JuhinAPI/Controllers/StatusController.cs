@@ -2,6 +2,8 @@
 using JuhinAPI.DTOs;
 using JuhinAPI.Helpers;
 using JuhinAPI.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -29,6 +31,7 @@ namespace JuhinAPI.Controllers
         /// <param name="pagination"></param>
         /// <returns></returns>
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist,Warehouseman,Guest")]
         public async Task<ActionResult<List<StatusDTO>>> Get([FromQuery] PaginationDTO pagination)
         {
             var queryable = context.Statuses.AsQueryable();
@@ -43,6 +46,7 @@ namespace JuhinAPI.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}", Name = "GetStatusById")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist,Warehouseman,Guest")]
         public async Task<ActionResult<StatusDTO>> GetStatusById(int id)
         {
             var status = await context.Statuses
@@ -61,6 +65,7 @@ namespace JuhinAPI.Controllers
         /// <param name="newStatus"></param>
         /// <returns></returns>
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist")]
         public async Task<ActionResult> Post([FromBody] StatusCreationDTO newStatus)
         {
             var status = mapper.Map<Status>(newStatus);
@@ -78,6 +83,7 @@ namespace JuhinAPI.Controllers
         /// <param name="updatedStatus"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist")]
         public async Task<ActionResult> Put(int id, [FromBody] StatusCreationDTO updatedStatus)
         {
             var status = mapper.Map<Status>(updatedStatus);
@@ -92,6 +98,7 @@ namespace JuhinAPI.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<ActionResult> Delete(int id)
         {
             var exist = await context.Statuses.AnyAsync(s => s.StatusId == id);

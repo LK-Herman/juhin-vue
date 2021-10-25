@@ -2,6 +2,8 @@
 using JuhinAPI.DTOs;
 using JuhinAPI.Helpers;
 using JuhinAPI.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -29,6 +31,7 @@ namespace JuhinAPI.Controllers
         /// <param name="pagination"></param>
         /// <returns></returns>
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist,Warehouseman,Guest")]
         public async Task<ActionResult<List<ForwarderDTO>>> Get([FromQuery] PaginationDTO pagination)
         {
             var queryable = context.Forwarders.AsQueryable();
@@ -43,6 +46,7 @@ namespace JuhinAPI.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}", Name = "GetForwarderById")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist,Warehouseman,Guest")]
         public async Task<ActionResult<ForwarderDTO>> GetForwarderById(int id)
         {
             var forwarder = await context.Forwarders
@@ -60,6 +64,7 @@ namespace JuhinAPI.Controllers
         /// <param name="newForwarder"></param>
         /// <returns></returns>
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist")]
         public async Task<ActionResult> Post([FromBody] ForwarderCreationDTO newForwarder)
         {
             var forwarder = mapper.Map<Forwarder>(newForwarder);
@@ -75,6 +80,7 @@ namespace JuhinAPI.Controllers
         /// <param name="updatedForwarder"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist")]
         public async Task<ActionResult> Put(int id, [FromBody] ForwarderCreationDTO updatedForwarder)
         {
             var forwarder = mapper.Map<Forwarder>(updatedForwarder);
@@ -90,6 +96,7 @@ namespace JuhinAPI.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist")]
         public async Task<ActionResult> Delete(int id)
         {
             var exist = await context.Forwarders.AnyAsync(f => f.ForwarderId == id);

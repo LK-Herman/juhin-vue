@@ -2,6 +2,8 @@
 using JuhinAPI.DTOs;
 using JuhinAPI.Helpers;
 using JuhinAPI.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -29,6 +31,7 @@ namespace JuhinAPI.Controllers
         /// <param name="pagination"></param>
         /// <returns></returns>
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist,Warehouseman,Guest")]
         public async Task<ActionResult<List<ItemDTO>>> Get([FromQuery] PaginationDTO pagination)
         {
             var queryable = context.Items
@@ -48,6 +51,7 @@ namespace JuhinAPI.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}", Name = "GetItemById")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist,Warehouseman,Guest")]
         public async Task<ActionResult<ItemDTO>> GetItem(Guid id)
         {
             var item = await context.Items
@@ -69,6 +73,7 @@ namespace JuhinAPI.Controllers
         /// <param name="newItem"></param>
         /// <returns></returns>
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist")]
         public async Task<ActionResult> Post([FromBody] ItemCreationDTO newItem)
         {
             var item = mapper.Map<Item>(newItem);
@@ -85,6 +90,7 @@ namespace JuhinAPI.Controllers
         /// <param name="updatedItem"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist")]
         public async Task<ActionResult> Put(Guid id, [FromBody] ItemCreationDTO updatedItem)
         {
             var item = mapper.Map<Item>(updatedItem);
@@ -100,6 +106,7 @@ namespace JuhinAPI.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist")]
         public async Task<ActionResult> Delete(Guid id)
         {
             var exist = await context.Items.AnyAsync(i => i.ItemId == id);

@@ -39,7 +39,7 @@ namespace JuhinAPI.Controllers
         [HttpGet(Name ="getVendors")]
         //[ResponseCache(Duration = 60)] //caching response for 60 sec
         //[ServiceFilter(typeof(MyActionFilter))]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Specialist, Warehouseman, Guest")] 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Specialist, Warehouseman, Guest")] 
         [ProducesResponseType(typeof(List<VendorDTO>), 200)]
         public async Task<IActionResult> Get([FromQuery] PaginationDTO pagination)
         {
@@ -63,6 +63,7 @@ namespace JuhinAPI.Controllers
         /// <returns></returns>
         
         [HttpGet("{id:Guid}", Name = "getVendor")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist,Warehouseman,Guest")]
         public async Task<ActionResult<VendorDTO>> GetVendorsId(Guid id)
         {
             var vendor = await context.Vendors
@@ -83,6 +84,7 @@ namespace JuhinAPI.Controllers
         /// <param name="vendorCreation"></param>
         /// <returns></returns>
         [HttpPost(Name = "postVendor")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist")]
         public async Task<ActionResult> Post([FromBody] VendorCreationDTO vendorCreation)
         {
             var exists = await context.Vendors.AnyAsync(v => v.VendorCode == vendorCreation.VendorCode);
@@ -106,6 +108,7 @@ namespace JuhinAPI.Controllers
         /// <param name="vendorCreation"></param>
         /// <returns></returns>
         [HttpPut("{id}", Name = "putVendor")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist")]
         public async Task<ActionResult> Put(Guid id, [FromBody] VendorCreationDTO vendorCreation)
         {
             var exists = await context.Vendors.AnyAsync(v => v.VendorCode == vendorCreation.VendorCode);
@@ -125,6 +128,7 @@ namespace JuhinAPI.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}", Name = "deleteVendor")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<ActionResult> Delete(Guid id)
         {
             var exists = await context.Vendors.AnyAsync(vendor => vendor.VendorId == id);

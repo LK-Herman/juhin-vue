@@ -2,6 +2,8 @@
 using JuhinAPI.DTOs;
 using JuhinAPI.Helpers;
 using JuhinAPI.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -30,6 +32,7 @@ namespace JuhinAPI.Controllers
         /// <param name="pagination"></param>
         /// <returns></returns>
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist,Warehouseman,Guest")]
         public async Task<ActionResult<List<PackedItemDetailsDTO>>> Get([FromQuery] PaginationDTO pagination)
         {
             var queryable = context.PackedItems
@@ -46,6 +49,7 @@ namespace JuhinAPI.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}", Name = "GetById")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist,Warehouseman,Guest")]
         public async Task<ActionResult<PackedItemDTO>> GetById(Guid id)
         {
             var packedItem = await context.PackedItems
@@ -65,6 +69,7 @@ namespace JuhinAPI.Controllers
         /// <param name="newPackedItem"></param>
         /// <returns></returns>
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist")]
         public async Task<ActionResult> Post([FromBody] PackedItemCreationDTO newPackedItem)
         {
             var packedItem = mapper.Map<PackedItem>(newPackedItem);
@@ -81,6 +86,7 @@ namespace JuhinAPI.Controllers
         /// <param name="updatedPackedItem"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist")]
         public async Task<ActionResult> Put(Guid id, [FromBody] PackedItemCreationDTO updatedPackedItem)
         {
             var packedItem = mapper.Map<PackedItem>(updatedPackedItem);
@@ -95,6 +101,7 @@ namespace JuhinAPI.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist")]
         public async Task<ActionResult> Delete(Guid id)
         {
             var exist = await context.PackedItems.AnyAsync(x => x.PackedItemId == id);

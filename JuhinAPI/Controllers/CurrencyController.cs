@@ -2,6 +2,8 @@
 using JuhinAPI.DTOs;
 using JuhinAPI.Helpers;
 using JuhinAPI.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -60,6 +62,7 @@ namespace JuhinAPI.Controllers
         /// <param name="newCurrency"></param>
         /// <returns></returns>
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist")]
         public async Task<ActionResult> Post([FromBody] CurrencyCreationDTO newCurrency)
         {
             var currency = mapper.Map<Currency>(newCurrency);
@@ -75,6 +78,7 @@ namespace JuhinAPI.Controllers
         /// <param name="updatedCurrency">Currency data. Example name: American dollar, code: USD, valuePLN: 3952 (value * 1000)</param>
         /// <returns></returns>
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist")]
         public async Task<ActionResult> Put(int id, [FromBody] CurrencyCreationDTO updatedCurrency)
         {
             var currency = mapper.Map<Currency>(updatedCurrency);
@@ -90,6 +94,7 @@ namespace JuhinAPI.Controllers
         /// <param name="id">Requested currency Id</param>
         /// <returns></returns>
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist")]
         public async Task<ActionResult> Delete(int id)
         {
             var exists = await context.Currency.AnyAsync(curr => curr.CurrencyId == id);

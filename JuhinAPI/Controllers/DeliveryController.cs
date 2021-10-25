@@ -13,6 +13,8 @@ using Microsoft.Extensions.Logging;
 using JuhinAPI.Services;
 using JuhinAPI.Data;
 using Hangfire;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace JuhinAPI.Controllers
 {
@@ -45,6 +47,7 @@ namespace JuhinAPI.Controllers
         /// <param name="pagination">(Page - page number to show / RecordsPerPage - How many records to show in one page.)</param>
         /// <returns></returns>
         [HttpGet(Name = "getDeliveries")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist,Warehouseman,Guest")]
         public async Task<ActionResult<List<DeliveryDetailsDTO>>> Get([FromQuery] PaginationDTO pagination)
         {
             var queryable = context.Deliveries
@@ -69,6 +72,7 @@ namespace JuhinAPI.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("upcoming")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist,Warehouseman,Guest")]
         public async Task<ActionResult<List<DeliveryDetailsDTO>>> GetUpcomingDeliveries()
         {
             var weekAhead = DateTime.Today.AddDays(7);
@@ -94,6 +98,7 @@ namespace JuhinAPI.Controllers
         /// <param name="filterDeliveriesDTO"></param>
         /// <returns></returns>
         [HttpGet("filter")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist,Warehouseman,Guest")]
         public async Task<ActionResult<List<DeliveryDetailsDTO>>> GetFiltered([FromQuery] FilterDeliveriesDTO filterDeliveriesDTO)
         {
             var nullDate = new DateTime();
@@ -179,6 +184,7 @@ namespace JuhinAPI.Controllers
         /// <param name="id">Requested Id of delivery record</param>
         /// <returns></returns>
         [HttpGet("{id}", Name = "GetDelivery")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist,Warehouseman,Guest")]
         public async Task<ActionResult<DeliveryDTO>> GetDeliveryById(Guid id)
         {
             var delivery = await context.Deliveries
@@ -201,6 +207,7 @@ namespace JuhinAPI.Controllers
         /// <param name="deliveryId">Requested delivery Id </param>
         /// <returns></returns>
         [HttpGet("{deliveryId:Guid}", Name = "GetDetailed")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist,Warehouseman,Guest")]
         public async Task<ActionResult<DeliveryDetailsDTO>> GetDeliveryByIdDetailed(Guid deliveryId)
         {
             var delivery = await context.Deliveries
@@ -225,6 +232,7 @@ namespace JuhinAPI.Controllers
         /// <param name="newDelivery">New delivery data</param>
         /// <returns></returns>
         [HttpPost("{purchaseOrderId:Guid}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist")]
         public async Task<ActionResult> Post(Guid purchaseOrderId, [FromBody] DeliveryCreationDTO newDelivery)
         {
             var delivery = mapper.Map<Delivery>(newDelivery);
@@ -277,7 +285,7 @@ namespace JuhinAPI.Controllers
                 }
                 string packingList = "<p style=\"color:#c93337\">Packing list is empty (no parts added)</p>";
                 int i = 0;
-                if (delivery.PackedItems != null) 
+                if (delivery.PackedItems.Count != 0) 
                 {
                     packingList = "";
                     foreach (var packedItem in delivery.PackedItems)
@@ -347,6 +355,7 @@ namespace JuhinAPI.Controllers
         /// <param name="updatedDelivery"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist,Warehouseman")]
         public async Task<ActionResult> Put(Guid id, [FromBody] DeliveryCreationDTO updatedDelivery)
         {
             var oldStatusId = await context.Deliveries
@@ -359,9 +368,6 @@ namespace JuhinAPI.Controllers
             if(delivery.StatusId == 3)
             {
                 delivery.DeliveryDate = DateTime.Now;
-            }else
-            {
-                delivery.DeliveryDate = delivery.ETADate;
             }
             context.Entry(delivery).State = EntityState.Modified;
             await context.SaveChangesAsync();
@@ -378,6 +384,7 @@ namespace JuhinAPI.Controllers
        /// <param name="purchaseOrderId"></param>
        /// <returns></returns>
         [HttpDelete("{deliveryId},{purchaseOrderId}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist")]
         public async Task<ActionResult> Delete(Guid deliveryId, Guid purchaseOrderId )
         {
             var deliveryExist = await context.Deliveries.AnyAsync(d => d.DeliveryId == deliveryId);

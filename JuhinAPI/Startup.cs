@@ -46,7 +46,7 @@ namespace JuhinAPI
             services.AddLogging();
             services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("WebioDBConnection")));
             //services.AddScoped<IRepository, DbRepository>();
             services.AddAutoMapper(typeof(Startup));
             services.AddDataProtection();
@@ -73,7 +73,7 @@ namespace JuhinAPI
                 .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
                 .UseSimpleAssemblyNameTypeSerializer()
                 .UseRecommendedSerializerSettings()
-                .UseSqlServerStorage(Configuration.GetConnectionString("HangfireAzureConnection"), new SqlServerStorageOptions
+                .UseSqlServerStorage(Configuration.GetConnectionString("WebioHangfireConnection"), new SqlServerStorageOptions
                 {
                     CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
                     SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),

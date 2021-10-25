@@ -2,6 +2,8 @@
 using JuhinAPI.DTOs;
 using JuhinAPI.Helpers;
 using JuhinAPI.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -29,6 +31,7 @@ namespace JuhinAPI.Controllers
         /// <param name="pagination"></param>
         /// <returns></returns>
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist,Warehouseman,Guest")]
         public async Task<ActionResult<List<SubscriptionDTO>>> Get([FromQuery] PaginationDTO pagination)
         {
             var queryable = context.Subscriptions.AsQueryable();
@@ -43,6 +46,7 @@ namespace JuhinAPI.Controllers
         /// <param name="id">The Id of subscription</param>
         /// <returns></returns>
         [HttpGet("{id}", Name = "GetSubscription")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist,Warehouseman,Guest")]
         public async Task<ActionResult<SubscriptionDTO>> GetSubscriptionById(Guid id)
         {
             var subscription = await context.Subscriptions
@@ -60,6 +64,7 @@ namespace JuhinAPI.Controllers
         /// <param name="newSubscription"></param>
         /// <returns></returns>
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist,Warehouseman,Guest")]
         public async Task<ActionResult> Post([FromBody] SubscriptionCreationDTO newSubscription)
         {
             var subscription = mapper.Map<Subscription>(newSubscription);
@@ -75,6 +80,7 @@ namespace JuhinAPI.Controllers
         /// <param name="updatedSubscription"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist")]
         public async Task<ActionResult> Put(Guid id, [FromBody] SubscriptionCreationDTO updatedSubscription)
         {
             var subscription = mapper.Map<Subscription>(updatedSubscription);
@@ -89,6 +95,7 @@ namespace JuhinAPI.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist,Warehouseman,Guest")]
         public async Task<ActionResult> Delete(Guid id)
         {
             var exist = await context.Subscriptions.AnyAsync(s => s.SubscriptionId == id);

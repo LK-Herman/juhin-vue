@@ -2,6 +2,8 @@
 using JuhinAPI.DTOs;
 using JuhinAPI.Helpers;
 using JuhinAPI.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -29,6 +31,7 @@ namespace JuhinAPI.Controllers
         /// <param name="pagination"></param>
         /// <returns></returns>
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist,Warehouseman,Guest")]
         public async Task<ActionResult<List<PalletDTO>>> Get([FromQuery] PaginationDTO pagination) 
         {
             var queryable = context.Pallets.AsQueryable();
@@ -43,6 +46,7 @@ namespace JuhinAPI.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}", Name = "GetPalletById")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist,Warehouseman,Guest")]
         public async Task<ActionResult<PalletDTO>> GetById(int id)
         {
             var pallet = await context.Pallets
@@ -60,6 +64,7 @@ namespace JuhinAPI.Controllers
         /// <param name="palletCreated"></param>
         /// <returns></returns>
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist,Warehouseman")]
         public async Task<ActionResult> Post([FromBody] PalletCreationDTO palletCreated)
         {
             var pallet = mapper.Map<Pallet>(palletCreated);
@@ -75,6 +80,7 @@ namespace JuhinAPI.Controllers
         /// <param name="updatedPallet"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist,Warehouseman")]
         public async Task<ActionResult> Put(int id, [FromBody] PalletCreationDTO updatedPallet)
         {
             var pallet = mapper.Map<Pallet>(updatedPallet);
@@ -90,6 +96,7 @@ namespace JuhinAPI.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<ActionResult> Delete(int id)
         {
             var exist = await context.Pallets
