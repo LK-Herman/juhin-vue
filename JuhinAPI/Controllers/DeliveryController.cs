@@ -283,7 +283,7 @@ namespace JuhinAPI.Controllers
                     statusColorBright = "#91ff37";
                     statusColorDark = "#63ac00";
                 }
-                string packingList = "<p style=\"color:#c93337\">Packing list is empty (no parts added)</p>";
+                string packingList = "<p style=\"color:#ff9d9d\">Packing list is empty (no parts added)</p>";
                 int i = 0;
                 if (delivery.PackedItems.Count != 0) 
                 {
@@ -298,7 +298,7 @@ namespace JuhinAPI.Controllers
                 var message = new EmailMessage();
                 message.Subject = "JuhinAPI Status Notification";
                 message.Content =
-                    "<div style=\"margin: 10px; width:400px; font-family: Calibri; font-size:16px; border-radius:16px; overflow:hidden; background-image: linear-gradient(#161f24, #727272, #969696);\">" +
+                    "<div style=\"margin: 10px; width:400px; font-family: Calibri; font-size:16px; border-radius:16px; overflow:hidden; background-image: linear-gradient(#161f24, #727272, #969696); background-color: #95bebe;\">" +
                         "<div style=\"border-radius:0px; text-align:center; padding:2px; margin:0px; color:white; font-size:20px; background-image: linear-gradient(#00cfeb,#008fa8,#006f88, #006f88, #005f78);\">" +
                             "<p style=\"margin-bottom: 2px;\"> DELIVERY SUBSCRIPTION NOTICE</p>" +
                             "<p style=\"font-size:16px; margin-top: 2px;\">Status of your delivery has been updated.</p>" +
