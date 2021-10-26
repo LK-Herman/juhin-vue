@@ -16,7 +16,7 @@ namespace JuhinAPI.DTOs
         [Required]
         [StringLength(30)]
         public string Number { get; set; }
-        [FileSizeValidator(6)]
+        [FileSizeValidator(3)]
         [ContentTypeValidator(ContentTypeGroup.Document)]
         public IFormFile DocumentFile { get; set; }
 

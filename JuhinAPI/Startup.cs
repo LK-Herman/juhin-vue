@@ -50,8 +50,10 @@ namespace JuhinAPI
             //services.AddScoped<IRepository, DbRepository>();
             services.AddAutoMapper(typeof(Startup));
             services.AddDataProtection();
-            services.AddTransient<IFileStorageService, AzureStorageService>();
-
+            
+            services.AddTransient<IFileStorageService, InAppStorageService>();
+            services.AddHttpContextAccessor();
+            services.AddLogging();
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
@@ -116,11 +118,11 @@ namespace JuhinAPI
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 config.IncludeXmlComments(xmlPath);
             });
-            services.AddAzureClients(builder =>
-            {
-                builder.AddBlobServiceClient(Configuration["ConnectionStrings:AzureStorageConnection:blob"], preferMsi: true);
-                builder.AddQueueServiceClient(Configuration["ConnectionStrings:AzureStorageConnection:queue"], preferMsi: true);
-            });
+            //services.AddAzureClients(builder =>
+            //{
+            //    builder.AddBlobServiceClient(Configuration["ConnectionStrings:AzureStorageConnection:blob"], preferMsi: true);
+            //    builder.AddQueueServiceClient(Configuration["ConnectionStrings:AzureStorageConnection:queue"], preferMsi: true);
+            //});
 
         }
 
@@ -140,6 +142,8 @@ namespace JuhinAPI
             });
 
             app.UseHttpsRedirection();
+
+            app.UseStaticFiles();
 
             app.UseRouting();
 
@@ -163,29 +167,29 @@ namespace JuhinAPI
             });
         }
     }
-    internal static class StartupExtensions
-    {
-        public static IAzureClientBuilder<BlobServiceClient, BlobClientOptions> AddBlobServiceClient(this AzureClientFactoryBuilder builder, string serviceUriOrConnectionString, bool preferMsi)
-        {
-            if (preferMsi && Uri.TryCreate(serviceUriOrConnectionString, UriKind.Absolute, out Uri serviceUri))
-            {
-                return builder.AddBlobServiceClient(serviceUri);
-            }
-            else
-            {
-                return builder.AddBlobServiceClient(serviceUriOrConnectionString);
-            }
-        }
-        public static IAzureClientBuilder<QueueServiceClient, QueueClientOptions> AddQueueServiceClient(this AzureClientFactoryBuilder builder, string serviceUriOrConnectionString, bool preferMsi)
-        {
-            if (preferMsi && Uri.TryCreate(serviceUriOrConnectionString, UriKind.Absolute, out Uri serviceUri))
-            {
-                return builder.AddQueueServiceClient(serviceUri);
-            }
-            else
-            {
-                return builder.AddQueueServiceClient(serviceUriOrConnectionString);
-            }
-        }
-    }
+    //internal static class StartupExtensions
+    //{
+    //    public static IAzureClientBuilder<BlobServiceClient, BlobClientOptions> AddBlobServiceClient(this AzureClientFactoryBuilder builder, string serviceUriOrConnectionString, bool preferMsi)
+    //    {
+    //        if (preferMsi && Uri.TryCreate(serviceUriOrConnectionString, UriKind.Absolute, out Uri serviceUri))
+    //        {
+    //            return builder.AddBlobServiceClient(serviceUri);
+    //        }
+    //        else
+    //        {
+    //            return builder.AddBlobServiceClient(serviceUriOrConnectionString);
+    //        }
+    //    }
+    //    public static IAzureClientBuilder<QueueServiceClient, QueueClientOptions> AddQueueServiceClient(this AzureClientFactoryBuilder builder, string serviceUriOrConnectionString, bool preferMsi)
+    //    {
+    //        if (preferMsi && Uri.TryCreate(serviceUriOrConnectionString, UriKind.Absolute, out Uri serviceUri))
+    //        {
+    //            return builder.AddQueueServiceClient(serviceUri);
+    //        }
+    //        else
+    //        {
+    //            return builder.AddQueueServiceClient(serviceUriOrConnectionString);
+    //        }
+    //    }
+    //}
 }
