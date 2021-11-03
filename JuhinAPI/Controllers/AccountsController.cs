@@ -1,7 +1,10 @@
 ﻿
 using AutoMapper;
+using Hangfire;
+using JuhinAPI.Data;
 using JuhinAPI.DTOs;
 using JuhinAPI.Helpers;
+using JuhinAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -28,13 +31,17 @@ namespace JuhinAPI.Controllers
         private readonly IConfiguration configuration;
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
+        private readonly IEmailService emailService;
+        private readonly IBackgroundJobClient backgroundJobs;
 
         public AccountsController(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             IConfiguration configuration,
             ApplicationDbContext context,
-            IMapper mapper
+            IMapper mapper,
+            IEmailService emailService,
+            IBackgroundJobClient backgroundJobs
             )
         {
             this.userManager = userManager;
@@ -42,6 +49,8 @@ namespace JuhinAPI.Controllers
             this.configuration = configuration;
             this.context = context;
             this.mapper = mapper;
+            this.emailService = emailService;
+            this.backgroundJobs = backgroundJobs;
         }
         /// <summary>
         /// Shows the list of all users (with pagination)
@@ -105,7 +114,7 @@ namespace JuhinAPI.Controllers
                 return NotFound();
             }
             await userManager.RemoveClaimAsync(user, new Claim(ClaimTypes.Role, editRoleDTO.RoleName));
-            
+
             return NoContent();
         }
 
@@ -117,14 +126,14 @@ namespace JuhinAPI.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(typeof(UserToken), 200)]
         [HttpPost("Create", Name = "createAccount")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<ActionResult<UserToken>> CreateUser([FromBody] UserInfo model)
         {
             var user = new IdentityUser { UserName = model.EmailAddress, Email = model.EmailAddress };
             var result = await userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                return await BuildToken (model);
+                return await BuildToken(model);
             }
             else
             {
@@ -134,22 +143,19 @@ namespace JuhinAPI.Controllers
         /// <summary>
         /// Resets the password / for testing only / to be removed
         /// </summary>
-        /// <param name="userName"></param>
-        /// <param name="password"></param>
+        /// <param name="userResetInfo"></param>
         /// <returns></returns>
 
-        [ApiExplorerSettings(IgnoreApi = true)]
-        [HttpPost("{userName},{password}", Name = "resetPassword")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
-        public async Task<ActionResult> ResetPassword(string userName, string password)
+        //[ApiExplorerSettings(IgnoreApi = true)]
+        //[HttpPost("{userName},{password}", Name = "resetPassword")]
+        [HttpPost("ResetPassword", Name = "resetPassword")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        public async Task<ActionResult> ResetPassword([FromBody] UserResetInfo userResetInfo)
         {
-            //UserInfo model
-            //var user = new IdentityUser { UserName = model.EmailAddress, Email = model.EmailAddress };
-            var user = await userManager.FindByNameAsync(userName);
+            var user = await userManager.FindByIdAsync(userResetInfo.UserId);
             if (user != null)
             {
-                var token = await userManager.GeneratePasswordResetTokenAsync(user);
-                var result = await userManager.ResetPasswordAsync(user, token, password);
+                var result = await userManager.ResetPasswordAsync(user, userResetInfo.ResetPasswordToken, userResetInfo.Password);
 
                 if (result.Succeeded)
                 {
@@ -162,6 +168,23 @@ namespace JuhinAPI.Controllers
             }
             return NotFound();
         }
+
+        [HttpPost("ResetTokenRequest", Name = "resetTokenRequest")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        public async Task<ActionResult> ResetTokenRequest([FromQuery] string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                var token = await userManager.GeneratePasswordResetTokenAsync(user);
+                UserResetInfo userInfo = new UserResetInfo { UserId = user.Id, ResetPasswordToken = token};
+                var callbackUrl = Url.Action(action: "ResetPassword", controller:"Accounts", userInfo, protocol:Request.Scheme);
+                SendLinkByEmail(callbackUrl, user);
+                return Ok("Link was send via Email");
+            }
+            return NotFound();
+        }
+
         private async Task<UserToken> BuildToken(UserInfo userInfo)
             {
                 var claims = new List<Claim>()
@@ -227,5 +250,48 @@ namespace JuhinAPI.Controllers
             };
             return await BuildToken(userInfo);
         }
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public void SendLinkByEmail(string url, IdentityUser user)
+        {
+            
+
+                var message = new EmailMessage();
+                message.Subject = "JuhinAPI Password Reset Notification";
+                message.Content =
+                    "<div style=\"margin: 10px; width:400px; font-family: Calibri; font-size:16px; border-radius:16px; overflow:hidden; background-image: linear-gradient(#161f24, #727272, #969696); background-color: #95bebe;\">" +
+                        "<div style=\"border-radius:0px; text-align:center; padding:2px; margin:0px; color:white; font-size:20px;background-image: linear-gradient(#00cfeb,#008fa8,#006f88, #006f88, #005f78); background-color:#95bebe;\">" +
+                            "<p style=\"margin-bottom: 2px;\"> PASSWORD RESET NOTIFICATION</p>" +
+                            "<p style=\"font-size:16px; margin-top: 2px;\">To reset your password, please use the link below:</p>" +
+                        "</div>" +
+                        "<div style=\"padding:5px 10px 5px 10px; color:#e3e3e3; background-color:#c7f1fa;\">" +
+                            "<p style=\"text-align:center; color:#e3e3e3\"><a href = "+url+" > RESET PASSWORD LINK </a></p>" +
+                        "</div>" +
+                    "</div>";
+                message.FromAddress.Name = "JuhinAPI Software";
+                message.FromAddress.Address = "pipsitestemail@gmail.com";
+                            
+                    message.ToAddresses.Add(new EmailAddress { Name = "Dear " + user.UserName.ToLower(), Address = user.Email });
+                
+                try
+                {
+                    backgroundJobs.Enqueue(() => emailService.Send(message));
+                }
+                catch (Exception ex)
+                {
+
+                    Console.WriteLine(ex.Message);
+                    var errorMessage = new EmailMessage();
+                    errorMessage.Content = "<p>ERROR MESSAGE: " + ex.Message + " / " + ex.TargetSite.Name.ToString() + "</p>";
+                    errorMessage.Subject = "JuhinAPI ERROR/EXCEPTION Notification";
+                    errorMessage.FromAddress.Name = "JuhinAPI Software";
+                    errorMessage.ToAddresses.Add(new EmailAddress { Name = "Hermano", Address = "lkuczma@gmail.com" });
+                    errorMessage.FromAddress.Address = "pipsitestemail@gmail.com";
+                    emailService.Send(errorMessage);
+                }
+            
+
+        }
+
     }
 }
