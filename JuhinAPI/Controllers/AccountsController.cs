@@ -58,7 +58,7 @@ namespace JuhinAPI.Controllers
         /// <param name="paginationDTO">Sets the maximum records per page and the page numberr to show</param>
         /// <returns></returns>
         [HttpGet("Users", Name = "getUsers")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<ActionResult<List<UserDTO>>> Get([FromQuery] PaginationDTO paginationDTO)
         {
             var queryable = context.Users.AsQueryable();
@@ -178,7 +178,9 @@ namespace JuhinAPI.Controllers
             {
                 var token = await userManager.GeneratePasswordResetTokenAsync(user);
                 UserResetInfo userInfo = new UserResetInfo { UserId = user.Id, ResetPasswordToken = token};
-                var callbackUrl = Url.Action(action: "ResetPassword", controller:"Accounts", userInfo, protocol:Request.Scheme);
+                //var callbackUrl = Url.Action(action: "ResetPassword", controller:"Accounts", userInfo, protocol:Request.Scheme);
+                //var callbackUrl = Url.Link(routeName: "resetPassword", new {Controller = "Accounts", Action = "ResetPassword", code = token });
+                var callbackUrl = Url.Action(action: null,  controller:"Accounts", userInfo, protocol: Request.Scheme);
                 SendLinkByEmail(callbackUrl, user);
                 return Ok("Link was send via Email");
             }

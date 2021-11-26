@@ -14,6 +14,7 @@ namespace JuhinAPI.DTOs
         public DateTime ETADate { get; set; }
         public DateTime DeliveryDate { get; set; }
         public int Rating { get; set; }
+        public bool IsPriority { get; set; }
         public string Comment { get; set; }
 
         //Delivery 1-m Document
