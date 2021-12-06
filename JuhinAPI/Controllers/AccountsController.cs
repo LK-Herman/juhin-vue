@@ -104,16 +104,17 @@ namespace JuhinAPI.Controllers
         /// </summary>
         /// <returns>string</returns>
         [HttpGet("userInfo", Name = "getUserInfo")]
-        public ActionResult<CurrentUserInfo> GetUserInfo()
+        public async Task<ActionResult<CurrentUserInfo>> GetUserInfo()
         {
+            var identityUser = await userManager.GetUserAsync(User);
             var user = new CurrentUserInfo
             {
                 UserId = User.FindFirstValue(ClaimTypes.NameIdentifier),
                 Name = User.FindFirstValue(ClaimTypes.Name),
                 UserRole = User.FindFirstValue(ClaimTypes.Role),
-                EmailAddress = User.FindFirstValue(ClaimTypes.Email),
+                EmailAddress = identityUser?.Email
             };
-            if (user.UserId == null) return NotFound();
+            //if (user.UserId == null && user.Name == null && user.UserRole == null) return NotFound();
 
             return Ok(user);
         }

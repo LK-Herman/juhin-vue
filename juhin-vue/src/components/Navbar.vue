@@ -9,9 +9,9 @@
                 <p id="sublogo"> WAREHOUSE MANAGEMENT </p>
             </div>
             <div class="logobar-links">
-                <p v-if="isLogged" class="links-item">{{email}}</p>
-                <p class="links-item">Zarejestruj się</p>
-                <p v-if="isLogged" class="links-item">Wyloguj</p>
+                <p v-if="isLogged" class="links-item" id="email-address">{{email}}</p>
+                <p v-if="!isLogged" class="links-item">Zarejestruj się</p>
+                <a v-if="isLogged" class="links-item" @click="handleNavLogout">Wyloguj</a>
                 <router-link v-else :to="{name:'Login'}" class="links-item">Zaloguj się</router-link>
             </div>
         </div>
@@ -21,13 +21,21 @@
 </template>
 
 <script>
-
+import logoutUser from '../composables/logoutUser.js'
+import { useRouter } from 'vue-router'
 export default {
     props:['isLogged', 'email'],
     setup(props, context){
+        const router = useRouter()
+        const {logout, error, logoutData} = logoutUser()
         
+        const handleNavLogout = () =>{
+            context.emit('logoutEvent')
+            logout()
+            router.push({name:'Login'})
+        }
 
-        return {  }
+        return {  handleNavLogout}
     }
 
 }
@@ -76,6 +84,18 @@ export default {
     padding-left: 36px;
     font-size: 14px;
     font-weight: 500;
+    cursor: pointer;
+    text-shadow: 1px 1px 2px rgb(0, 0, 0);
+}
+.navbar .logobar-in .logobar-links .links-item#email-address{
+    cursor: default;
+}
+.navbar .logobar-in .logobar-links .links-item#email-address:hover{
+    cursor: default;
+    color: var(--primary);
+}
+.navbar .logobar-in .logobar-links .links-item:hover{
+    color: rgb(255, 192, 56);
 }
 #sublogo{
     font-family: 'Amaranth', sans-serif;

@@ -1,7 +1,7 @@
 <template>
 <div class="main-container">
     <div class="nav-container">
-        <Navbar :isLogged="isLogged" :email="userEmail" />
+        <Navbar :isLogged="isLogged" :email="userEmail" @logoutEvent="handleLogout"/>
     </div>
     <div :class="{'sub-container':isLogged}">
         <div v-if="isLogged">
@@ -9,11 +9,12 @@
         </div>
         
         <div class="body-container">
-            <router-view @loginEvent="handleLogin" />
+            <router-view @loginEvent="handleLogin" :userToken="userToken"  />
         </div>
     </div>
 </div>
 <div class="downbar">
+    <button @click="handleClick">getUser</button>
     <Endbar />
 </div>
   
@@ -25,6 +26,8 @@ import Endbar from './components/Endbar.vue'
 import { ref } from '@vue/reactivity'
 import urlHolder from './composables/urlHolder.js'
 import { useRouter } from 'vue-router'
+import getCurrentUser from './composables/getCurrentUser.js'
+import { onUpdated } from '@vue/runtime-core'
 
 export default {
     components: { MenuBar, Navbar, Endbar},
@@ -34,15 +37,30 @@ export default {
         const mainUrl = urlHolder
         const userEmail = ref('')
         const router = useRouter()
+        const userToken = ref('')
+        const {getUser, error, user} = getCurrentUser(mainUrl)
         
-        const handleLogin = () =>{
+        const handleLogin = (email, token) =>{
             isLogged.value = true
-            userEmail.value = 'user@email.com'
+            userEmail.value = email
+            userToken.value = token
             router.push({name:"Upcomming"})
+        }
+        const handleLogout = () =>{
+            isLogged.value = false
+            router.push({name:'Main'})
+        }
+        onUpdated(()=>{
+            getUser()
+            console.log(user.value)
+        })
+        const handleClick = ()=>{
+            getUser()
+            console.log(user.value)
         }
 
        
-    return { isLogged, mainUrl, handleLogin, userEmail}
+    return { isLogged, mainUrl, handleLogin, handleLogout, userEmail, userToken, error, getUser, handleClick}
   }
 }
 </script>

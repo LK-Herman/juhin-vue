@@ -27,6 +27,7 @@ import { useRouter } from 'vue-router'
 import urlHolder from '../composables/urlHolder.js'
 import loginUser from '../composables/loginUser.js'
 
+
 export default {
     props: [],
     setup(props, context){
@@ -34,13 +35,16 @@ export default {
         const router = useRouter()
         const email = ref('')
         const password =ref('')
+        
         const {login, loginData, error, token} = loginUser(mainUrl)
         
         const handleSubmit = async () =>{
             await login(email.value, password.value)
+            
             if(!error.value){
                 console.log('User '+ email.value + ' logged in succesfully')
-                context.emit('loginEvent')
+                context.emit('loginEvent', email.value, token.value)
+                
             }
         } 
         
