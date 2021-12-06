@@ -7,6 +7,7 @@ using JuhinAPI.Helpers;
 using JuhinAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -98,6 +99,10 @@ namespace JuhinAPI.Controllers
             await userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, editRoleDTO.RoleName));
             return NoContent();
         }
+        /// <summary>
+        /// Gets current user info
+        /// </summary>
+        /// <returns>string</returns>
         [HttpGet("userInfo", Name = "getUserInfo")]
         public ActionResult<CurrentUserInfo> GetUserInfo()
         {
@@ -105,11 +110,12 @@ namespace JuhinAPI.Controllers
             {
                 UserId = User.FindFirstValue(ClaimTypes.NameIdentifier),
                 Name = User.FindFirstValue(ClaimTypes.Name),
+                UserRole = User.FindFirstValue(ClaimTypes.Role),
                 EmailAddress = User.FindFirstValue(ClaimTypes.Email),
-                UserRole = User.FindFirstValue(ClaimTypes.Role)
             };
+            if (user.UserId == null) return NotFound();
 
-            return user;
+            return Ok(user);
         }
         /// <summary>
         /// Removes the user Role in system (Roles: Admin)
@@ -250,6 +256,21 @@ namespace JuhinAPI.Controllers
             {
                 return BadRequest("Invalid login attempt");
             }
+        }
+        /// <summary>
+        /// Logout current user
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("Logout", Name = "loginOutUser")]
+        public async Task<ActionResult> Logout()
+        {
+            await signInManager.SignOutAsync();
+            var result = signInManager.SignOutAsync().IsCompletedSuccessfully;
+            if (result)
+            {
+                return Ok("Logged out successfully");
+            }
+            return BadRequest("Invalid logout attempt");
         }
         /// <summary>
         /// Action to renew the token (to be used at client side)

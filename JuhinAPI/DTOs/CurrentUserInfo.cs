@@ -11,5 +11,6 @@ namespace JuhinAPI.DTOs
         public string EmailAddress { get; set; }
         public string Name { get; set; }
         public string UserRole { get; set; }
+
     }
 }

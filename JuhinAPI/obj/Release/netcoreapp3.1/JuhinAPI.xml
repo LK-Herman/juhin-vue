@@ -24,6 +24,12 @@
             <param name="editRoleDTO"></param>
             <returns></returns>
         </member>
+        <member name="M:JuhinAPI.Controllers.AccountsController.GetUserInfo">
+            <summary>
+            Gets current user info
+            </summary>
+            <returns>string</returns>
+        </member>
         <member name="M:JuhinAPI.Controllers.AccountsController.RemoveRole(JuhinAPI.DTOs.EditRoleDTO)">
             <summary>
             Removes the user Role in system (Roles: Admin)
@@ -50,6 +56,12 @@
             Login action (returns JwtBearer token)
             </summary>
             <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JuhinAPI.Controllers.AccountsController.Logout">
+            <summary>
+            Logout current user
+            </summary>
             <returns></returns>
         </member>
         <member name="M:JuhinAPI.Controllers.AccountsController.Renew">
