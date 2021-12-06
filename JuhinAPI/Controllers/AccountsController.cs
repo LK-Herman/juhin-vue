@@ -109,9 +109,9 @@ namespace JuhinAPI.Controllers
             var identityUser = await userManager.GetUserAsync(User);
             var user = new CurrentUserInfo
             {
-                UserId = User.FindFirstValue(ClaimTypes.NameIdentifier),
-                Name = User.FindFirstValue(ClaimTypes.Name),
-                UserRole = User.FindFirstValue(ClaimTypes.Role),
+                UserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier),
+                Name = HttpContext.User.FindFirstValue(ClaimTypes.Name),
+                UserRole = HttpContext.User.FindFirstValue(ClaimTypes.Role),
                 EmailAddress = identityUser?.Email
             };
             //if (user.UserId == null && user.Name == null && user.UserRole == null) return NotFound();
