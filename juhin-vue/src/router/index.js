@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Main from '../views/Main.vue'
 import Login from '../views/Login.vue'
+import Upcomming from '../views/Upcomming.vue'
+import Vendors from '../views/Vendors.vue'
 
 const routes = [
   {
@@ -13,7 +15,19 @@ const routes = [
     name: 'Login',
     component: Login,
     props: true
-  }
+  },
+  {
+      path: '/upcomming',
+      name: 'Upcomming',
+      component: Upcomming,
+      props: true
+  },
+  {
+    path: '/vendors',
+    name: 'Vendors',
+    component: Vendors,
+    props: true
+}
  
 ]
 

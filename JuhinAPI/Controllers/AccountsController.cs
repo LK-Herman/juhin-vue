@@ -98,6 +98,19 @@ namespace JuhinAPI.Controllers
             await userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, editRoleDTO.RoleName));
             return NoContent();
         }
+        [HttpGet("userInfo", Name = "getUserInfo")]
+        public ActionResult<CurrentUserInfo> GetUserInfo()
+        {
+            var user = new CurrentUserInfo
+            {
+                UserId = User.FindFirstValue(ClaimTypes.NameIdentifier),
+                Name = User.FindFirstValue(ClaimTypes.Name),
+                EmailAddress = User.FindFirstValue(ClaimTypes.Email),
+                UserRole = User.FindFirstValue(ClaimTypes.Role)
+            };
+
+            return user;
+        }
         /// <summary>
         /// Removes the user Role in system (Roles: Admin)
         /// </summary>

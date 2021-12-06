@@ -8,7 +8,7 @@
             <h4>DOSTAWY</h4>
         </div>
     </div>
-    <button class="deliveries-btn">Najbliższe dostawy</button>
+    <router-link :to="{name:'Upcomming'}" class="deliveries-btn btn">Najbliższe dostawy</router-link>
     <button class="deliveries-btn">Harmonogram</button>
     <button class="deliveries-btn">Wyszukaj</button>
     <button class="deliveries-btn">Dodaj</button>
@@ -44,7 +44,7 @@
             <h4>DOSTAWCY</h4>
         </div>
     </div>
-    <button class="vendors-btn">Przeglądaj</button>
+    <router-link class="vendors-btn btn" :to="{name:'Vendors'}">Przeglądaj</router-link>
     <button class="vendors-btn">Dodaj</button>
 
     <div class="title-bar">

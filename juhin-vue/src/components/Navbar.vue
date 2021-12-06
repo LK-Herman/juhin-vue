@@ -9,8 +9,10 @@
                 <p id="sublogo"> WAREHOUSE MANAGEMENT </p>
             </div>
             <div class="logobar-links">
+                <p v-if="isLogged" class="links-item">{{email}}</p>
                 <p class="links-item">Zarejestruj się</p>
-                <router-link :to="{name:'Login'}" class="links-item">Zaloguj się</router-link>
+                <p v-if="isLogged" class="links-item">Wyloguj</p>
+                <router-link v-else :to="{name:'Login'}" class="links-item">Zaloguj się</router-link>
             </div>
         </div>
     </div>
@@ -19,11 +21,13 @@
 </template>
 
 <script>
-export default {
-    props:[],
-    setup(){
 
-        return {}
+export default {
+    props:['isLogged', 'email'],
+    setup(props, context){
+        
+
+        return {  }
     }
 
 }

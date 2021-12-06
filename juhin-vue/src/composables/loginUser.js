@@ -3,7 +3,7 @@ import { ref } from '@vue/reactivity'
 const loginUser = (url) =>{
     
     const loginData = ref([])
-    const error = ref(null)
+    const error = ref('')
     const token = ref('')
     
     const login = async (userEmail, password) => {
@@ -19,12 +19,15 @@ const loginUser = (url) =>{
                             },
                   body: JSON.stringify(userData)
                 })
-               console.log(JSON.stringify(userData)) 
+               
                if (!data.ok){
-                throw Error('No data available')
+                   if(data.status === 400){
+                       throw Error('Niepoprawne dane logowania (400)')}
+                throw Error('Dane niedostępne')
                 }
               loginData.value = await data.json()
               token.value = loginData.value.token
+              error.value = ''
         } catch (er) {
           error.value = er.message
           console.log(error.value)

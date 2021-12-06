@@ -9,7 +9,7 @@
     --green:#6C952B;
     --teal: #32A0C2;
     --delay: #B14343;
-    --warning: #da0f41;
+    --warning: #ff3c6d;
     --primary: #eee;
 }
 
@@ -21,7 +21,8 @@
     margin:0;
 }
 body {
-    background-color: #3c68b9;    
+    background-color: var(--back-dark);
+    
     margin: 0;
     padding: 0;
 }
@@ -93,7 +94,7 @@ button:disabled{
 form {
     max-width: 400px;
     min-width: 300px;
-    margin: auto;
+    margin: 40px auto;
     justify-items: center;
     padding: 30px;
     box-shadow: 3px 3px 6px rgba(0,0,0,0.5);

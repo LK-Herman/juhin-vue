@@ -5,14 +5,17 @@
           <h2>Zaloguj się</h2>
 
           <label >Adres Email</label>
-          <input v-model="email" type="email" required>
+          <input v-model="email" type="email" required placeholder="adres@email.pl">
           <label for="">Hasło</label>
-          <input v-model="password" type="password" required>
+          <input v-model="password" type="password" required placeholder="mojeH@slo123">
           <div class="login-links">
               <p>Zarejestruj się</p>
               <p>Nie pamiętasz hasła?</p>
           </div>
           <button id="login-btn">Zaloguj</button>
+          <div v-if="error">
+              <div class="error-msg">{{error}}</div>
+          </div>
       </form>
       
   </div>
@@ -20,19 +23,25 @@
 
 <script>
 import { ref } from '@vue/reactivity'
+import { useRouter } from 'vue-router'
 import urlHolder from '../composables/urlHolder.js'
 import loginUser from '../composables/loginUser.js'
+
 export default {
     props: [],
-    setup(){
+    setup(props, context){
         const mainUrl = urlHolder
-
+        const router = useRouter()
         const email = ref('')
         const password =ref('')
         const {login, loginData, error, token} = loginUser(mainUrl)
         
-        const handleSubmit = () =>{
-            login(email.value, password.value)
+        const handleSubmit = async () =>{
+            await login(email.value, password.value)
+            if(!error.value){
+                console.log('User '+ email.value + ' logged in succesfully')
+                context.emit('loginEvent')
+            }
         } 
         
         return {email, password, handleSubmit, token, loginData, error}
@@ -46,6 +55,11 @@ export default {
     display: flex;
     flex-flow: column;
     background-image: linear-gradient(#282828, var(--back-grey), var(--back-grey2));
+}
+#login-form .error-msg{
+    color: var(--warning);
+    font-size: 12px;
+    text-align: center;
 }
 #login-form h4{
     font-family: 'Amaranth', sans-serif;
