@@ -34,6 +34,7 @@ namespace JuhinAPI.Controllers
         private readonly IMapper mapper;
         private readonly IEmailService emailService;
         private readonly IBackgroundJobClient backgroundJobs;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
         public AccountsController(
             UserManager<IdentityUser> userManager,
@@ -42,7 +43,8 @@ namespace JuhinAPI.Controllers
             ApplicationDbContext context,
             IMapper mapper,
             IEmailService emailService,
-            IBackgroundJobClient backgroundJobs
+            IBackgroundJobClient backgroundJobs,
+            IHttpContextAccessor httpContextAccessor
             )
         {
             this.userManager = userManager;
@@ -52,6 +54,7 @@ namespace JuhinAPI.Controllers
             this.mapper = mapper;
             this.emailService = emailService;
             this.backgroundJobs = backgroundJobs;
+            this.httpContextAccessor = httpContextAccessor;
         }
         /// <summary>
         /// Shows the list of all users (with pagination)
@@ -109,10 +112,15 @@ namespace JuhinAPI.Controllers
             var identityUser = await userManager.GetUserAsync(User);
             var user = new CurrentUserInfo
             {
-                UserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier),
-                Name = HttpContext.User.FindFirstValue(ClaimTypes.Name),
-                UserRole = HttpContext.User.FindFirstValue(ClaimTypes.Role),
-                EmailAddress = identityUser?.Email
+                UserId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier),
+                Name = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name),
+                UserRole = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Role),
+                EmailAddress = identityUser?.Email,
+                isAdmin = httpContextAccessor.HttpContext.User.IsInRole("Admin"),
+                isSpecialist = httpContextAccessor.HttpContext.User.IsInRole("Specialist"),
+                isWarehouseman = httpContextAccessor.HttpContext.User.IsInRole("Warehouseman"),
+                isGuest = httpContextAccessor.HttpContext.User.IsInRole("Guest"),
+
             };
             //if (user.UserId == null && user.Name == null && user.UserRole == null) return NotFound();
 

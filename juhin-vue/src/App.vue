@@ -3,6 +3,7 @@
     <div class="nav-container">
         <Navbar :isLogged="isLogged" :email="userEmail" @logoutEvent="handleLogout"/>
     </div>
+    <button @click="handleClick">Get User by HttpContext.User</button>
     <div :class="{'sub-container':isLogged}">
         <div v-if="isLogged">
             <MenuBar />
@@ -13,8 +14,10 @@
         </div>
     </div>
 </div>
+    <br>
+    <br>
+    <br>
 <div class="downbar">
-    <button @click="handleClick">getUser</button>
     <Endbar />
 </div>
   
