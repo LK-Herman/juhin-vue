@@ -94,7 +94,7 @@ namespace JuhinAPI.Helpers
             var result = new List<PurchaseOrderDTO>();
             foreach (var deliveryOrder in delivery.PurchaseOrderDeliveries)
             {
-                result.Add(new PurchaseOrderDTO() { OrderId = deliveryOrder.PurchaseOrderId, OrderNumber = deliveryOrder.PurchaseOrder.OrderNumber, VendorId = deliveryOrder.PurchaseOrder.VendorId });
+                result.Add(new PurchaseOrderDTO() { OrderId = deliveryOrder.PurchaseOrderId, OrderNumber = deliveryOrder.PurchaseOrder.OrderNumber, VendorId = deliveryOrder.PurchaseOrder.VendorId, UserId = deliveryOrder.PurchaseOrder.UserId });
             }
             return result;
         }

@@ -207,7 +207,7 @@ namespace JuhinAPI.Controllers
         /// <param name="deliveryId">Requested delivery Id </param>
         /// <returns></returns>
         [HttpGet("detailed/{deliveryId:Guid}", Name = "GetDetailed")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist,Warehouseman,Guest")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist,Warehouseman,Guest")]
         public async Task<ActionResult<DeliveryDetailsDTO>> GetDeliveryByIdDetailed(Guid deliveryId)
         {
             var delivery = await context.Deliveries
