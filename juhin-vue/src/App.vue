@@ -1,9 +1,9 @@
 <template>
 <div class="main-container">
     <div class="nav-container">
-        <Navbar :isLogged="isLogged" :email="userEmail" @logoutEvent="handleLogout"/>
+        <Navbar :isLogged="isLogged" :email="userEmail" @logoutEvent="handleLogout" :mainUrl="mainUrl"/>
     </div>
-    <button @click="handleClick">Get User by HttpContext.User</button>
+    
     <div :class="{'sub-container':isLogged}">
         <div v-if="isLogged">
             <MenuBar />
@@ -30,7 +30,6 @@ import { ref } from '@vue/reactivity'
 import urlHolder from './composables/urlHolder.js'
 import { useRouter } from 'vue-router'
 import getCurrentUser from './composables/getCurrentUser.js'
-import { onUpdated } from '@vue/runtime-core'
 
 export default {
     components: { MenuBar, Navbar, Endbar},
@@ -53,17 +52,8 @@ export default {
             isLogged.value = false
             router.push({name:'Main'})
         }
-        onUpdated(()=>{
-            getUser()
-            console.log(user.value)
-        })
-        const handleClick = ()=>{
-            getUser()
-            console.log(user.value)
-        }
-
        
-    return { isLogged, mainUrl, handleLogin, handleLogout, userEmail, userToken, error, getUser, handleClick}
+    return { isLogged, mainUrl, handleLogin, handleLogout, userEmail, userToken, error, getUser}
   }
 }
 </script>

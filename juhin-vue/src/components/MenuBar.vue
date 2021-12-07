@@ -12,7 +12,7 @@
     <button class="deliveries-btn">Harmonogram</button>
     <button class="deliveries-btn">Wyszukaj</button>
     <button class="deliveries-btn">Dodaj</button>
-    <button class="deliveries-btn">Moje dostawy</button>
+    <router-link :to="{name:'Main'}" class="deliveries-btn">Moje dostawy</router-link>
 
     <div class="title-bar">
         <div id="orders" class="menu-icon">

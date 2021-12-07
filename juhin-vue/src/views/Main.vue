@@ -1,5 +1,9 @@
 <template>
     <h2>Strona startowa</h2>
+    <DeliveryDetails :userToken="userToken"/>
+
+    <br>
+    <br>
     <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos excepturi fugit saepe exercitationem ipsam voluptas sequi ab, harum modi, quo veniam minima dicta fugiat deserunt eaque officiis. Quaerat, esse veritatis?</p>
     <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptate quae sed tempore placeat nobis pariatur similique cumque fuga nulla ad. Dolor corporis non ut rerum id officiis nobis ea facere qui ex, mollitia quae, laborum accusantium, dolore voluptatem esse. Similique illum, cupiditate asperiores fugiat dolores dolorem iste voluptate, corrupti atque sapiente quia, dolorum porro tenetur impedit perspiciatis nihil dolore vitae fugit vero itaque nostrum! Molestiae illo mollitia autem dicta aut accusantium? Explicabo molestiae commodi, nobis ea vero facere dolore! Ipsam, voluptate nihil. Iusto molestias adipisci provident architecto exercitationem sit eveniet consequatur dicta, illum suscipit enim culpa aliquam dolore ut quos?</p>
     <br>
@@ -8,10 +12,13 @@
 </template>
 
 <script>
-
+import { ref } from '@vue/reactivity'
+import DeliveryDetails from '../components/DeliveryDetails.vue'
 export default {
-  components: {  },
+    props: ['userToken'],
+  components: { DeliveryDetails },
   setup() {
+      const isVisible = ref(false)
     
 
     return { }

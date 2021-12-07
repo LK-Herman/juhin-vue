@@ -9,6 +9,7 @@
                 <p id="sublogo"> WAREHOUSE MANAGEMENT </p>
             </div>
             <div class="logobar-links">
+                <p v-if="isLogged" class="links-item" @click="handleClick">Get User by HttpContext.User</p>
                 <p v-if="isLogged" class="links-item" id="email-address">{{email}}</p>
                 <p v-if="!isLogged" class="links-item">Zarejestruj się</p>
                 <a v-if="isLogged" class="links-item" @click="handleNavLogout">Wyloguj</a>
@@ -23,19 +24,24 @@
 <script>
 import logoutUser from '../composables/logoutUser.js'
 import { useRouter } from 'vue-router'
+import getCurrentUser from '../composables/getCurrentUser.js'
 export default {
-    props:['isLogged', 'email'],
+    props:['isLogged', 'email', 'mainUrl'],
     setup(props, context){
         const router = useRouter()
         const {logout, error, logoutData} = logoutUser()
+        const {getUser, user} = getCurrentUser(props.mainUrl)
         
         const handleNavLogout = () =>{
             context.emit('logoutEvent')
             logout()
             router.push({name:'Login'})
         }
+         const handleClick = () =>{
+            getUser()
+        }
 
-        return {  handleNavLogout}
+        return {  handleNavLogout, handleClick}
     }
 
 }

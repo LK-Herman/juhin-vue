@@ -25,8 +25,6 @@ const getCurrentUser = (url) =>{
             .catch(error => console.log('error', error));
 
 
-
-
     }
 
       return {getUser, error, user}
