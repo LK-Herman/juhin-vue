@@ -12,6 +12,7 @@ const getCurrentUser = (url) =>{
         myHeaders.append("Accept", "*/*")
         myHeaders.append("Accept-Encoding", "gzip, deflate, br")
         myHeaders.append("Connection", "keep-alive")
+
         var requestOptions = {
         method: 'GET',
         headers: myHeaders,
@@ -22,9 +23,8 @@ const getCurrentUser = (url) =>{
           await fetch("https://juhin.zerwijzfrankiem.pl/api/accounts/userInfo/", requestOptions)
             .then(response => response.json())
             .then(result => console.log(result))
+            .then(response => response = user.value)
             .catch(error => console.log('error', error));
-
-
     }
 
       return {getUser, error, user}

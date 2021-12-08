@@ -1,27 +1,44 @@
 <template>
     <h2>Strona startowa</h2>
-    <DeliveryDetails :userToken="userToken"/>
-
+    <div>
+        <button class="btn" @click="deliveryFlag=!deliveryFlag">Pokaż szczegóły zamówienia</button>
+        <div v-if="deliveryFlag">
+            <DeliveryDetails :userToken="userToken" />
+        </div>
+    </div>
     <br>
     <br>
     <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos excepturi fugit saepe exercitationem ipsam voluptas sequi ab, harum modi, quo veniam minima dicta fugiat deserunt eaque officiis. Quaerat, esse veritatis?</p>
     <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptate quae sed tempore placeat nobis pariatur similique cumque fuga nulla ad. Dolor corporis non ut rerum id officiis nobis ea facere qui ex, mollitia quae, laborum accusantium, dolore voluptatem esse. Similique illum, cupiditate asperiores fugiat dolores dolorem iste voluptate, corrupti atque sapiente quia, dolorum porro tenetur impedit perspiciatis nihil dolore vitae fugit vero itaque nostrum! Molestiae illo mollitia autem dicta aut accusantium? Explicabo molestiae commodi, nobis ea vero facere dolore! Ipsam, voluptate nihil. Iusto molestias adipisci provident architecto exercitationem sit eveniet consequatur dicta, illum suscipit enim culpa aliquam dolore ut quos?</p>
-    <br>
-    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Totam distinctio non voluptatibus quisquam quibusdam tempora sit veritatis animi qui nisi debitis rem molestias beatae iusto dolore excepturi modi, quod nulla iste culpa quae cum eos amet. Ab ut cupiditate eos ea, magni perferendis blanditiis modi obcaecati officia alias voluptatibus. Ratione, illo eaque odio architecto fuga autem mollitia eveniet voluptates nobis rem dolor expedita assumenda ea atque. Suscipit laborum rerum qui id nulla animi fugit temporibus quos dicta dignissimos magni, similique est cumque quod dolorum totam ex voluptatem dolore eum corporis libero repudiandae voluptate fuga quia. Tempora deleniti atque reprehenderit similique fuga repellendus distinctio, neque voluptates! Cumque placeat animi rerum deserunt fugiat veniam magnam praesentium unde odit adipisci alias, laborum inventore ratione, asperiores ullam, dolore beatae. Obcaecati iste nemo, iure tenetur eos omnis labore vitae totam quidem repudiandae et deserunt quae facilis atque odit nihil. Dolores neque, magni ea recusandae dolore assumenda praesentium deserunt atque aut sint doloremque obcaecati excepturi, cum ullam exercitationem quae, qui ipsa consequuntur ipsum vel voluptates accusantium. Tempore laborum saepe corrupti. Quaerat minima molestias fugiat adipisci atque doloribus nihil magnam doloremque optio asperiores quis eius, architecto vel laborum. Illum cum sapiente adipisci placeat exercitationem distinctio possimus iusto rem corrupti laborum modi corporis, ex facere doloremque consequuntur aspernatur dolorem incidunt. Expedita ullam veniam ducimus distinctio accusantium nulla dicta temporibus cupiditate dolorem eos dolores, facere quasi perspiciatis laboriosam ipsa doloremque! Expedita enim illo dicta explicabo minima voluptatum maiores fugiat possimus deleniti eius earum, doloribus a saepe reprehenderit quibusdam! Accusantium, facere quisquam voluptatibus consequatur soluta nostrum illo optio eaque nemo pariatur eligendi atque ratione labore nulla voluptates provident ex beatae incidunt at quo hic temporibus! In eligendi reiciendis aliquam animi atque ducimus quidem, nam quisquam dicta eos fugit, aliquid neque commodi harum suscipit. Cum autem at natus maxime harum non adipisci iusto minima aliquid impedit sequi labore, nesciunt saepe deserunt magnam. Earum autem consectetur quae alias natus ab molestias odio nam magni! Exercitationem numquam ex ipsa molestiae nostrum illum non odio, pariatur inventore, adipisci repellat recusandae deserunt. Corporis a sint ipsa recusandae hic eum numquam iste quasi perspiciatis nihil, iusto, pariatur ducimus dicta expedita provident dolorem sit! Atque itaque, cumque perferendis praesentium explicabo quod tempore ex illum doloribus obcaecati quibusdam tempora in illo magni odit fugiat distinctio sint velit excepturi quo. Placeat illo similique, eius ipsa veniam qui numquam quia consequuntur laboriosam eaque sapiente porro unde cumque dolor esse voluptate laborum. Consequatur, qui necessitatibus dolorem, expedita explicabo quia sequi consequuntur adipisci optio delectus nihil. Perferendis laborum, cupiditate beatae voluptas qui voluptatibus modi inventore cumque, quisquam ipsum quam fugit ad. Maxime libero eos eum corrupti vel unde deleniti quisquam qui. Temporibus sequi repudiandae soluta ut cupiditate, in deleniti iusto exercitationem totam inventore corrupti error mollitia? Hic fugiat nam, culpa in eligendi pariatur provident est expedita consequuntur voluptate adipisci consequatur et, magnam, voluptatum rerum autem dolorum dolorem. Sit natus ipsam unde quo. Nam, quas quos laboriosam culpa iure blanditiis dolores corrupti repellat, labore minus, vero odio animi ipsam id a vel non. Quidem exercitationem enim cum autem delectus voluptate, dolores eos dignissimos provident reiciendis blanditiis molestias facilis illo qui, ab perspiciatis maiores, nam in? Accusamus at sed placeat fugiat veniam, quia libero architecto consequatur, iste laboriosam consequuntur cupiditate. Et, perspiciatis! Tempora adipisci distinctio, minima atque ducimus sapiente, enim eaque similique magni voluptates ipsum eum? Fuga culpa deleniti est aut eius iure alias fugit minima eum similique perspiciatis, cumque ut maiores esse error recusandae eos? Error illo quos expedita soluta id quae cumque nam esse. Modi, sapiente quo. Ex nulla, temporibus totam dicta illum omnis ad esse hic, sed accusantium doloremque, beatae sapiente.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos autem, ratione iure aliquam incidunt, eius blanditiis provident excepturi sunt omnis numquam, dignissimos quas sint earum quos dolores distinctio aliquid quisquam dicta porro eum tempora. Mollitia inventore laboriosam impedit optio in dolorum odio sit autem eius consequuntur velit quas assumenda doloremque, at nam ea amet magnam voluptatem hic accusamus rerum repudiandae? Labore, totam? Harum repellat numquam vero ipsum aliquam ad cupiditate quam tenetur. Nostrum quia iure esse ex numquam ullam quae quos, enim doloribus similique, ad asperiores? Voluptate tempora nisi quisquam porro autem natus fugit. Optio nostrum itaque autem repudiandae eius! Nemo possimus placeat facilis voluptas dolores ut laboriosam labore voluptatum repellat minima alias, commodi modi impedit laborum exercitationem laudantium molestias architecto praesentium! Exercitationem, at similique facilis, unde culpa necessitatibus voluptatum corrupti inventore labore tenetur dolore! Doloribus expedita explicabo voluptates totam voluptate, dolorem eveniet nemo iure, quibusdam odio voluptatum aliquam laboriosam repellat ducimus? Et optio fugit unde quibusdam ducimus? Nihil non soluta deserunt rerum nulla magni sit laudantium itaque, totam, illum tempore aspernatur eius vero iste dolorem voluptate ducimus molestias provident eveniet? Nesciunt exercitationem aperiam ullam iusto expedita magni esse, recusandae enim reiciendis iste placeat dolorum voluptas numquam nam itaque doloremque deserunt! Vero voluptas exercitationem totam, non accusamus corporis quae error dolores aperiam corrupti consectetur ad eius, unde distinctio deserunt! Id, eveniet blanditiis voluptate optio iure architecto, atque quidem ipsa, quasi commodi dolorum impedit sint ullam reprehenderit ipsam corporis? Minima, atque. Dolor laudantium perferendis veniam laborum nulla facere hic culpa, ipsa quaerat aperiam repudiandae qui tempore porro nam quisquam, quasi reiciendis fugiat eveniet cum, nostrum illum corrupti vel beatae. Eaque saepe dolore suscipit officia quasi corrupti quam magnam error sint nam provident accusamus, assumenda facere consectetur deleniti rem fugit porro sapiente quidem illum repellat temporibus. Laboriosam, adipisci natus? Sint, cum facilis!</p>
+    
+    
+    
 </template>
 
 <script>
 import { ref } from '@vue/reactivity'
 import DeliveryDetails from '../components/DeliveryDetails.vue'
+import { onMounted } from '@vue/runtime-core'
+import { useRouter } from 'vue-router'
 export default {
-    props: ['userToken'],
+  props: ['userToken'],
   components: { DeliveryDetails },
-  setup() {
+  setup(props) {
       const isVisible = ref(false)
+      const router = useRouter()
+      const deliveryFlag = ref(false)
     
+    onMounted(()=>{
+        if (!props.userToken){
+            isVisible.value = false
+            router.push({name:"Login"})
+        }
+        else{
+            isVisible.value = true
+        }
+    })
 
-    return { }
+    return { isVisible, deliveryFlag }
   }
 }
 </script>

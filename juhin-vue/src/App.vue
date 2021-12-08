@@ -1,16 +1,20 @@
 <template>
 <div class="main-container">
     <div class="nav-container">
-        <Navbar :isLogged="isLogged" :email="userEmail" @logoutEvent="handleLogout" :mainUrl="mainUrl"/>
+        <Navbar :isLogged="isLogged" :userEmail="userEmail" @logout-event="handleLogout"/>
     </div>
     
     <div :class="{'sub-container':isLogged}">
         <div v-if="isLogged">
             <MenuBar />
         </div>
-        
         <div class="body-container">
-            <router-view @loginEvent="handleLogin" :userToken="userToken"  />
+            <div v-if="!isLogged">
+                <Login @login-event="handleLogin" />
+            </div>
+            <div v-else>
+                <router-view  :userToken="userToken"  />
+            </div>
         </div>
     </div>
 </div>
@@ -29,31 +33,31 @@ import Endbar from './components/Endbar.vue'
 import { ref } from '@vue/reactivity'
 import urlHolder from './composables/urlHolder.js'
 import { useRouter } from 'vue-router'
-import getCurrentUser from './composables/getCurrentUser.js'
+import Login from './views/Login.vue'
 
 export default {
-    components: { MenuBar, Navbar, Endbar},
-    
-    setup(prop, emit) {
+    components: { MenuBar, Navbar, Endbar, Login},
+    emits:["login-event", "logout-event"],
+    props: [],
+    setup(props,context) {
         const isLogged = ref(false)
         const mainUrl = urlHolder
         const userEmail = ref('')
         const router = useRouter()
         const userToken = ref('')
-        const {getUser, error, user} = getCurrentUser(mainUrl)
         
-        const handleLogin = (email, token) =>{
+        const handleLogin = (userCred) =>{
             isLogged.value = true
-            userEmail.value = email
-            userToken.value = token
-            router.push({name:"Upcomming"})
+            userEmail.value = userCred.email
+            userToken.value = userCred.token
+            router.push({name:"Main"})
         }
         const handleLogout = () =>{
             isLogged.value = false
-            router.push({name:'Main'})
+            router.push({name:'Login'})
         }
        
-    return { isLogged, mainUrl, handleLogin, handleLogout, userEmail, userToken, error, getUser}
+    return { isLogged, handleLogin, handleLogout, userEmail, userToken}
   }
 }
 </script>

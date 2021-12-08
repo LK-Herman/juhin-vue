@@ -1,13 +1,13 @@
 import { ref } from '@vue/reactivity'
 
-const getDeliveryDetails = (url, token) =>{
+const getVendorById = (url, token) =>{
 
-    const delivery = ref([])
+    const vendor = ref([])
     const error = ref(null)
 
-    const loadDetails = async (id) => {
+    const loadVendor = async (id) => {
         try {
-              let data = await fetch(url + 'deliveries/detailed/' + id, {
+              let data = await fetch(url + 'vendors/' + id, {
                 headers: {'Authorization':'Bearer ' + token,
                           'Accept':'*/*'
                 }
@@ -15,14 +15,15 @@ const getDeliveryDetails = (url, token) =>{
                if (!data.ok){
                 throw Error('No data available')
                 }
-              delivery.value = await data.json()
+              vendor.value = await data.json()
+          
         } catch (er) {
           error.value = er.message
           console.log(error.value)
         }
       }
 
-      return {loadDetails, error, delivery}
+      return {loadVendor, error, vendor}
 }
 
-export default getDeliveryDetails
+export default getVendorById

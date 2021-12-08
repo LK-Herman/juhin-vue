@@ -7,7 +7,7 @@
           <label >Adres Email</label>
           <input v-model="email" type="email" required placeholder="adres@email.pl">
           <label for="">Hasło</label>
-          <input v-model="password" type="password" required placeholder="mojeH@slo123">
+          <input v-model="password" type="password" required placeholder="* * * hasło * * *">
           <div class="login-links">
               <p>Zarejestruj się</p>
               <p>Nie pamiętasz hasła?</p>
@@ -30,6 +30,7 @@ import loginUser from '../composables/loginUser.js'
 
 export default {
     props: [],
+    emits:['login-event'],
     setup(props, context){
         const mainUrl = urlHolder
         const router = useRouter()
@@ -42,13 +43,11 @@ export default {
             await login(email.value, password.value)
             
             if(!error.value){
-                console.log('User '+ email.value + ' logged in succesfully')
-                context.emit('loginEvent', email.value, token.value)
-                
+                context.emit('login-event', {email: email.value, token:token.value})
             }
         } 
         
-        return {email, password, handleSubmit, token, loginData, error}
+        return { handleSubmit, error, email, password}
     }
 }
 </script>

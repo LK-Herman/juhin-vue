@@ -10,7 +10,7 @@
             </div>
             <div class="logobar-links">
                 <p v-if="isLogged" class="links-item" @click="handleClick">Get User by HttpContext.User</p>
-                <p v-if="isLogged" class="links-item" id="email-address">{{email}}</p>
+                <p v-if="isLogged" class="links-item" id="email-address">{{userEmail}}</p>
                 <p v-if="!isLogged" class="links-item">Zarejestruj się</p>
                 <a v-if="isLogged" class="links-item" @click="handleNavLogout">Wyloguj</a>
                 <router-link v-else :to="{name:'Login'}" class="links-item">Zaloguj się</router-link>
@@ -25,15 +25,18 @@
 import logoutUser from '../composables/logoutUser.js'
 import { useRouter } from 'vue-router'
 import getCurrentUser from '../composables/getCurrentUser.js'
+import urlHolder from '../composables/urlHolder.js'
 export default {
-    props:['isLogged', 'email', 'mainUrl'],
+    props:['isLogged', 'userEmail'],
+    emits:["logout-event","login-event"],
     setup(props, context){
         const router = useRouter()
+        const mainUrl = urlHolder
         const {logout, error, logoutData} = logoutUser()
-        const {getUser, user} = getCurrentUser(props.mainUrl)
+        const {getUser, user} = getCurrentUser(mainUrl)
         
         const handleNavLogout = () =>{
-            context.emit('logoutEvent')
+            context.emit('logout-event')
             logout()
             router.push({name:'Login'})
         }
