@@ -10,6 +10,7 @@ const loginUser = (url) =>{
     const login = async (userEmail, password) => {
         const userData = {emailAddress:userEmail, password:password}
         var requestOptions = {
+            body:'raw',
             method: 'POST',
             mode: 'cors',               
             headers: {'Accept':'*/*',

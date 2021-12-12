@@ -73,6 +73,14 @@ namespace JuhinAPI.Controllers
 
             return mapper.Map<List<UserDTO>>(users);
         }
+        [HttpGet("User/{id}", Name = "getUserById")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        public async Task<ActionResult<UserDTO>> GetUserById(string id)
+        {
+            var user = await context.Users.FirstOrDefaultAsync(x => x.Id == id);
+
+            return mapper.Map<UserDTO>(user);
+        }
         /// <summary>
         /// Shows all available roles in system
         /// </summary>
@@ -122,7 +130,7 @@ namespace JuhinAPI.Controllers
                 isGuest = httpContextAccessor.HttpContext.User.IsInRole("Guest"),
 
             };
-            //if (user.UserId == null && user.Name == null && user.UserRole == null) return NotFound();
+            if (user.UserId == null && user.Name == null ) return NotFound();
 
             return Ok(user);
         }
@@ -259,6 +267,9 @@ namespace JuhinAPI.Controllers
             var result = await signInManager.PasswordSignInAsync(model.EmailAddress, model.Password, isPersistent: false, lockoutOnFailure: false);
             if (result.Succeeded)
             {
+
+                var role =httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Role);
+                HttpContext.Response.Headers.Add("Role", role);
                 return await BuildToken(model);
             }
             else

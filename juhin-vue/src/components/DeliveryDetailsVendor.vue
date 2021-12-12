@@ -1,11 +1,7 @@
 <template>
-<div v-if="!errorVendor">
-  <p>VENDOR CODE: {{vendor.vendorCode}}</p>
-  <p>VENDOR NAME: {{vendor.name}}</p>
-  <p>VENDOR ADDRESS: {{vendor.address}}</p>
-  <p>VENDOR COUNTRY: {{vendor.country}}</p>
-  <p>VENDOR EMAIL: {{vendor.email}}</p>
-  <p>VENDOR PHONE NO: {{vendor.phoneNumber}}</p>
+<div class="item-v" v-if="!errorVendor">
+    <h1>{{vendor.name}}</h1>
+    <p>{{vendor.vendorCode}}</p>
 </div>
 </template>
 

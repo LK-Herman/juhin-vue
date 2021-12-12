@@ -3,13 +3,12 @@
     <div>
         <button class="btn" @click="deliveryFlag=!deliveryFlag">Pokaż szczegóły zamówienia</button>
         <div v-if="deliveryFlag">
-            <DeliveryDetails :userToken="userToken" />
+            <DeliveryDetails :userToken="userToken" :id="id" />
+            <DeliveryDetails :userToken="userToken" :id="id2" />
+            <DeliveryDetails :userToken="userToken" :id="id" />
         </div>
     </div>
-    <br>
-    <br>
-    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eos excepturi fugit saepe exercitationem ipsam voluptas sequi ab, harum modi, quo veniam minima dicta fugiat deserunt eaque officiis. Quaerat, esse veritatis?</p>
-    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptate quae sed tempore placeat nobis pariatur similique cumque fuga nulla ad. Dolor corporis non ut rerum id officiis nobis ea facere qui ex, mollitia quae, laborum accusantium, dolore voluptatem esse. Similique illum, cupiditate asperiores fugiat dolores dolorem iste voluptate, corrupti atque sapiente quia, dolorum porro tenetur impedit perspiciatis nihil dolore vitae fugit vero itaque nostrum! Molestiae illo mollitia autem dicta aut accusantium? Explicabo molestiae commodi, nobis ea vero facere dolore! Ipsam, voluptate nihil. Iusto molestias adipisci provident architecto exercitationem sit eveniet consequatur dicta, illum suscipit enim culpa aliquam dolore ut quos?</p>
+    
     
     
     
@@ -27,7 +26,8 @@ export default {
       const isVisible = ref(false)
       const router = useRouter()
       const deliveryFlag = ref(false)
-    
+      const id2 = ref('a0bc3e8b-f4de-454e-286a-08d996ff5716')
+        const id= ref('cc30c0d7-e02e-407d-b628-08d997df4626')
     onMounted(()=>{
         if (!props.userToken){
             isVisible.value = false
@@ -38,7 +38,7 @@ export default {
         }
     })
 
-    return { isVisible, deliveryFlag }
+    return { isVisible, deliveryFlag, id, id2 }
   }
 }
 </script>

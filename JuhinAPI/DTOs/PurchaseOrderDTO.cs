@@ -11,8 +11,6 @@ namespace JuhinAPI.DTOs
         
         public Guid OrderId { get; set; }
         public string OrderNumber { get; set; }
-
-        //PurchaseOrder m-1 Vendor
         public Guid VendorId { get; set; }
         public string UserId { get; set; }
     }

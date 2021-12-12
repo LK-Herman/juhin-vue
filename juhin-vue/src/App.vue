@@ -6,7 +6,7 @@
     
     <div :class="{'sub-container':isLogged}">
         <div v-if="isLogged">
-            <MenuBar />
+            <MenuBar :userToken='userToken' />
         </div>
         <div class="body-container">
             <div v-if="!isLogged">

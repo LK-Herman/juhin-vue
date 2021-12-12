@@ -55,7 +55,9 @@ export default {
 .navbar{
     display: grid;
     grid-template-rows: 60px 60px;
+ 
     column-gap: 0;
+
     
 }
 .navbar .logo
@@ -64,13 +66,14 @@ export default {
     font-size: 61px;
     z-index: 10;
     padding: 0px 0 0 15px;
+    
 }
 .navbar .logobar-out{
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    background-color: #536BAA;
+    background-color: #2865d6;
      
 }
 .navbar .logobar-in{
@@ -79,9 +82,9 @@ export default {
     margin: 0px auto;
     width: 100%;
     padding: 10px 0px;
-    background-color: #6D8CDC;
+    
     margin: auto;
-    box-shadow: 0px 2px 4px rgba(50, 50, 50, 0.4);
+    
 }
 .navbar .logobar-in .logobar-links{
     margin-left: auto;

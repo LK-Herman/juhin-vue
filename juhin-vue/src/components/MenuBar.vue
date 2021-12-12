@@ -9,10 +9,11 @@
         </div>
     </div>
     <router-link :to="{name:'Upcomming'}" class="deliveries-btn btn">Najbliższe dostawy</router-link>
-    <button class="deliveries-btn">Harmonogram</button>
-    <button class="deliveries-btn">Wyszukaj</button>
-    <button class="deliveries-btn">Dodaj</button>
-    <router-link :to="{name:'Main'}" class="deliveries-btn btn">Moje dostawy</router-link>
+    <router-link :to="{name:'Deliveries', params: {userToken: userToken}}" class="deliveries-btn btn">Przeglądaj</router-link>
+    <router-link :to="{name:'DeliverySchedule'}" class="deliveries-btn btn">Grafik dostaw</router-link>
+    <router-link :to="{name:'DeliverySearch'}" class="deliveries-btn btn">Wyszukaj</router-link>
+    <router-link :to="{name:'DeliveryAdd'}" class="deliveries-btn btn">Dodaj</router-link>
+    <router-link :to="{name:'DeliveryUser'}" class="deliveries-btn btn">Moje dostawy</router-link>
 
     <div class="title-bar">
         <div id="orders" class="menu-icon">
@@ -22,19 +23,19 @@
             <h4>ZAMÓWIENIA</h4>
         </div>
     </div>
-    <button class="orders-btn">Przeglądaj</button>
-    <button class="orders-btn">Dodaj</button>
+    <router-link :to="{name:'Orders'}" class="orders-btn btn">Przeglądaj</router-link>
+    <router-link :to="{name:'OrderAdd'}" class="orders-btn btn">Dodaj</router-link>
 
      <div class="title-bar">
         <div id="items" class="menu-icon">
              <img src="@/assets/images/itemIcon.png"/>
         </div>
         <div>
-            <h4>MATERIAŁY</h4>
+            <h4>TOWARY</h4>
         </div>
     </div>
-    <button class="items-btn">Przeglądaj</button>
-    <button class="items-btn">Dodaj</button>
+    <router-link :to="{name:'Items'}" class="items-btn btn">Dodaj</router-link>
+    <router-link :to="{name:'ItemAdd'}" class="items-btn btn">Dodaj</router-link>
 
     <div class="title-bar">
         <div id="vendors" class="menu-icon">
@@ -45,7 +46,7 @@
         </div>
     </div>
     <router-link class="vendors-btn btn" :to="{name:'Vendors'}">Przeglądaj</router-link>
-    <button class="vendors-btn">Dodaj</button>
+    <router-link class="vendors-btn btn" :to="{name:'VendorAdd'}">Dodaj</router-link>
 
     <div class="title-bar">
         <div id="forwarders" class="menu-icon">
@@ -55,15 +56,18 @@
             <h4>PRZEWOŹNICY</h4>
         </div>
     </div>
-    <router-link class="forwarders-btn btn" :to="{name:'Main'}">Przeglądaj</router-link>
-    <router-link class="forwarders-btn btn" :to="{name:'Main'}">Ranking</router-link>
-    <router-link class="forwarders-btn btn" :to="{name:'Main'}">Dodaj</router-link>
+    <router-link class="forwarders-btn btn" :to="{name:'Forwarders'}">Przeglądaj</router-link>
+    <router-link class="forwarders-btn btn" :to="{name:'ForwarderAdd'}">Dodaj</router-link>
+    <router-link class="forwarders-btn btn" :to="{name:'ForwarderRanking'}">Ranking</router-link>
 </div>
 </template>
 
 <script>
 export default {
-
+    props: ['userToken'],
+setup(){
+    return{}
+}
 }
 </script>
 
