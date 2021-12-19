@@ -18,12 +18,14 @@ import VendorAdd from '../views/VendorAdd.vue'
 import Forwarders from '../views/Forwarders.vue'
 import ForwarderAdd from '../views/ForwarderAdd.vue'
 import ForwarderRanking from '../views/ForwarderRanking.vue'
+import Created from '../views/Created.vue'
 
 const routes = [
   {
     path: '/',
     name: 'Main',
-    component: Main
+    component: Main,
+    props: true
   },
   {
     path: '/*',
@@ -124,6 +126,12 @@ const routes = [
     path: '/forwarders/ranking',
     name: 'ForwarderRanking',
     component: ForwarderRanking,
+    props: true
+  },
+  {
+    path: '/ok',
+    name: 'Created',
+    component: Created,
     props: true
   }
  

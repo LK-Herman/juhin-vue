@@ -22,8 +22,6 @@ const getVendorById = (url, token) =>{
           console.log(error.value)
         }
       }
-
       return {loadVendor, error, vendor}
 }
-
 export default getVendorById

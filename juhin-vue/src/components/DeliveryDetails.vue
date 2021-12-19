@@ -154,7 +154,7 @@ export default {
   display: flex;
   align-self: flex-start;
   justify-content: center;
-  background-color: var(--back-grey);
+  background-color: #5ca101;
   padding: 5px;
 
 }

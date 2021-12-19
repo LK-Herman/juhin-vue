@@ -8,8 +8,8 @@ namespace JuhinAPI.DTOs
     public class PaginationDTO
     {
         public int Page { get; set; } = 1;
-        private int recordsPerPage = 10;
-        private readonly int maxRecordsPerPage = 50;
+        private int recordsPerPage = 20;
+        private readonly int maxRecordsPerPage = 100;
 
         public int RecordsPerPage
         {

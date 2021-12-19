@@ -36,6 +36,8 @@ namespace JuhinAPI.Controllers
         {
 
             var queryable = context.Warehouses.AsQueryable();
+            var count = queryable.Count();
+            HttpContext.Response.Headers.Add("All-Records", count.ToString());
             await HttpContext.InsertPaginationParametersInResponse(queryable, pagination.RecordsPerPage);
             var warehouses = await queryable.Paginate(pagination).ToListAsync();
 

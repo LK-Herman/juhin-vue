@@ -41,7 +41,8 @@ namespace JuhinAPI.Controllers
                 .ThenInclude(o => o.PurchaseOrders)
                 .OrderBy(o => o.OrderNumber)
                 .AsQueryable();
-            
+            var count = queryable.Count();
+            HttpContext.Response.Headers.Add("All-Records", count.ToString());
             await HttpContext.InsertPaginationParametersInResponse(queryable, pagination.RecordsPerPage);
             var orders = await queryable.Paginate(pagination).ToListAsync();
             

@@ -34,6 +34,8 @@ namespace JuhinAPI.Controllers
         public async Task<ActionResult<List<CurrencyDTO>>> Get([FromQuery] PaginationDTO pagination)
         {
             var queryable = context.Currency.AsQueryable();
+            var count = queryable.Count();
+            HttpContext.Response.Headers.Add("All-Records", count.ToString());
             await HttpContext.InsertPaginationParametersInResponse(queryable, pagination.RecordsPerPage);
             var currency = await queryable.Paginate(pagination).ToListAsync();
 

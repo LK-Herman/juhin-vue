@@ -46,9 +46,9 @@ namespace JuhinAPI.Controllers
             var queryable = context.Vendors
                 .Include(v => v.Items)
                 .AsQueryable();
-            
             await HttpContext.InsertPaginationParametersInResponse(queryable, pagination.RecordsPerPage);
-            
+            var count = queryable.Count();
+            HttpContext.Response.Headers.Add("All-Records", count.ToString());
             var vendors = await queryable.Paginate(pagination).ToListAsync();
             var vendorsDTOs = mapper.Map<List<VendorDTO>>(vendors);
 

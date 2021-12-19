@@ -1,19 +1,19 @@
 <template>
 <div class="main-container">
     <div class="nav-container">
-        <Navbar :isLogged="isLogged" :userEmail="userEmail" @logout-event="handleLogout"/>
+        <Navbar :isLogged="isLogged" :user='user' :userToken="userToken" @logout-event="handleLogout"/>
     </div>
     
     <div :class="{'sub-container':isLogged}">
         <div v-if="isLogged">
-            <MenuBar :userToken='userToken' />
+            <MenuBar :userToken='userToken' :user='user' />
         </div>
         <div class="body-container">
             <div v-if="!isLogged">
-                <Login @login-event="handleLogin" />
+                <Login :userToken="userToken" @login-event="handleLogin" />
             </div>
             <div v-else>
-                <router-view  :userToken="userToken"  />
+                <router-view  :userToken="userToken" :user="user" />
             </div>
         </div>
     </div>
@@ -34,10 +34,11 @@ import { ref } from '@vue/reactivity'
 import urlHolder from './composables/urlHolder.js'
 import { useRouter } from 'vue-router'
 import Login from './views/Login.vue'
+import { onMounted } from '@vue/runtime-core'
 
 export default {
     components: { MenuBar, Navbar, Endbar, Login},
-    emits:["login-event", "logout-event"],
+    emits:["login-event", "logout-event", "user"],
     props: [],
     setup(props,context) {
         const isLogged = ref(false)
@@ -45,19 +46,29 @@ export default {
         const userEmail = ref('')
         const router = useRouter()
         const userToken = ref('')
+        const user = ref(null)
         
         const handleLogin = (userCred) =>{
             isLogged.value = true
             userEmail.value = userCred.email
             userToken.value = userCred.token
-            router.push({name:"Main"})
+            user.value = userCred.user
+            router.push({name:"Main", params:{ user:'user'}})
         }
         const handleLogout = () =>{
             isLogged.value = false
-            router.push({name:'Login'})
+            router.push({name:'Main'})
         }
+
+        onMounted(()=>{
+            if (userToken.value !== ''){
+                isLogged.value= true
+                console.log(userToken.value)
+                console.log(isLogged.value)
+            }
+        })
        
-    return { isLogged, handleLogin, handleLogout, userEmail, userToken}
+    return { isLogged, handleLogin, handleLogout, user, userEmail, userToken}
   }
 }
 </script>

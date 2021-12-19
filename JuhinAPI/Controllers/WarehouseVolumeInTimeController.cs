@@ -33,6 +33,8 @@ namespace JuhinAPI.Controllers
         public async Task<ActionResult<List<WarehouseVolumeDTO>>> Get([FromQuery] PaginationDTO pagination)
         {
             var queryable = context.WarehouseVolumes.AsQueryable();
+            var count = queryable.Count();
+            HttpContext.Response.Headers.Add("All-Records", count.ToString());
             await HttpContext.InsertPaginationParametersInResponse(queryable, pagination.RecordsPerPage);
             var warehouseVolumes = await queryable.Paginate(pagination).ToListAsync();
             //var warehouseVolumes = await context.WarehouseVolumes.ToListAsync();

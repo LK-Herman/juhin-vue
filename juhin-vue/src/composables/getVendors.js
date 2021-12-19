@@ -1,29 +1,37 @@
 import { ref } from '@vue/reactivity'
+import axios from 'axios'
 
 const getVendors = (url, token) =>{
 
     const vendors = ref([])
     const error = ref(null)
+    const totalRecords = ref(1)
+    const lastPage = ref('')
 
-    const loadVendors = async () => {
+    
+    const loadVendors = async (pageNo, recordsPerPage) => {
+
         try {
-              let data = await fetch(url + 'vendors/', {
-                headers: {'Authorization':'Bearer ' + token,
-                          'Accept':'*/*'
+                let resp = await axios.get(url + 'vendors?Page='+pageNo+'&RecordsPerPage='+recordsPerPage, {
+                    headers: {'Authorization':'Bearer ' + token,
+                            'Accept':'*/*'
+                    }
+                })
+                console.log(resp)
+                if (resp.status <200 & resp.status > 300){
+                throw Error('Coś poszło nie tak..')
                 }
-              })
-               if (!data.ok){
-                throw Error('No data available')
-                }
-              vendors.value = await data.json()
-          
-        } catch (er) {
-          error.value = er.message
-          console.log(error.value)
+                totalRecords.value = resp.headers["all-records"]
+                lastPage.value = resp.headers["totalamountpages"]
+                vendors.value = resp.data
+                
+            } catch (er) {
+        error.value = er.message
+        console.log(error.value)
         }
       }
 
-      return {loadVendors, error, vendors}
+      return {loadVendors, error, vendors, totalRecords}
 }
 
 export default getVendors

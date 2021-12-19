@@ -67,7 +67,9 @@ namespace JuhinAPI.Controllers
         {
             var queryable = context.Users.AsQueryable();
             queryable = queryable.OrderBy(x => x.Email);
-
+            
+            var count = queryable.Count();
+            HttpContext.Response.Headers.Add("All-Records", count.ToString());
             await HttpContext.InsertPaginationParametersInResponse(queryable, paginationDTO.RecordsPerPage);
             var users = await queryable.Paginate(paginationDTO).ToListAsync();
 
@@ -115,15 +117,16 @@ namespace JuhinAPI.Controllers
         /// </summary>
         /// <returns>string</returns>
         [HttpGet("userInfo", Name = "getUserInfo")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist,Warehouseman,Guest")]
         public async Task<ActionResult<CurrentUserInfo>> GetUserInfo()
         {
-            var identityUser = await userManager.GetUserAsync(User);
+            var identityUser = await userManager.FindByNameAsync(httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name));
             var user = new CurrentUserInfo
             {
-                UserId = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier),
+                UserId = identityUser?.Id,
+                EmailAddress = identityUser?.Email,
                 Name = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name),
                 UserRole = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Role),
-                EmailAddress = identityUser?.Email,
                 isAdmin = httpContextAccessor.HttpContext.User.IsInRole("Admin"),
                 isSpecialist = httpContextAccessor.HttpContext.User.IsInRole("Specialist"),
                 isWarehouseman = httpContextAccessor.HttpContext.User.IsInRole("Warehouseman"),
@@ -169,6 +172,7 @@ namespace JuhinAPI.Controllers
             var result = await userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
+                await userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, "Guest"));
                 return await BuildToken(model);
             }
             else
@@ -268,8 +272,16 @@ namespace JuhinAPI.Controllers
             if (result.Succeeded)
             {
 
-                var role =httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Role);
-                HttpContext.Response.Headers.Add("Role", role);
+                var identityUser = await userManager.FindByEmailAsync(model.EmailAddress);
+                var roles = await userManager.GetRolesAsync(identityUser);
+                var rolesToString = "";
+                foreach (var role in roles)
+                {
+                    Console.WriteLine(role);
+                    rolesToString = rolesToString + role + ".";
+                } 
+                    HttpContext.Response.Headers.Add("Roles", rolesToString);
+                //var role =httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Role);
                 return await BuildToken(model);
             }
             else

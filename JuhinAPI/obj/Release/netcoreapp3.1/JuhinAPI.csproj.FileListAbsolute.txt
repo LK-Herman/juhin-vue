@@ -182,4 +182,3 @@ C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\JuhinAPI.dll
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\JuhinAPI.xml
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\JuhinAPI.pdb
 C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\JuhinAPI.genruntimeconfig.cache
-C:\Projects\Juhin\JuhinAPI\obj\Release\netcoreapp3.1\JuhinAPI.csproj.AssemblyReference.cache

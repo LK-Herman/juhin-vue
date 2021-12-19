@@ -5,7 +5,7 @@
              <img src="@/assets/images/deliveryIcon.png"/>
         </div>
         <div>
-            <h4>DOSTAWY</h4>
+            <h4 >DOSTAWY</h4>
         </div>
     </div>
     <router-link :to="{name:'Upcomming'}" class="deliveries-btn btn">Najbliższe dostawy</router-link>
@@ -23,7 +23,7 @@
             <h4>ZAMÓWIENIA</h4>
         </div>
     </div>
-    <router-link :to="{name:'Orders'}" class="orders-btn btn">Przeglądaj</router-link>
+    <router-link :to="{name:'Orders', params: {userToken: userToken}}" class="orders-btn btn">Przeglądaj</router-link>
     <router-link :to="{name:'OrderAdd'}" class="orders-btn btn">Dodaj</router-link>
 
      <div class="title-bar">
@@ -45,8 +45,8 @@
             <h4>DOSTAWCY</h4>
         </div>
     </div>
-    <router-link class="vendors-btn btn" :to="{name:'Vendors'}">Przeglądaj</router-link>
-    <router-link class="vendors-btn btn" :to="{name:'VendorAdd'}">Dodaj</router-link>
+    <router-link class="vendors-btn btn" :to="{name:'Vendors', params: {userToken: userToken}}">Przeglądaj</router-link>
+    <router-link class="vendors-btn btn" :to="{name:'VendorAdd', params: {userToken: userToken}}">Dodaj</router-link>
 
     <div class="title-bar">
         <div id="forwarders" class="menu-icon">
@@ -56,17 +56,20 @@
             <h4>PRZEWOŹNICY</h4>
         </div>
     </div>
-    <router-link class="forwarders-btn btn" :to="{name:'Forwarders'}">Przeglądaj</router-link>
+    <router-link class="forwarders-btn btn" :to="{name:'Forwarders', params: {userToken: userToken}}">Przeglądaj</router-link>
     <router-link class="forwarders-btn btn" :to="{name:'ForwarderAdd'}">Dodaj</router-link>
     <router-link class="forwarders-btn btn" :to="{name:'ForwarderRanking'}">Ranking</router-link>
 </div>
 </template>
 
 <script>
+import { ref } from '@vue/reactivity'
+import { onMounted } from '@vue/runtime-core'
 export default {
-    props: ['userToken'],
-setup(){
-    return{}
+    props: ['userToken', 'user'],
+setup(props){
+   
+    return{ }
 }
 }
 </script>
@@ -92,10 +95,10 @@ setup(){
     margin: 3px auto;
 }
 .menubar #deliveries {
-    background-color: #2A9F98;
+    background-color: var(--deliveries);
 }
 .menubar #orders{
-    background-color: #D445EC;
+    background-color: var(--orders);
 }
 .menubar #items{
     background-color: #218FF3;

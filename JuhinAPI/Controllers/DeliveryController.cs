@@ -62,6 +62,8 @@ namespace JuhinAPI.Controllers
                 .AsQueryable();
             
             await HttpContext.InsertPaginationParametersInResponse(queryable, pagination.RecordsPerPage);
+            var count = queryable.Count();
+            HttpContext.Response.Headers.Add("All-Records", count.ToString());
             var deliveries = await queryable.Paginate(pagination).ToListAsync();
             
             return mapper.Map<List<DeliveryDetailsDTO>>(deliveries);
@@ -110,7 +112,8 @@ namespace JuhinAPI.Controllers
                 .ThenInclude(pod => pod.PurchaseOrder)
                 .ThenInclude(p => p.Vendor)
                 .AsQueryable();
-
+            
+            
             if (filterDeliveriesDTO.StatusId != 0)
             {
                 deliveriesQueryable = deliveriesQueryable.Where(s => s.StatusId == filterDeliveriesDTO.StatusId);
@@ -170,7 +173,8 @@ namespace JuhinAPI.Controllers
                     logger.LogWarning("Could not order by field " + filterDeliveriesDTO.OrderingField);
                 }
             }
-
+            var count = deliveriesQueryable.Count();
+            HttpContext.Response.Headers.Add("All-Records", count.ToString());
             await HttpContext.InsertPaginationParametersInResponse(deliveriesQueryable, filterDeliveriesDTO.RecordsPerPage);
             var deliveries = await deliveriesQueryable.Paginate(filterDeliveriesDTO.Pagination).ToListAsync();
 
@@ -325,8 +329,7 @@ namespace JuhinAPI.Controllers
                         .Where(x => x.Id == subId)
                         .AsNoTracking()
                         .FirstOrDefault();
-                        //.Select(y => y.Email)
-                        //.FirstOrDefault();
+                       
                     message.ToAddresses.Add(new EmailAddress { Name = "Dear "+email.UserName.ToLower(), Address = email.Email });
                 }
                 try

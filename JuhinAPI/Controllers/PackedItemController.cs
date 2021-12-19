@@ -39,6 +39,9 @@ namespace JuhinAPI.Controllers
                 .Include(p => p.Item)
                 .ThenInclude(i => i.Unit)
                 .AsQueryable();
+
+            var count = queryable.Count();
+            HttpContext.Response.Headers.Add("All-Records", count.ToString());
             await HttpContext.InsertPaginationParametersInResponse(queryable, pagination.RecordsPerPage);
             var packedItems = await queryable.Paginate(pagination).ToListAsync();
             return mapper.Map<List<PackedItemDetailsDTO>>(packedItems);

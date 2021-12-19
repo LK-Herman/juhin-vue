@@ -36,6 +36,8 @@ namespace JuhinAPI.Controllers
         public async Task<ActionResult<List<DocumentDTO>>> Get([FromQuery] PaginationDTO pagination)
         {
             var queryable = context.Documents.AsQueryable();
+            var count = queryable.Count();
+            HttpContext.Response.Headers.Add("All-Records", count.ToString());
             await HttpContext.InsertPaginationParametersInResponse(queryable, pagination.RecordsPerPage);
             var documents = await queryable.Paginate(pagination).ToListAsync();
             

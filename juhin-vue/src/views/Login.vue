@@ -26,6 +26,7 @@ import { ref } from '@vue/reactivity'
 import { useRouter } from 'vue-router'
 import urlHolder from '../composables/urlHolder.js'
 import loginUser from '../composables/loginUser.js'
+import getCurrentUser from '../composables/getCurrentUser.js'
 
 
 export default {
@@ -36,18 +37,23 @@ export default {
         const router = useRouter()
         const email = ref('')
         const password =ref('')
+        const {getUser, user, error:getError} = getCurrentUser()
         
-        const {login, loginData, error, token} = loginUser(mainUrl)
+        const {login, error, token} = loginUser(mainUrl)
         
         const handleSubmit = async () =>{
             await login(email.value, password.value)
             
             if(!error.value){
-                context.emit('login-event', {email: email.value, token:token.value})
+                await getUser(mainUrl, token.value)
+                if(!getError.value){
+                  
+                    context.emit('login-event', {email: email.value, token:token.value, user:user.value })
+                }
             }
         } 
         
-        return { handleSubmit, error, email, password}
+        return { handleSubmit, error, email, password, user}
     }
 }
 </script>
