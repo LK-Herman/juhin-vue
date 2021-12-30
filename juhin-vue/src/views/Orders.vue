@@ -59,7 +59,9 @@
                 <button v-else @click="handleNextPage">dalej<span class="material-icons">keyboard_double_arrow_right</span> </button>
 
                 <div class="table-page-numbers">
-                    <div v-for="page in lastPage" :key="page" @click="handleGoToPage(page)">{{page}}</div>
+                    <div v-for="page in lastPage" :key="page" @click="handleGoToPage(page)">
+                        <span :class="{'active-page-no' : pageNo==page}">{{page}}</span>
+                    </div>
                     <div> | </div>
                     <div v-if="lastPage>=pageNo" @click="handleGoToPage(lastPage)"> {{lastPage}}</div>
                     
@@ -69,18 +71,23 @@
           </div>
 
       </div>
+      <br>
+      <div>
+          <button @click="handleBack">Powrót</button>
+      </div>
 </template>
 
 <script>
 import { onMounted, ref, watch, watchEffect } from '@vue/runtime-core'
 import getOrders from '../composables/getOrders.js'
 import urlHolder from '../composables/urlHolder.js'
-
+import { useRouter } from 'vue-router'
 
 export default {
   components: {  },
   props:['userToken', 'user'],
   setup(props) {
+    const router = useRouter()
     const url = urlHolder
     const {orders, error, loadOrders, totalRecords} = getOrders(url, props.userToken)
     const pageNo = ref(1)
@@ -94,15 +101,13 @@ export default {
     onMounted(async () => {
       await loadOrders(pageNo.value, recordsPerPage.value)
     })
-    watchEffect(() => {
+    watch(pageNo, () => {
         lastPage.value = calculatePageCount(recordsPerPage.value, totalRecords.value)
     })
 
     watch((orders), async () =>{
         
-        if(orders.value.length == 0){
-            await handleGoToPage(1)
-        }
+        lastPage.value = calculatePageCount(recordsPerPage.value, totalRecords.value)
     })
 
     const handleNextPage = async () => {
@@ -117,8 +122,10 @@ export default {
         await loadOrders(pageNo.value, recordsPerPage.value)
     }
     }
-    const handlePages = async (pages) => {
+     const handlePages = async (pages) => {
         recordsPerPage.value = pages
+        pageNo.value =1
+        lastPage.value = calculatePageCount(recordsPerPage.value, totalRecords.value)
         await loadOrders(pageNo.value, recordsPerPage.value)
     }
     const handleGoToPage = async (page) => {
@@ -126,7 +133,11 @@ export default {
         await loadOrders(pageNo.value, recordsPerPage.value)
     }
 
-    return { orders, error, pageNo, recordsPerPage, handleNextPage, handlePreviousPage, handlePages, handleGoToPage, lastPage }
+    const handleBack = () =>{
+        router.go(-1)
+    }
+
+    return {handleBack, orders, error, pageNo, recordsPerPage, handleNextPage, handlePreviousPage, handlePages, handleGoToPage, lastPage }
   }
 }
 </script>

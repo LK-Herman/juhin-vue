@@ -34,7 +34,7 @@ const loginUser = (url) =>{
             error.value = ''
         } catch (er) {
             error.value = er.message
-            console.log(error.value)
+            //console.log(error.value)
         }
     }
     

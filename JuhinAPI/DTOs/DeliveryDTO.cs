@@ -27,7 +27,7 @@ namespace JuhinAPI.DTOs
         //Delivery m-1 Status
         public int StatusId { get; set; }
 
-        public List<PurchaseOrderDTO> PurchaseOrders { get; set; }
+        public List<PurchaseOrderDetailsDTO> PurchaseOrders { get; set; }
 
 
     }

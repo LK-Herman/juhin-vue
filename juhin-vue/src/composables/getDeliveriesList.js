@@ -15,8 +15,9 @@ const getDeliveriesList = (url, token) =>{
         try {
             let resp = await axios.get(url + 'deliveries?Page='+pageNo+'&RecordsPerPage='+recordsPerPage, {
                 headers: {'Authorization':'Bearer ' + token,
-                'Accept':'*/*' }})
-            console.log(resp)
+                'Accept':'*/*',
+                'Access-Control-Allow-Origin':'*' }})
+            //console.log(resp)
             if (resp.status <200 & resp.status > 300){
             throw Error('Coś poszło nie tak..')
             }
@@ -26,7 +27,7 @@ const getDeliveriesList = (url, token) =>{
             
         } catch (er) {
             error.value = er.message
-            console.log(error.value)
+            //console.log(error.value)
             }
 
         deliveries.value.forEach(delivery => {

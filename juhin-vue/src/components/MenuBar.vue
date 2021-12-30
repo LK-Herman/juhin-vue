@@ -8,7 +8,7 @@
             <h4 >DOSTAWY</h4>
         </div>
     </div>
-    <router-link :to="{name:'Upcomming'}" class="deliveries-btn btn">Najbliższe dostawy</router-link>
+    <router-link :to="{name:'Upcoming'}" class="deliveries-btn btn">Najbliższe dostawy</router-link>
     <router-link :to="{name:'Deliveries', params: {userToken: userToken}}" class="deliveries-btn btn">Przeglądaj</router-link>
     <router-link :to="{name:'DeliverySchedule'}" class="deliveries-btn btn">Grafik dostaw</router-link>
     <router-link :to="{name:'DeliverySearch'}" class="deliveries-btn btn">Wyszukaj</router-link>
@@ -63,8 +63,7 @@
 </template>
 
 <script>
-import { ref } from '@vue/reactivity'
-import { onMounted } from '@vue/runtime-core'
+
 export default {
     props: ['userToken', 'user'],
 setup(props){

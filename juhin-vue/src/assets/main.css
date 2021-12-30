@@ -6,14 +6,14 @@
     --back-grey:#303030;
     --back-grey2: #444444;
     --dark-blue:#536BAA;
-    --green:#6C952B;
+    --orange:#c07600;
+    --green:#5a7e1f;
     --teal: #32A0C2;
     --delay: #B14343;
     --warning: #ff3c6d;
     --primary: #ddd;
     --deliveries: #2A9F98;
     --orders: #D445EC;
-
 }
 
 /* base styles */
@@ -87,21 +87,32 @@ button, .btn {
     padding: 10px 20px;
     font-weight: 500;
     cursor: pointer;
-    text-align: center;
-    /* display: flex; */
-    /* align-items: center; */
-}
-/*
-button:hover, .btn:hover {
-    background: var(--button2);
     color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
 }
+button:hover, .btn:hover {
+    background-color: var(--dark-blue);
+}
+.edit-btn, .edit-btn {
+    background-color: rgb(21, 141, 0);
+}
+.sub-btn, .sub-btn {
+    background-color: rgb(0, 117, 163);
+}
+.delete-btn, .delete-btn {
+    background-color: rgb(199, 3, 3);
+}
+
+
 button:disabled{
     opacity: 0.5;
     color: var(--primary);
     background: var(--back-grey);
     cursor: not-allowed;
-}*/
+}
 form {
     max-width: 400px;
     min-width: 300px;

@@ -244,7 +244,7 @@ namespace JuhinAPI.Controllers
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:key"]));
                 var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-                var expiration = DateTime.UtcNow.AddDays(7);
+                var expiration = DateTime.UtcNow.AddHours(1);
 
                 JwtSecurityToken token = new JwtSecurityToken(
                     issuer: null,

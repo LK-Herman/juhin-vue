@@ -72,24 +72,37 @@ namespace JuhinAPI.Controllers
         /// Shows only upcoming deliveries for next week (7 days) from today 
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
-        [Route("upcoming")]
+        [HttpGet("upcoming/{startDate:DateTime}", Name ="GetUpcomingDeliveries")]
+        
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist,Warehouseman,Guest")]
-        public async Task<ActionResult<List<DeliveryDetailsDTO>>> GetUpcomingDeliveries()
+        public async Task<ActionResult<List<DeliveryDetailsDTO>>> GetUpcomingDeliveries(DateTime startDate)
         {
-            var weekAhead = DateTime.Today.AddDays(7);
+            var weekAhead = startDate.AddDays(7);
             
+            
+                
+
             var upcomingDeliveries = await context.Deliveries
-                .Include(x => x.PackedItems)
+                .Include(d => d.Forwarder)
+                .Include(d => d.PackedItems)
                 .ThenInclude(i => i.Item)
-                .Include(x => x.PurchaseOrderDeliveries)
-                .ThenInclude(pod => pod.PurchaseOrder)
+                .ThenInclude(u => u.Unit)
+                .Include(d => d.Status)
+                .Include(d => d.PurchaseOrderDeliveries)
+                .ThenInclude(p => p.PurchaseOrder)
                 .ThenInclude(p => p.Vendor)
-                .Include(x => x.Forwarder)
-                .Where(d => d.ETADate < weekAhead)
-                .Where(s => s.StatusId == 1 )
+                .Where(d => d.ETADate <= weekAhead && d.ETADate >= startDate)
                 .OrderBy(d => d.ETADate)
                 .ToListAsync();
+
+                //.Include(x => x.PackedItems)
+                //.ThenInclude(i => i.Item)
+                //.ThenInclude(u => u.Unit)
+                //.Include(x => x.PurchaseOrderDeliveries)
+                //.ThenInclude(pod => pod.PurchaseOrder)
+                //.ThenInclude(p => p.Vendor)
+                //.Include(x => x.Forwarder)
+                //.Where(s => s.StatusId == 1 )
 
             return mapper.Map<List<DeliveryDetailsDTO>>(upcomingDeliveries);
         }

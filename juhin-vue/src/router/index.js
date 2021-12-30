@@ -3,10 +3,11 @@ import Main from '../views/Main.vue'
 import Login from '../views/Login.vue'
 import Error404 from '../views/Error404.vue'
 
-import Upcomming from '../views/Upcomming.vue'
+import Upcoming from '../views/Upcoming.vue'
 import Deliveries from '../views/Deliveries.vue'
 import DeliverySearch from '../views/DeliverySearch.vue'
 import DeliverySchedule from '../views/DeliverySchedule.vue'
+import DeliveryDetails from '../views/DeliveryDetails.vue'
 import DeliveryAdd from '../views/DeliveryAdd.vue'
 import DeliveryUser from '../views/DeliveryUser.vue'
 import Orders from '../views/Orders.vue'
@@ -40,14 +41,20 @@ const routes = [
   },
   {
       path: '/deliveries/upcomming',
-      name: 'Upcomming',
-      component: Upcomming,
+      name: 'Upcoming',
+      component: Upcoming,
       props: true
   },
   {
       path: '/deliveries',
       name: 'Deliveries',
       component: Deliveries,
+      props: true
+  },
+  {
+      path: '/delivery/:id',
+      name: 'DeliveryDetails',
+      component: DeliveryDetails,
       props: true
   },
   {

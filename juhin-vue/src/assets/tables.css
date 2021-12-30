@@ -1,14 +1,17 @@
 .table-list{
     margin: 15px 0px;
     display: grid;
-    grid-template-rows: auto 46px;
+    grid-template-rows: auto 80px;
     font-size: 0.9em;
-    justify-content: start
+    justify-content: start;
+    
 }
 
 .table-list .table-page-numbers{
+    margin:10px;
     display: flex;
-    justify-content: center;
+    justify-content: right;
+    flex-flow: wrap;
 }
 .table-list .table-page-numbers div{
     margin:0 5px;
@@ -16,6 +19,9 @@
     font-weight: 600;
     cursor: pointer;
     align-self: center;
+}
+.table-list .table-page-numbers .active-page-no{
+    color: rgb(253, 189, 39);
 }
 .table-list .table-page-numbers div:hover{
     color:var(--dark-blue);
@@ -35,13 +41,12 @@
 
 .table-list .table-buttons{
     display: grid;
-    grid-template-columns: 100px 100px 100px 120px auto 120px;
+    grid-template-columns: 100px 100px 100px 120px 560px 120px;
     /* background: var(--back-grey); */
     background-color: #222;
-    align-self: center;
+    align-self: top;
     font-size: 0.9em;
-    padding: 0 25px;
-
+    padding: 0px 25px;
 }
 .table-container{
     display: grid;
@@ -55,6 +60,16 @@
     /* word-break: break-all; */
     background-color: var(--back-dark);
     margin:2px 0;
+}
+.table-container:hover{
+    transition: ease-in-out 300ms;
+    background-color: var(--back-grey);
+    
+}
+.table-container:active{
+    transition: ease-in-out 100ms;
+    background-color: rgb(94, 21, 161);
+    
 }
 .table-list .table-header{
     

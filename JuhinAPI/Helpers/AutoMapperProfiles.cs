@@ -17,7 +17,9 @@ namespace JuhinAPI.Helpers
             CreateMap<VendorCreationDTO, Vendor>();
 
             CreateMap<PurchaseOrder, PurchaseOrderDTO>().ReverseMap();
-            CreateMap<PurchaseOrder, PurchaseOrderDetailsDTO>();
+            CreateMap<PurchaseOrder, PurchaseOrderDetailsDTO>()
+                .ForMember(x => x.VendorName, options => options.MapFrom(x => x.Vendor.Name))
+                .ForMember(x => x.VendorShortName, options => options.MapFrom(x => x.Vendor.ShortName)); 
             CreateMap<PurchaseOrderCreationDTO, PurchaseOrder>();
 
             CreateMap<Item, ItemDTO>().ReverseMap();
@@ -89,12 +91,18 @@ namespace JuhinAPI.Helpers
             return unitDTO.ShortName;
         }
 
-        private List<PurchaseOrderDTO> MapDeliveryPurchaseOrders(Delivery delivery, DeliveryDetailsDTO deliveryDetails)
+        private List<PurchaseOrderDetailsDTO> MapDeliveryPurchaseOrders(Delivery delivery, DeliveryDetailsDTO deliveryDetails)
         {
-            var result = new List<PurchaseOrderDTO>();
+            var result = new List<PurchaseOrderDetailsDTO>();
             foreach (var deliveryOrder in delivery.PurchaseOrderDeliveries)
             {
-                result.Add(new PurchaseOrderDTO() { OrderId = deliveryOrder.PurchaseOrderId, OrderNumber = deliveryOrder.PurchaseOrder.OrderNumber, VendorId = deliveryOrder.PurchaseOrder.VendorId, UserId = deliveryOrder.PurchaseOrder.UserId });
+                result.Add(new PurchaseOrderDetailsDTO() { 
+                    OrderId = deliveryOrder.PurchaseOrderId, 
+                    OrderNumber = deliveryOrder.PurchaseOrder.OrderNumber, 
+                    VendorId = deliveryOrder.PurchaseOrder.VendorId, 
+                    VendorName = deliveryOrder.PurchaseOrder.Vendor.Name,
+                    VendorShortName = deliveryOrder.PurchaseOrder.Vendor.ShortName,
+                    UserId = deliveryOrder.PurchaseOrder.UserId });
             }
             return result;
         }
@@ -103,13 +111,16 @@ namespace JuhinAPI.Helpers
             var result = new List<PackedItemDetailsDTO>();
             foreach (var deliveryPackedItem in delivery.PackedItems)
             {
-                result.Add(new PackedItemDetailsDTO() { 
-                    DeliveryId = deliveryPackedItem.DeliveryId, 
-                    PackedItemId = deliveryPackedItem.PackedItemId, 
-                    ItemId = deliveryPackedItem.ItemId, 
-                    Quantity = deliveryPackedItem.Quantity, 
-                    PartNumber = deliveryPackedItem.Item.Name, 
-                    UnitMeasure = deliveryPackedItem.Item.Unit.ShortName });
+                result.Add(new PackedItemDetailsDTO()
+                {
+                    DeliveryId = deliveryPackedItem.DeliveryId,
+                    PackedItemId = deliveryPackedItem.PackedItemId,
+                    ItemId = deliveryPackedItem.ItemId,
+                    Quantity = deliveryPackedItem.Quantity,
+                    PartNumber = deliveryPackedItem.Item.Name,
+                    UnitMeasure = deliveryPackedItem.Item.Unit.ShortName,
+                    Description = deliveryPackedItem.Item.Description
+                });
             }
             return result;
         }

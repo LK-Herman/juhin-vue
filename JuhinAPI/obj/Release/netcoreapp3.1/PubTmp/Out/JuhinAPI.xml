@@ -113,7 +113,7 @@
             <param name="pagination">(Page - page number to show / RecordsPerPage - How many records to show in one page.)</param>
             <returns></returns>
         </member>
-        <member name="M:JuhinAPI.Controllers.DeliveryController.GetUpcomingDeliveries">
+        <member name="M:JuhinAPI.Controllers.DeliveryController.GetUpcomingDeliveries(System.DateTime)">
             <summary>
             Shows only upcoming deliveries for next week (7 days) from today 
             </summary>

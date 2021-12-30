@@ -17,7 +17,7 @@ const getVendors = (url, token) =>{
                             'Accept':'*/*'
                     }
                 })
-                console.log(resp)
+                //console.log(resp)
                 if (resp.status <200 & resp.status > 300){
                 throw Error('Coś poszło nie tak..')
                 }
@@ -29,6 +29,9 @@ const getVendors = (url, token) =>{
         error.value = er.message
         console.log(error.value)
         }
+        //console.log(vendors.value)
+        //vendors.value.sort(function(a, b){return a.vendorCode - b.vendorCode})
+
       }
 
       return {loadVendors, error, vendors, totalRecords}

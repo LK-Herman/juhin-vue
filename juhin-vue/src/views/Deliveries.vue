@@ -33,42 +33,45 @@
                     </div>
                 </div>
                 <div v-for="delivery in deliveries" :key="delivery.deliveryId" >
-                    <div class="table-container">    
-                        <div class="sub-table-list" >
-                            <div v-for="order in delivery.purchaseOrders" :key="order.orderId">
-                                <p>{{order.orderNumber}}</p>
-                            </div>
-                        </div>
-                        <div>
-                            <div v-for="order in delivery.purchaseOrders" :key="order.orderId">
-                                <p v-if="order.vendorData">{{order.vendorData.name}}</p>
-                            </div>
-                        </div>
-                        <div>
-                            <div v-for="order in delivery.purchaseOrders" :key="order.orderId">
-                                <p v-if="order.vendorData">{{order.vendorData.vendorCode}}</p>
-                            </div>
-                        </div>
-                        <div>
-                            <p>{{delivery.createdAt}}</p>
-                        </div>
-                        <div>
-                            <p>{{delivery.etaDate}}</p>
-                        </div>
-                        <div>
-                            <p v-if="delivery.forwarderName">{{delivery.forwarderName}}</p>
-                        </div>
-                        <div>
-                            <p>{{delivery.rating}}</p>
-                        </div>
-                        <div>
-                            <p v-if="delivery.statusName">{{delivery.statusName}}</p>
-                        </div>
-                        <div>
-                            <p>{{delivery.isPriority?"TAK":"NIE"}}</p>
-                        </div>
+                    <router-link :to="{name:'DeliveryDetails', params:{id:delivery.deliveryId}}">
 
-                    </div>
+                        <div class="table-container">    
+                            <div class="sub-table-list" >
+                                <div v-for="order in delivery.purchaseOrders" :key="order.orderId">
+                                    <p>{{order.orderNumber}}</p>
+                                </div>
+                            </div>
+                            <div>
+                                <div v-for="order in delivery.purchaseOrders" :key="order.orderId">
+                                    <p v-if="order.vendorData">{{order.vendorData.name}}</p>
+                                </div>
+                            </div>
+                            <div>
+                                <div v-for="order in delivery.purchaseOrders" :key="order.orderId">
+                                    <p v-if="order.vendorData">{{order.vendorData.vendorCode}}</p>
+                                </div>
+                            </div>
+                            <div>
+                                <p>{{delivery.createdAt}}</p>
+                            </div>
+                            <div>
+                                <p>{{delivery.etaDate}}</p>
+                            </div>
+                            <div>
+                                <p v-if="delivery.forwarderName">{{delivery.forwarderName}}</p>
+                            </div>
+                            <div>
+                                <p>{{delivery.rating}}</p>
+                            </div>
+                            <div>
+                                <p v-if="delivery.statusName">{{delivery.statusName}}</p>
+                            </div>
+                            <div>
+                                <p>{{delivery.isPriority?"TAK":"NIE"}}</p>
+                            </div>
+
+                        </div>
+                    </router-link>
                 </div>
           </div>
           <div class="table-buttons">
@@ -80,7 +83,9 @@
                 <button v-else @click="handlePreviousPage"><span class="material-icons">keyboard_double_arrow_left</span>cofnij</button>
 
                 <div class="table-page-numbers">
-                    <div v-for="page in lastPage" :key="page" @click="handleGoToPage(page)">{{page}}</div>
+                     <div v-for="page in lastPage" :key="page" @click="handleGoToPage(page)">
+                        <span :class="{'active-page-no' : pageNo==page}">{{page}}</span>
+                    </div>
                     <div> | </div>
                     <div v-if="lastPage>=pageNo" @click="handleGoToPage(lastPage)"> {{lastPage}}</div>
                     
@@ -105,7 +110,7 @@ export default {
     const url = urlHolder
     const {deliveries, error, loadDeliveries, totalRecords} = getDeliveriesList(url, props.userToken)
     const pageNo = ref(1)
-    const recordsPerPage = ref(5)
+    const recordsPerPage = ref(10)
     const lastPage = ref(1)
     
     const calculatePageCount = (pageSize, totalCount) => {
@@ -127,10 +132,9 @@ export default {
     watch((deliveries), async () =>{
         
         lastPage.value = calculatePageCount(recordsPerPage.value, totalRecords.value)
-        console.log(lastPage.value)
-        // if(vendors.value.length == 0){
-        //     await handleGoToPage(1)
-        // }
+        if(vendors.value){
+             await handleGoToPage(lastPage.value)
+         }
     })
 
     const handleNextPage = async () => {
@@ -143,15 +147,19 @@ export default {
         if(pageNo.value > 1){
             pageNo.value--
         await loadDeliveries(pageNo.value, recordsPerPage.value)
-    }
+        }
     }
     const handlePages = async (pages) => {
         recordsPerPage.value = pages
+        pageNo.value =1
+        lastPage.value = calculatePageCount(recordsPerPage.value, totalRecords.value)
         await loadDeliveries(pageNo.value, recordsPerPage.value)
+    
+        
     }
     const handleGoToPage = async (page) => {
         pageNo.value = page
-        await loadDeliveries(pageNo.value, recordsPerPage.value)
+        await loadDeliveries(page, recordsPerPage.value)
     }
 
     return { deliveries, error, pageNo, recordsPerPage, handleNextPage, handlePreviousPage, handlePages, handleGoToPage, lastPage }

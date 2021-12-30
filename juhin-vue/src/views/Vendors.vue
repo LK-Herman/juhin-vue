@@ -58,7 +58,9 @@
                 <button v-else @click="handlePreviousPage"><span class="material-icons">keyboard_double_arrow_left</span>cofnij</button>
 
                 <div class="table-page-numbers">
-                    <div v-for="page in lastPage" :key="page" @click="handleGoToPage(page)">{{page}}</div>
+                    <div v-for="page in lastPage" :key="page" @click="handleGoToPage(page)">
+                        <span :class="{'active-page-no' : pageNo==page}">{{page}}</span>
+                    </div>
                     <div> | </div>
                     <div v-if="lastPage>=pageNo" @click="handleGoToPage(lastPage)"> {{lastPage}}</div>
                     
@@ -84,7 +86,7 @@ export default {
     const url = urlHolder
     const {vendors, error, loadVendors, totalRecords} = getVendors(url, props.userToken)
     const pageNo = ref(1)
-    const recordsPerPage = ref(20)
+    const recordsPerPage = ref(10)
     const lastPage = ref(1)
     
     const calculatePageCount = (pageSize, totalCount) => {
@@ -97,20 +99,11 @@ export default {
     })
     watch(pageNo, () => {
         lastPage.value = calculatePageCount(recordsPerPage.value, totalRecords.value)
-        // console.log(lastPage.value)
-        console.log(lastPage.value)
     })
-  
 
     watch((vendors), async () =>{
-        
         lastPage.value = calculatePageCount(recordsPerPage.value, totalRecords.value)
-        console.log(lastPage.value)
-        // if(vendors.value.length == 0){
-        //     await handleGoToPage(1)
-        // }
     })
-   
 
     const handleNextPage = async () => {
         if(pageNo.value < lastPage.value){
@@ -126,6 +119,8 @@ export default {
     }
     const handlePages = async (pages) => {
         recordsPerPage.value = pages
+        pageNo.value =1
+        lastPage.value = calculatePageCount(recordsPerPage.value, totalRecords.value)
         await loadVendors(pageNo.value, recordsPerPage.value)
     }
     const handleGoToPage = async (page) => {
