@@ -36,6 +36,7 @@ namespace JuhinAPI
             );
             modelBuilder.Entity<PurchaseOrder>()
                 .HasIndex(x => x.OrderNumber).IsUnique();
+          
 
 
             base.OnModelCreating(modelBuilder);

@@ -3,7 +3,7 @@
     <div v-if="!error" class="small-container" :class="{delayed:delivery.isDelayed==true, delivered:delivery.statusId==3 }">
         <div class="item-order">
             <div v-for="order in delivery.purchaseOrders" :key="order.orderId">
-                <p>{{order.orderNumber}}</p>    
+                <p>PO: {{order.orderNumber}}</p>    
             </div>
         </div>        
         <div class="item-eta">
@@ -54,9 +54,9 @@ export default {
 <style>
 .small-container{
     display: grid;
-    max-width: 360px;
-    min-width: 360px;
-    grid-template-columns: 60px 60px 60px 60px 60px 60px;
+    max-width: 380px;
+    min-width: 380px;
+    grid-template-columns: 60px 60px 60px 80px 60px 60px;
     grid-template-rows: auto;
     grid-template-areas: 
     "eta eta eta order pallets pallets"
@@ -66,16 +66,16 @@ export default {
     font-size: 16px;
     box-shadow: 2px 2px 3px rgba(10,10,10,0.6);
     background-color: var(--dark-blue);
-    background-image: linear-gradient(to bottom right, var(--dark-blue),#2f3d61);
+    background-image: linear-gradient(to right, var(--dark-blue),var(--dark-blue),#2f3d61);
 }
 .delivered{
     background-color: var(--green);
-    background-image: linear-gradient(var(--green),#3a5215);
+    background-image: linear-gradient(to right, var(--green),var(--green),#3a5215);
 }
 
 .delayed{
     background-color: var(--delay);
-    background-image: linear-gradient( var(--delay),#752c2c);
+    background-image: linear-gradient(to right, var(--delay),var(--delay),#612525);
 }
 .small-container .item-order {
     grid-area: order;
@@ -89,8 +89,8 @@ export default {
 }
 .small-container .item-vendor {
     grid-area: vendor;
-    font-size: 22px;
-    font-weight: 500;
+    font-size: 18px;
+    font-weight: 600;
     padding: 5px 5px 5px 0px;
     align-self: center;
 }
@@ -99,11 +99,11 @@ export default {
     justify-self: end;
     align-self: center;
     text-align: center;
-    font-size: 20px;
-    font-weight: 600;
+    font-size: 24px;
+    font-weight: 500;
     background-color: #5c5c5c;
     /* background-image: linear-gradient(to bottom right, #5a5a5a, #333333);  */
-    padding:  14px 8px;
+    padding:  10px 8px;
     margin: 6px;
     box-shadow: 2px 2px 3px rgba(20,20,20,0.7) inset;
     border-radius: 50%;

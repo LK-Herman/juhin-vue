@@ -20,6 +20,9 @@
                         <p>EDYTUJ</p>
                     </div>
                     <div>
+                        <p>DODAJ DOSTAWĘ</p>
+                    </div>
+                    <div>
                         <p>USUŃ</p>
                     </div>
                     
@@ -41,11 +44,19 @@
                         <div>
                             <p>{{order.vendorName}}</p>
                         </div>
-                        <div v-if="user.userId == order.userId" >
-                            <button>Edytuj</button>
+                        <div>
+                            <button class="edit-btn">Edytuj</button>
+                        </div>
+                        <div>
+                            <router-link :to="{name:'DeliveryAdd', params:{
+                                        vId:order.vendorId, 
+                                        user:user, 
+                                        vendorName:order.vendorName, 
+                                        orderNo:order.orderNumber,
+                                        orderId:order.orderId}}" class="btn sub-btn">Dodaj dostawę</router-link>
                         </div>
                         <div v-if="user.userId == order.userId">
-                            <button>Usuń</button>
+                            <button class="delete-btn">Usuń</button>
                         </div>
                     </div>
                 </div>
@@ -143,12 +154,16 @@ export default {
 </script>
 
 <style>
+.table-orders{
+    max-width: 500px;
+}
 .table-list .table-header#orders-header{
     background-color: #491980;
-    grid-template-columns: 110px 130px 100px 300px 100px 100px ;
+    grid-template-columns: 110px 130px 80px 340px 100px 160px 100px;
+
 }
 .table-container#orders-container{
-    grid-template-columns: 110px 130px 100px 300px 100px 100px;
+    grid-template-columns: 110px 130px 80px 340px 100px 160px 100px;
 }
 .table-container .icon-group{
     color: rgb(97, 97, 97);

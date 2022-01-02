@@ -104,13 +104,7 @@ input[type='checkbox']{
     margin: 0 10px 0 0;
     top: 2px;
 }
-.submit{
-    text-align: center;
-    margin-top: 30px;
-}
-.submit button{
-    width: 200px;
-}
+
 .vendor-form h2{
     text-align: center;
 }

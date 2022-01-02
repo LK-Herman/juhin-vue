@@ -114,8 +114,8 @@ export default {
     const lastPage = ref(1)
     
     const calculatePageCount = (pageSize, totalCount) => {
-        console.log('RPP '+pageSize)
-        console.log('TR '+totalCount)
+        //console.log('RPP '+pageSize)
+        //console.log('TR '+totalCount)
         return totalCount < pageSize ? 1 : Math.ceil(totalCount / pageSize)
     }
 

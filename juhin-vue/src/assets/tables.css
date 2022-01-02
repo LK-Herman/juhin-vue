@@ -4,6 +4,7 @@
     grid-template-rows: auto 80px;
     font-size: 0.9em;
     justify-content: start;
+    width: auto;
     
 }
 
@@ -51,7 +52,6 @@
 .table-container{
     display: grid;
     grid-template-columns: 100px 260px 100px 100px 100px 190px 50px 70px 50px;
-    /* grid-template-columns: auto auto auto auto auto auto auto ; */
     row-gap: 0px;
     column-gap: 14px;
     text-align: left;
@@ -62,7 +62,7 @@
     margin:2px 0;
 }
 .table-container:hover{
-    transition: ease-in-out 300ms;
+    transition: ease-in-out 240ms;
     background-color: var(--back-grey);
     
 }

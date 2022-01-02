@@ -50,8 +50,8 @@ namespace JuhinAPI.Models
         public int PalletId { get; set; }
         public Pallet Pallet { get; set; }
 
-        //Item 1-1 PackedItem
-        public PackedItem PackedItem { get; set; }
+        //Item 1-m PackedItem
+        public List<PackedItem> PackedItems { get; set; }
 
         //Item m-1 Unit
         [Required]

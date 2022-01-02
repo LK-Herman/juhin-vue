@@ -12,7 +12,7 @@
     <router-link :to="{name:'Deliveries', params: {userToken: userToken}}" class="deliveries-btn btn">Przeglądaj</router-link>
     <router-link :to="{name:'DeliverySchedule'}" class="deliveries-btn btn">Grafik dostaw</router-link>
     <router-link :to="{name:'DeliverySearch'}" class="deliveries-btn btn">Wyszukaj</router-link>
-    <router-link :to="{name:'DeliveryAdd'}" class="deliveries-btn btn">Dodaj</router-link>
+    <!-- <router-link  class="deliveries-btn btn">Dodaj</router-link> -->
     <router-link :to="{name:'DeliveryUser'}" class="deliveries-btn btn">Moje dostawy</router-link>
 
     <div class="title-bar">

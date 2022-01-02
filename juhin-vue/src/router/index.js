@@ -64,7 +64,7 @@ const routes = [
       props: true
   },
   {
-      path: '/deliveries/add',
+      path: '/deliveries/add/:vId',
       name: 'DeliveryAdd',
       component: DeliveryAdd,
       props: true

@@ -99,7 +99,7 @@ export default {
     
 }
 .upcoming-container .item-week3 {
-    grid-area: week-two;
+    grid-area: week-three;
     justify-self: center;
 }
 .upcoming-container .item-head1 {
