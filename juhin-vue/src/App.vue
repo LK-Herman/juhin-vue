@@ -18,9 +18,7 @@
         </div>
     </div>
 </div>
-    <br>
-    <br>
-    <br>
+   
 <div class="downbar">
     <Endbar />
 </div>

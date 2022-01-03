@@ -76,15 +76,15 @@
           </div>
           <div class="table-buttons">
                 
+                <button @click="handlePages(10)"><span class="material-icons">list</span>10</button>
                 <button @click="handlePages(20)"><span class="material-icons">list</span>20</button>
                 <button @click="handlePages(50)"><span class="material-icons">list</span>50</button>
-                <button @click="handlePages(100)"><span class="material-icons">list</span>100</button>
                 <button v-if="pageNo==1"><span class="material-icons">keyboard_double_arrow_left</span>cofnij</button>
                 <button v-else @click="handlePreviousPage"><span class="material-icons">keyboard_double_arrow_left</span>cofnij</button>
 
                 <div class="table-page-numbers">
                      <div v-for="page in lastPage" :key="page" @click="handleGoToPage(page)">
-                        <span :class="{'active-page-no' : pageNo==page}">{{page}}</span>
+                        <div :class="{'active-page-no' : pageNo==page}">{{page}}</div>
                     </div>
                     <div> | </div>
                     <div v-if="lastPage>=pageNo" @click="handleGoToPage(lastPage)"> {{lastPage}}</div>

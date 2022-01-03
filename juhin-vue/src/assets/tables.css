@@ -15,8 +15,8 @@
     flex-flow: wrap;
 }
 .table-list .table-page-numbers div{
-    margin:0 5px;
-    font-size: 1.3em;
+    margin:0 3px;
+    font-size: 1.2em; 
     font-weight: 600;
     cursor: pointer;
     align-self: center;
@@ -35,6 +35,7 @@
     /* background-color: var(--back-grey); */
     background-color: #222;
     font-size: 1em;
+    
 }
 .table-list .table-buttons .material-icons {
     font-size: 2.0em;
@@ -48,7 +49,14 @@
     align-self: top;
     font-size: 0.9em;
     padding: 0px 25px;
+    align-self: top;
+    
 }
+.table-list .table-buttons span{
+    align-self:center;
+    color: rgb(182, 182, 182);
+}
+
 .table-container{
     display: grid;
     grid-template-columns: 100px 260px 100px 100px 100px 190px 50px 70px 50px;

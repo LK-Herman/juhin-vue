@@ -7,7 +7,8 @@ const getDeliveryDetails = (url, token) =>{
     const delivery = ref([])
     const error = ref(null)
     const perror = ref(null)
-
+    
+    
     
     const loadDetails = async (id, palFlag) => {
         try {
@@ -34,7 +35,51 @@ const getDeliveryDetails = (url, token) =>{
             error.value = er.message
             //console.log(error.value)
         }
-        
+
+        async function getPallets (itemId)  {
+            let pallets = {eur:0,ori:0}
+            try {
+                let resp = await axios.get(url + 'items/' + itemId , {
+                    headers: {'Authorization':'Bearer ' + token,
+                    'Accept':'*/*',
+                    'Access-Control-Allow-Origin':'*' }})
+                if (resp.status <200 & resp.status > 300){
+                    throw Error('Coś poszło nie tak..')
+                }
+                
+                pallets["eur"] = resp.data.maxEuroPalQty
+                pallets["ori"] = resp.data.palletQty
+                
+                } catch (er) {
+                    perror.value = er.message
+                }
+            return pallets
+        }
+
+         // PALLETS
+         if(palFlag){
+            let eurPalletSum = 0
+            let oriPalletSum = 0
+            delivery.value["eurpal"] = eurPalletSum
+            delivery.value["oripal"] = oriPalletSum
+            delivery.value.packedItems.forEach(item => {
+                //console.log(item)
+                getPallets(item.itemId)
+                    .then(result => {
+                                eurPalletSum+= Math.ceil(item.quantity / result.eur)
+                                oriPalletSum+= Math.ceil(item.quantity / result.ori)
+                                //console.log(eurPalletSum)
+                                delivery.value["eurpal"] = eurPalletSum
+                                delivery.value["oripal"] = oriPalletSum
+                                })
+            });
+                // delivery.value["eurpal"] = eurPalletSum,
+                // delivery.value["oripal"] = oriPalletSum
+            
+
+            
+            
+        }
         
         // STATUS
         try {
@@ -68,47 +113,7 @@ const getDeliveryDetails = (url, token) =>{
                 error.value = er.message
             }
 
-        // PALLETS
-        if(palFlag){
-            let eurPalletSum = 0
-            let oriPalletSum = 0
-            delivery.value["eurpal"] = eurPalletSum
-            delivery.value["oripal"] = oriPalletSum
-            delivery.value.packedItems.forEach(item => {
-                //console.log(item)
-                getPallets(item.itemId)
-                    .then(result => {
-                                eurPalletSum = eurPalletSum + Math.ceil(item.quantity / result.eur)
-                                oriPalletSum = oriPalletSum + Math.ceil(item.quantity / result.ori)
-                                //console.log(eurPalletSum)
-                                delivery.value["eurpal"] = eurPalletSum
-                                delivery.value["oripal"] = oriPalletSum
-                                })
-
-                //console.log(pallets)
-            });
-
-            async function getPallets (itemId)  {
-                let pallets = {eur:0,ori:0}
-                try {
-                    let resp = await axios.get(url + 'items/' + itemId , {
-                        headers: {'Authorization':'Bearer ' + token,
-                        'Accept':'*/*',
-                        'Access-Control-Allow-Origin':'*' }})
-                    if (resp.status <200 & resp.status > 300){
-                        throw Error('Coś poszło nie tak..')
-                    }
-                    
-                    pallets["eur"] = resp.data.maxEuroPalQty
-                    pallets["ori"] = resp.data.palletQty
-                    
-                    } catch (er) {
-                        perror.value = er.message
-                    }
-                return pallets
-            }
-            
-        }
+       
         //console.log(delivery.value)
     }
     

@@ -72,6 +72,28 @@ namespace JuhinAPI.Controllers
             return mapper.Map<ItemDTO>(item);
         }
         /// <summary>
+        /// Gets the component info by Id
+        /// </summary>
+        /// <param name="vendorId"></param>
+        /// <returns></returns>
+        [HttpGet("vendor/{vendorId}", Name = "GetItemByVendor")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist,Warehouseman,Guest")]
+        public async Task<ActionResult<List<ItemDTO>>> GetItemByVendor(Guid vendorId)
+        {
+            var items = await context.Items
+                .Include(i => i.Currency)
+                .Include(i => i.Pallet)
+                .Include(i => i.Unit)
+                .Include(i => i.Vendor)
+                .Where(i => i.VendorId == vendorId)
+                .ToListAsync();
+            if (items == null)
+            {
+                return NotFound();
+            }
+            return mapper.Map<List<ItemDTO>>(items);
+        }
+        /// <summary>
         /// Posts the new component
         /// </summary>
         /// <param name="newItem"></param>

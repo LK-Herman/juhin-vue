@@ -22,10 +22,10 @@ const getOrders = (url, token) =>{
             .then(data => orders.value = data)
             .catch(err => error.value = err)
        
-            console.log(orders.value)
+            // console.log(orders.value)
 
       }
-      console.log('TOTAL RECORDS:'+totalRecords.value)
+    //   console.log('TOTAL RECORDS:'+totalRecords.value)
       return {loadOrders, error, orders, totalRecords}
 }
 export default getOrders

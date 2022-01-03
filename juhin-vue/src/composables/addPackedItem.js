@@ -1,12 +1,11 @@
 import { ref } from '@vue/reactivity'
 import axios from 'axios'
 
-const addDelivery = (url, token) =>{
+const addPackedItem = (url, token) =>{
 
     const error = ref(null)
-    const createdId = ref('')
 
-    const addNewDelivery =  async (deliveryData, poId) => {
+    const addItem =  async (packedItemData) => {
 
         var requestOptions = {
         method: 'POST',
@@ -20,16 +19,16 @@ const addDelivery = (url, token) =>{
         };
       
         try {
-            let resp = await axios.post( url + 'deliveries/'+ poId, deliveryData, requestOptions)
+            let resp = await axios.post( url + 'packed/', packedItemData, requestOptions)
             if (resp.status <200 & resp.status > 300){
                 throw Error('Coś poszło nie tak..')
             }
-            createdId.value = resp.data.deliveryId
+            //console.log(resp.data)
         } catch (err) {
             error.value = err.message
             console.log(error.value)
         }    
     }
-      return {addNewDelivery, error, createdId}
+      return {addItem, error}
 }
-export default addDelivery
+export default addPackedItem

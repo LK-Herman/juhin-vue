@@ -166,14 +166,9 @@ option{
     font-size: 14px;
     margin: 10px 0;
 }
-
-.mealImg{
-    width: 100%;
-    max-height: 400px;
-    object-fit: cover;
-    border-radius: 10px;
-    box-shadow: 2px 2px 4px rgba(50,50,50,0.5);
-  }
+.warning{
+    color:#e24444;
+}
   
 .lds-circle {
     display: inline-block;

@@ -251,6 +251,13 @@
             <param name="id"></param>
             <returns></returns>
         </member>
+        <member name="M:JuhinAPI.Controllers.ItemController.GetItemByVendor(System.Guid)">
+            <summary>
+            Gets the component info by Id
+            </summary>
+            <param name="vendorId"></param>
+            <returns></returns>
+        </member>
         <member name="M:JuhinAPI.Controllers.ItemController.Post(JuhinAPI.DTOs.ItemCreationDTO)">
             <summary>
             Posts the new component

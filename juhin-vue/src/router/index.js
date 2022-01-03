@@ -20,6 +20,11 @@ import Forwarders from '../views/Forwarders.vue'
 import ForwarderAdd from '../views/ForwarderAdd.vue'
 import ForwarderRanking from '../views/ForwarderRanking.vue'
 import Created from '../views/Created.vue'
+// import getCurrentUser from '../composables/getCurrentUser.js'
+
+// const requireAuth = (to, from, next)=>{
+    
+// }
 
 const routes = [
   {
