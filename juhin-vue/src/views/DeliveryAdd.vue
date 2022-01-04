@@ -40,20 +40,20 @@
             <div v-if="delivery.packedItems != 0" class="divTable blueTable">
                 <div class="divTableHeading">
                     <div class="divTableRow">
-                        <div class="divTableHead firstCol">POZYCJA</div>
+                        <div class="divTableHead firstCol center-text">POZYCJA</div>
                         <div class="divTableHead secondCol">NR TOWARU</div>
                         <div class="divTableHead thirdCol">OPIS TOWARU</div>
                         <div class="divTableHead fourthCol">ILOŚĆ</div>
-                        <div class="divTableHead fifthCol">JEDN.</div>
+                        <div class="divTableHead fifthCol center-text">JEDN.</div>
                     </div>
                 </div>
                 <div v-if="!loadedDeliveryError" class="divTableBody">
                     <div class="divTableRow" v-for="item in delivery.packedItems" :key="item.itemId">
-                        <div class="divTableCell firstCol">1.</div>
+                        <div class="divTableCell firstCol center-text">{{item.counter}}</div>
                         <div class="divTableCell secondCol">{{ item.partNumber.toUpperCase() }}</div>
                         <div class="divTableCell thirdCol">{{ item.description.toUpperCase() }}</div>
                         <div class="divTableCell fourthCol">{{ item.quantity }}</div>
-                        <div class="divTableCell fifthCol">{{ item.unitMeasure.toUpperCase() }}</div>
+                        <div class="divTableCell fifthCol center-text">{{ item.unitMeasure.toUpperCase() }}</div>
                     </div>
                 </div>
             </div>
@@ -83,7 +83,7 @@ export default {
     const comment = ref("");
     const selectedForwarderId = ref("");
     const packedItemsFlag = ref(false);
-
+    let counter = 1
     const { loadForwarders, error, forwarders } = getForwarders( mainUrl, props.userToken);
     const { addNewDelivery, error: deliveryError, createdId } = addDelivery(mainUrl, props.userToken );
     const { loadDetails, error:loadedDeliveryError, delivery } = getDeliveryDetails ( mainUrl, props.userToken )
@@ -93,28 +93,35 @@ export default {
     });
 
     const handleNewDeliverySubmit = async () => {
-      let createdAt = moment().toISOString();
-      error.value = null;
+        let createdAt = moment().toISOString();
+        error.value = null;
 
-      const deliveryData = {
-        createdAt: createdAt,
-        etaDate: eta.value,
-        deliveryDate: eta.value,
-        rating: 0,
-        comment: comment.value,
-        forwarderId: selectedForwarderId.value,
-        statusId: 1,
-      };
-      await addNewDelivery(deliveryData, props.orderId);
-      if (!error.value) {
-        packedItemsFlag.value = true;
-        console.log("Delivery added succesfully");
-        await loadDetails(createdId.value, false)
-      }
+        const deliveryData = {
+            createdAt: createdAt,
+            etaDate: eta.value,
+            deliveryDate: eta.value,
+            rating: 0,
+            comment: comment.value,
+            forwarderId: selectedForwarderId.value,
+            statusId: 1,
+        }
+        
+        await addNewDelivery(deliveryData, props.orderId);
+        if (!deliveryError.value) {
+            packedItemsFlag.value = true;
+            console.log("Delivery added succesfully");
+            await loadDetails(createdId.value)
+        }
     }
 
     const handleRefreshTable = async() =>{
         await loadDetails(createdId.value, false)
+            .then( function(){
+                counter = 1
+                delivery.value.packedItems.forEach(item =>{
+                            item['counter'] = counter++
+                        })
+                    })
     }
 
     return {
@@ -140,10 +147,7 @@ form.add-delivery {
   background-color: transparent;
   box-shadow: none;
 }
-.center-text {
-  text-align: center;
-  margin-bottom: 20px;
-}
+
 form .comment {
   height: 140px;
   resize: none;
@@ -153,13 +157,14 @@ div.blueTable {
   margin: 20px auto;
   background-color: #363636;
   width: 100%;
-  max-width: 800px;
+  max-width: 880px;
   text-align: left;
 }
-.divTable.blueTable .divTableCell,
-.divTable.blueTable .divTableHead {
-  border: 0px solid #252525;
+.divTable.blueTable .divTableCell{
   padding: 6px 10px;
+}
+.divTable.blueTable .divTableHead{
+    padding:15px 10px;
 }
 
 .divTable.blueTable .firstCol {
@@ -188,7 +193,7 @@ div.blueTable {
   background: #424242;
 }
 .divTable.blueTable .divTableHeading {
-  background: #777777;
+  background: #686868;
 }
 .divTable.blueTable .divTableHeading .divTableHead {
   font-size: 0.8em;

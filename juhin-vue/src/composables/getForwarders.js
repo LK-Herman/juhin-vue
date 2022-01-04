@@ -29,7 +29,7 @@ const getForwarders = (url, token) =>{
         error.value = er.message
         
         }
-        // console.log(forwarders.value)
+        console.log(forwarders.value)
 
       }
 

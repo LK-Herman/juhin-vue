@@ -132,7 +132,7 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style >
 .table-list .table-header#vendors-header{
     background-color: #2e570c;
     grid-template-columns: 100px 100px 240px 350px 160px 100px ;

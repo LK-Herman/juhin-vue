@@ -3,9 +3,8 @@
     display: grid;
     grid-template-rows: auto 80px;
     font-size: 0.9em;
-    justify-content: start;
     width: auto;
-    
+    align-items: center;
 }
 
 .table-list .table-page-numbers{
@@ -49,25 +48,23 @@
     align-self: top;
     font-size: 0.9em;
     padding: 0px 25px;
-    align-self: top;
-    
 }
 .table-list .table-buttons span{
     align-self:center;
     color: rgb(182, 182, 182);
 }
-
 .table-container{
     display: grid;
     grid-template-columns: 100px 260px 100px 100px 100px 190px 50px 70px 50px;
     row-gap: 0px;
     column-gap: 14px;
-    text-align: left;
     word-wrap: break-word;
     padding: 14px;
     /* word-break: break-all; */
     background-color: var(--back-dark);
     margin:2px 0;
+    align-items: center;
+    
 }
 .table-container:hover{
     transition: ease-in-out 240ms;
@@ -80,14 +77,12 @@
     
 }
 .table-list .table-header{
-    
     background-color: #196080;
     font-size: 0.8em;    
     height: 20px;
-    align-items: center;
 }
 .table-list .sub-table-list{
-    justify-self:end;
+    justify-self: end;
     padding-right: 14px ;
     /* text-align: right; */
 }

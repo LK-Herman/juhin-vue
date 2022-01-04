@@ -169,7 +169,13 @@ option{
 .warning{
     color:#e24444;
 }
-  
+.text-yellow{
+    color:#ffd000;
+}
+.center-text {
+    text-align: center;
+  }
+    
 .lds-circle {
     display: inline-block;
     transform: translateZ(1px);
