@@ -19,6 +19,7 @@ import VendorAdd from '../views/VendorAdd.vue'
 import Forwarders from '../views/Forwarders.vue'
 import ForwarderAdd from '../views/ForwarderAdd.vue'
 import ForwarderRanking from '../views/ForwarderRanking.vue'
+import VendorDetails from '../views/VendorDetails.vue' 
 import Created from '../views/Created.vue'
 // import getCurrentUser from '../composables/getCurrentUser.js'
 
@@ -114,6 +115,12 @@ const routes = [
     path: '/vendors',
     name: 'Vendors',
     component: Vendors,
+    props: true
+  },
+  {
+    path: '/vendors/:vId',
+    name: 'VendorDetails',
+    component: VendorDetails,
     props: true
   },
   {

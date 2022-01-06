@@ -10,9 +10,15 @@
             </div>
             <label>Nazwa pełna</label>
             <input type="text" v-model="formName">
+            <div v-if="formError[0] != ''" class="error">
+                <p>{{formError[0]}}</p>
+            </div>
             
             <label>Adres email</label>
-            <input type="email" v-model="formEmail">
+            <input type="email" v-model="formEmail" >
+            <div v-if="formError[1] != ''" class="error">
+                <p>{{formError[1]}}</p>
+            </div>
             
             <label>Nr telefonu</label>
             <input type="tel" v-model="formPhoneNumber">
@@ -41,26 +47,31 @@ export default {
         const formName = ref('')
         const formEmail = ref('')
         const formPhoneNumber = ref('')
-        
+        const formError = ref([])
 
         const {addNewForwarder, error, createdId} = addForwarder(mainUrl, props.userToken)
 
         const handleSubmit = async () =>{
                 error.value = null
-            const forwarderData = {
-                Name : formName.value,
-                Email : formEmail.value,
-                PhoneNumber : formPhoneNumber.value,
-                Rating: 0
-            }
-            
-            await addNewForwarder(forwarderData)
-            if(!error.value){
-                router.push({name:'Created'})
+                formError.value[0] = ''
+                formError.value[1] = ''
+                if(formName.value.length < 3) formError.value[0] = "Nazwa jest za krótka (co najmniej 3 znaki)"
+                if(!formEmail.value.includes('@') || !formEmail.value.includes('.') || formEmail.value.includes(' ')) formError.value[1] = "Adres email jest nieprawidłowy"
+                if (formError.value[0] == '' && formError.value[1] == ''){
+                    const forwarderData = {
+                        Name : formName.value,
+                        Email : formEmail.value,
+                        PhoneNumber : formPhoneNumber.value,
+                        Rating: 0
+                    }
+                    await addNewForwarder(forwarderData)
+                    if(!error.value){
+                        router.push({name:'Created'})
+                    }
             }
         }
 
-        return {handleSubmit, formName, formEmail, formPhoneNumber, error}
+        return {handleSubmit, formName, formEmail, formPhoneNumber, formError, error}
     }
 
 }

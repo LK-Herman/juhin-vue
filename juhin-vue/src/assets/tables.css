@@ -3,7 +3,7 @@
     display: grid;
     grid-template-rows: auto 80px;
     font-size: 0.9em;
-    width: auto;
+    /* width: auto; */
     align-items: center;
 }
 
@@ -42,12 +42,12 @@
 
 .table-list .table-buttons{
     display: grid;
-    grid-template-columns: 100px 100px 100px 120px 560px 120px;
+    grid-template-columns: 100px 100px 100px 100px auto 100px;
     /* background: var(--back-grey); */
     background-color: #222;
     align-self: top;
     font-size: 0.9em;
-    padding: 0px 25px;
+    padding: 0px 0px;
 }
 .table-list .table-buttons span{
     align-self:center;
@@ -64,7 +64,9 @@
     background-color: var(--back-dark);
     margin:2px 0;
     align-items: center;
-    
+}
+.table-container .last-col{
+    justify-self: end;
 }
 .table-container:hover{
     transition: ease-in-out 240ms;

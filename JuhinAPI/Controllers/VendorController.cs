@@ -55,13 +55,30 @@ namespace JuhinAPI.Controllers
                             
             return Ok(vendorsDTOs);
         }
+        [HttpGet("search/{vendorName}", Name = "getVendorByName")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Specialist, Warehouseman, Guest")]
+        [ProducesResponseType(typeof(List<VendorDTO>), 200)]
+        public async Task<IActionResult> GetByName([FromQuery] PaginationDTO pagination, string vendorName)
+        {
+            var queryable = context.Vendors
+                .Include(v => v.Items)
+                .Where(n => n.Name.Contains(vendorName))
+                .AsQueryable();
+            await HttpContext.InsertPaginationParametersInResponse(queryable, pagination.RecordsPerPage);
+            var count = queryable.Count();
+            HttpContext.Response.Headers.Add("All-Records", count.ToString());
+            var vendors = await queryable.Paginate(pagination).ToListAsync();
+            var vendorsDTOs = mapper.Map<List<VendorDTO>>(vendors);
 
+
+            return Ok(vendorsDTOs);
+        }
         /// <summary>
         /// Gets the vendor data by Id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        
+
         [HttpGet("{id:Guid}", Name = "getVendor")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist,Warehouseman,Guest")]
         public async Task<ActionResult<VendorDTO>> GetVendorsId(Guid id)

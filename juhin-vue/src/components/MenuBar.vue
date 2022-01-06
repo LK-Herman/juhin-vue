@@ -34,7 +34,7 @@
             <h4>TOWARY</h4>
         </div>
     </div>
-    <router-link :to="{name:'Items'}" class="items-btn btn">Dodaj</router-link>
+    <router-link :to="{name:'Items'}" class="items-btn btn">Przeglądaj</router-link>
     <router-link :to="{name:'ItemAdd'}" class="items-btn btn">Dodaj</router-link>
 
     <div class="title-bar">

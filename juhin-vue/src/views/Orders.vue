@@ -16,16 +16,10 @@
                     <div>
                         <p>DOSTAWCA</p>
                     </div>
-                    <div>
-                        <p>EDYTUJ</p>
-                    </div>
-                    <div>
-                        <p>DODAJ DOSTAWĘ</p>
-                    </div>
-                    <div>
-                        <p>USUŃ</p>
-                    </div>
                     
+                    <div class="last-col">
+                        <p></p>
+                    </div>
                 </div>
                 <div v-for="order in orders" :key="order.orderId" >
                     <div id="orders-container" class="table-container">    
@@ -44,10 +38,8 @@
                         <div>
                             <p>{{order.vendorName}}</p>
                         </div>
-                        <div>
-                            <button class="edit-btn">Edytuj</button>
-                        </div>
-                        <div>
+                        
+                        <div class="last-col">
                             <router-link :to="{name:'DeliveryAdd', params:{
                                         vId:order.vendorId, 
                                         user:user, 
@@ -55,9 +47,7 @@
                                         orderNo:order.orderNumber,
                                         orderId:order.orderId}}" class="btn sub-btn">Dodaj dostawę</router-link>
                         </div>
-                        <div v-if="user.userId == order.userId">
-                            <button class="delete-btn">Usuń</button>
-                        </div>
+                        
                     </div>
                 </div>
           </div>
@@ -66,8 +56,9 @@
                 <button @click="handlePages(10)"><span class="material-icons">list</span>10</button>
                 <button @click="handlePages(20)"><span class="material-icons">list</span>20</button>
                 <button @click="handlePages(50)"><span class="material-icons">list</span>50</button>
-                <button v-if="pageNo>1" @click="handlePreviousPage"> <span class="material-icons">keyboard_double_arrow_left</span> cofnij</button>
-                <button v-else @click="handleNextPage">dalej<span class="material-icons">keyboard_double_arrow_right</span> </button>
+
+                <button v-if="pageNo==1"><span class="material-icons">keyboard_double_arrow_left</span>cofnij</button>
+                <button v-else @click="handlePreviousPage"><span class="material-icons">keyboard_double_arrow_left</span>cofnij</button>
 
                 <div class="table-page-numbers">
                     <div v-for="page in lastPage" :key="page" @click="handleGoToPage(page)">
@@ -78,7 +69,7 @@
                     
                 </div>
                 <button v-if="pageNo<lastPage" @click="handleNextPage">dalej<span class="material-icons">keyboard_double_arrow_right</span></button>
-                <button v-else @click="handlePreviousPage"> <span class="material-icons">keyboard_double_arrow_left</span> cofnij</button>
+                <button v-else >koniec<span class="material-icons">keyboard_double_arrow_right</span></button>
           </div>
 
       </div>
@@ -155,15 +146,15 @@ export default {
 
 <style>
 .table-orders{
-    max-width: 500px;
+    max-width: 800px;
 }
 .table-list .table-header#orders-header{
     background-color: #491980;
-    grid-template-columns: 110px 130px 80px 340px 100px 160px 100px;
+    grid-template-columns: 110px 130px 80px 300px  1fr;
 
 }
 .table-container#orders-container{
-    grid-template-columns: 110px 130px 80px 340px 100px 160px 100px;
+    grid-template-columns: 110px 130px 80px 300px  1fr;
 }
 .table-container .icon-group{
     color: rgb(97, 97, 97);

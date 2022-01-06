@@ -64,6 +64,7 @@ export default {
     display: flex;
     flex-flow: column;
     background-image: linear-gradient(#282828, var(--back-grey), var(--back-grey2));
+    max-width: 340px;
 }
 #login-form .error-msg{
     color: var(--warning);

@@ -62,23 +62,22 @@ const getDeliveryDetails = (url, token) =>{
             let oriPalletSum = 0
             delivery.value["eurpal"] = eurPalletSum
             delivery.value["oripal"] = oriPalletSum
-            delivery.value.packedItems.forEach(item => {
-                //console.log(item)
-                getPallets(item.itemId)
-                    .then(result => {
-                                eurPalletSum+= Math.ceil(item.quantity / result.eur)
-                                oriPalletSum+= Math.ceil(item.quantity / result.ori)
-                                //console.log(eurPalletSum)
-                                delivery.value["eurpal"] = eurPalletSum
-                                delivery.value["oripal"] = oriPalletSum
-                                })
-            });
-                // delivery.value["eurpal"] = eurPalletSum,
-                // delivery.value["oripal"] = oriPalletSum
             
+                
+                delivery.value.packedItems.forEach(async item => {
+                    await getPallets(item.itemId)
+                        .then(result => {
+                                    eurPalletSum+= Math.ceil(item.quantity / result.eur)
+                                    oriPalletSum+= Math.ceil(item.quantity / result.ori)
+                                    //console.log(eurPalletSum)
+                                    delivery.value["eurpal"] = eurPalletSum
+                                    delivery.value["oripal"] = oriPalletSum
+                                    })
+                });
 
             
-            
+                // delivery.value["eurpal"] = eurPalletSum,
+                // delivery.value["oripal"] = oriPalletSum
         }
         
         // STATUS

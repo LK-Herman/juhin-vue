@@ -19,14 +19,6 @@
                     <div>
                         <p>OCENA</p>
                     </div>
-                    <div>
-                        <p>EDYTUJ</p>
-                    </div>
-                    <div>
-                        <p>USUŃ</p>
-                    </div>
-                   
-                    
                 </div>
                 <div v-for="forwarder in forwarders" :key="forwarder.forwarderId" >
                     <div id="forwarders-container" class="table-container">    
@@ -44,12 +36,6 @@
                         </div>
                         <div>
                             <p>{{forwarder.rating}}</p>
-                        </div>
-                        <div >
-                            <button>Edytuj</button>
-                        </div>
-                        <div >
-                            <button>Usuń</button>
                         </div>
                         
                     </div>
@@ -164,11 +150,11 @@ export default {
     max-width: 1200px;
 }
 .table-list .table-header#forwarders-header{
-    background-color: #49006b;
-    grid-template-columns: 80px 240px 180px 120px 100px 160px 160px;
+    background-color: #422464;
+    grid-template-columns: 80px 260px 240px 140px 80px ;
 }
 .table-container#forwarders-container{
-    grid-template-columns: 80px 240px 180px 120px 100px 160px 160px;
+    grid-template-columns: 80px 260px 240px 140px 80px ;
 }
 .table-container .icon-group{
     color: rgb(97, 97, 97);

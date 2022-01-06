@@ -83,11 +83,13 @@
             <div class="item-btn">
                 <button class="edit-btn">Edytuj</button>
                 <button class="sub-btn">Subskrybuj</button>
-                <button class="delete-btn">Usuń</button>
+                <button v-if="delivery.statusId == 1" class="delete-btn" @click="handleDelete">Usuń</button>
             </div>
-
         </div>         
   </div>
+    <div>
+        <DeliveryDelete :userToken="userToken" :id="id" :orders="delivery.purchaseOrders"/>
+    </div>
 </template>
 
 <script>
@@ -95,16 +97,17 @@ import getDeliveryDetails from '../composables/getDeliveryDetails.js'
 import urlHolder from '../composables/urlHolder.js'
 import { onMounted, ref } from '@vue/runtime-core'
 import {useRouter} from 'vue-router'
+import DeliveryDelete from '../components/DeliveryDelete.vue'
 
 export default {
     props: ['userToken','user', 'id'],
-    
+    components: {DeliveryDelete},
     setup(props){
         let counter = 1
         const mainUrl = urlHolder
         const router = useRouter()
         const {delivery, loadDetails, error} = getDeliveryDetails(mainUrl, props.userToken)
-
+        // const deleteFlag = ref(false)
         onMounted (()=>{
             counter = 1
             loadDetails(props.id)
@@ -117,7 +120,20 @@ export default {
         const handleBack = ()=>{
             router.back()
         }
-        return{delivery, error, counter, handleBack}
+        const handleDelete = ()=>{
+            // deleteFlag.value = true
+            var modal = document.getElementById("myModal");
+            modal.style.display = "block" 
+            
+            window.onclick = function(event) {
+            if (event.target == modal) {
+            modal.style.display = "none";
+            // deleteFlag.value = false
+            }
+        }
+        }
+
+        return{delivery, error, counter,handleDelete,  handleBack}
     }
 
 }
