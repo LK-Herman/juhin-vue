@@ -24,7 +24,7 @@ const getVendors = (url, token) =>{
                 totalRecords.value = resp.headers["all-records"]
                 lastPage.value = resp.headers["totalamountpages"]
                 vendors.value = resp.data
-                console.log(vendors.value)
+                // console.log(vendors.value)
             } catch (er) {
                 error.value = er.message
                 console.log(error.value)

@@ -1,18 +1,18 @@
 import { ref } from '@vue/reactivity'
 import axios from 'axios'
 
-const getForwarders = (url, token) =>{
+const getUnits = (url, token) =>{
 
-    const forwarders = ref([])
+    const units = ref([])
     const error = ref(null)
     const totalRecords = ref(1)
     const lastPage = ref('')
 
     
-    const loadForwarders = async (pageNo, recordsPerPage) => {
+    const loadUnits = async (pageNo, recordsPerPage) => {
 
         try {
-                let resp = await axios.get(url + 'forwarders?Page='+pageNo+'&RecordsPerPage='+recordsPerPage, {
+                let resp = await axios.get(url + 'units?Page='+pageNo+'&RecordsPerPage='+recordsPerPage, {
                     headers: {'Authorization':'Bearer ' + token,
                             'Accept':'*/*'
                     }
@@ -23,17 +23,17 @@ const getForwarders = (url, token) =>{
                 }
                 totalRecords.value = resp.headers["all-records"]
                 lastPage.value = resp.headers["totalamountpages"]
-                forwarders.value = resp.data
+                units.value = resp.data
                 
             } catch (er) {
         error.value = er.message
         
         }
-        // console.log(forwarders.value)
+        console.log(units.value)
 
       }
 
-      return {loadForwarders, error, forwarders, totalRecords}
+      return {loadUnits, error, units, totalRecords}
 }
 
-export default getForwarders
+export default getUnits

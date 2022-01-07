@@ -7,6 +7,7 @@ namespace JuhinAPI.DTOs
 {
     public class UnitDTO
     {
+        public int UnitId { get; set; }
         public string Name { get; set; }
         public string ShortName { get; set; }
     }

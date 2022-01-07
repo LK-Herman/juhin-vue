@@ -15,7 +15,7 @@
       </div>
 
       <label>Wprowadź datę dostawy</label>
-      <input type="date" v-model="eta" :class="{ disabled: packedItemsFlag }" required />
+      <input type="datetime-local" v-model="eta" :class="{ disabled: packedItemsFlag }" required />
       <label>Dodaj komentarz (opcjonalnie)</label>
       <textarea class="comment" v-model="comment" :class="{ disabled: packedItemsFlag }"></textarea>
       <label>Wybierz przewoźnika</label>
@@ -79,7 +79,7 @@ export default {
   components: { PackedItemsAdd },
   setup(props) {
     const mainUrl = urlHolder;
-    const eta = ref(moment().format("YYYY-MM-DD"));
+    const eta = ref(moment().format("YYYY-MM-DDThh:mm"));
     const comment = ref("");
     const selectedForwarderId = ref("");
     const packedItemsFlag = ref(false);

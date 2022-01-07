@@ -20,7 +20,7 @@ const getDeliveryDetails = (url, token) =>{
             throw Error('Coś poszło nie tak..')
             }
             delivery.value = resp.data
-            delivery.value['etaT'] = moment(delivery.value.etaDate).format('hh:mm')
+            delivery.value['etaT'] = moment(delivery.value.etaDate).locale('pl').format('LT')
             delivery.value['etaD'] = moment(delivery.value.etaDate).format('DD-MM-YYYY')
             delivery.value['createdAt'] = moment(delivery.value.createdAt).format('DD-MM-YYYY hh:mm')
             delivery.value['deliveryDate'] = moment(delivery.value.deliveryDate).format('DD-MM-YYYY hh:mm')

@@ -47,7 +47,8 @@
             </div>
             <div class="btns-items">
                 <p>Dodaj nowe materiały, które dostarcza {{vendor.name}} </p>
-                <button>Dodaj materiały</button>
+                <button @click="handleAddItem">Dodaj materiały</button>
+                <!-- <router-link :to="{name:'ItemAdd', params:{vId:vId}}" :userToken="userToken" :user="user">Dodaj materiały</router-link> -->
             </div>
         </div>
     </div>
@@ -61,6 +62,7 @@
 import urlHolder from '../composables/urlHolder.js'
 import getVendorById from '../composables/getVendorById.js'
 import { onMounted } from '@vue/runtime-core'
+import {useRouter} from 'vue-router'
 
 export default {
   components: {  },
@@ -68,12 +70,23 @@ export default {
   setup(props) {
     const url = urlHolder
     const {loadVendor, error, vendor} = getVendorById(url, props.userToken)
+    const router = useRouter()
 
     onMounted(async()=>{
         await loadVendor(props.vId)
     })
+
+    const handleAddItem = () =>{
+        
+        router.push({name:'ItemAdd', params:{
+            
+                userToken:props.userToken, 
+                user:props.user, 
+                vend:JSON.stringify(vendor.value)
+                }})
+    }
     
-    return {error, vendor}
+    return {error, vendor, handleAddItem}
   }
 }
 </script>
