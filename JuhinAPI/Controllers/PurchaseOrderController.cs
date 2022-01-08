@@ -100,7 +100,8 @@ namespace JuhinAPI.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist")]
         public async Task<ActionResult> Put(Guid id, [FromBody] PurchaseOrderCreationDTO orderCreation)
         {
-            var exists = await context.PurchaseOrders.AnyAsync(order => order.OrderNumber == orderCreation.OrderNumber);
+            var exists = await context.PurchaseOrders.AnyAsync(order => order.OrderNumber == orderCreation.OrderNumber && order.OrderId == id);
+            
             if (exists)
             {
                 return BadRequest("Duplicate Purchase Order Number");

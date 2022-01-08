@@ -1,12 +1,12 @@
 <template>
-  <button @click="handleBack"><span class="material-icons">keyboard_backspace</span> </button>
   <div v-if="!error">
         
         <div class="delivery-details-container">
             <div class="item-v">
                 <div v-for="order in delivery.purchaseOrders" :key="order.orderId">
-                    <div >
-                        <h1>{{order.vendorName}}</h1>
+                    <div class="vendor-header" >
+                        <img src="../assets/images/vendorIcon.png">
+                        <h1 class="text-yellow">{{order.vendorName}}</h1>
                     </div>
                 </div>
             </div>
@@ -81,6 +81,7 @@
                 <p>{{delivery.comment}}</p>
             </div>
             <div class="item-btn">
+                <button @click="handleBack"> <span class="material-icons">keyboard_backspace</span> Powrót</button>
                 <button class="edit-btn">Edytuj</button>
                 <button class="sub-btn">Subskrybuj</button>
                 <button v-if="delivery.statusId == 1" class="delete-btn" @click="handleDelete">Usuń</button>
@@ -158,7 +159,16 @@ export default {
     padding: 0px 0px;
     
 }
-
+.delivery-details-container .vendor-header{
+    display: flex;
+    align-items: center;
+}
+.delivery-details-container .vendor-header h1{
+    padding-left: 24px;
+}
+.delivery-details-container .vendor-header img{
+    padding-left: 6px;
+}
 .delivery-details-container .item-pl1 {
   grid-area: counter;
   padding: 10px 0px 1px 0px;
@@ -257,6 +267,9 @@ export default {
   padding: 10px 0 ;
   margin-left: 30px;
   margin-bottom: 25px;
+}
+.delivery-details-container .item-btn span{
+    padding-right: 10px;
 }
 .delivery-details-container .item-btn button {
     box-shadow: 2px 2px 3px rgba(20,20,20,0.5);

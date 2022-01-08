@@ -128,7 +128,8 @@ namespace JuhinAPI.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist")]
         public async Task<ActionResult> Put(Guid id, [FromBody] VendorCreationDTO vendorCreation)
         {
-            var exists = await context.Vendors.AnyAsync(v => v.VendorCode == vendorCreation.VendorCode);
+            var exists = await context.Vendors.AnyAsync(v => v.VendorCode == vendorCreation.VendorCode && v.VendorId != id);
+                        
             if (exists)
             {
                 return BadRequest("Duplicate Vendor Code (already exists)");

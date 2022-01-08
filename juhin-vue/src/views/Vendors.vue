@@ -38,25 +38,27 @@
                     
                 </div>
                 <div v-for="vendor in vendors" :key="vendor.vendorId" >
-                    <router-link :to="{name:'VendorDetails', params:{vId:vendor.vendorId}}" :userToken="userToken" :user="user">
-                    <div id="vendors-container" class="table-container">    
-                        <div class="sub-table-list" >
-                            <p>{{vendor.vendorCode}}</p>
+                    <div @click="handleClick(vendor)">
+                        <!-- <router-link :to="{name:'VendorDetails', params:{vId:vendor.vendorId}}" :userToken="userToken" :user="user"> -->
+                        <div id="vendors-container" class="table-container">    
+                            <div class="sub-table-list" >
+                                <p>{{vendor.vendorCode}}</p>
+                            </div>
+                            <div>
+                                <p>{{vendor.shortName}}</p>
+                            </div>
+                            <div>
+                                <p>{{vendor.name}}</p>
+                            </div>
+                            <div>
+                                <p>{{vendor.address}}</p>
+                            </div>
+                            <div>
+                                <p>{{vendor.country}}</p>
+                            </div>
                         </div>
-                        <div>
-                            <p>{{vendor.shortName}}</p>
-                        </div>
-                        <div>
-                            <p>{{vendor.name}}</p>
-                        </div>
-                        <div>
-                            <p>{{vendor.address}}</p>
-                        </div>
-                        <div>
-                            <p>{{vendor.country}}</p>
-                        </div>
+                        <!-- </router-link> -->
                     </div>
-                    </router-link>
                 </div>
           </div>
           <div class="table-buttons">
@@ -89,6 +91,7 @@
 import getVendors from '../composables/getVendors.js'
 import urlHolder from '../composables/urlHolder.js'
 import { onMounted, onUpdated, ref, watch, watchEffect } from '@vue/runtime-core'
+import {useRouter} from 'vue-router'
 
 export default {
   components: {  },
@@ -100,6 +103,7 @@ export default {
     const recordsPerPage = ref(10)
     const lastPage = ref(1)
     const searchedName = ref('')
+    const router = useRouter()
     
     const handleSearch =async () =>{
         recordsPerPage.value=10
@@ -109,6 +113,13 @@ export default {
     const calculatePageCount = (pageSize, totalCount) => {
         
         return totalCount < pageSize ? 1 : Math.ceil(totalCount / pageSize)
+    }
+    const handleClick = (vendor) =>{
+        router.push({ name:'VendorDetails', 
+                      params:{  vId:vendor.vendorId, 
+                                userToken:'userToken', 
+                                user:'user'}
+        })
     }
 
     onMounted(async () => {
@@ -145,7 +156,20 @@ export default {
         await loadVendors(pageNo.value, recordsPerPage.value, searchedName.value)
     }
 
-    return { vendors, error, pageNo, recordsPerPage, handleNextPage, handlePreviousPage, handlePages, handleGoToPage, lastPage, handleSearch, searchedName }
+    return { 
+            vendors, 
+            error, 
+            pageNo, 
+            recordsPerPage, 
+            handleNextPage, 
+            handlePreviousPage, 
+            handlePages, 
+            handleGoToPage, 
+            lastPage, 
+            handleSearch, 
+            searchedName, 
+            handleClick 
+            }
   }
 }
 </script>

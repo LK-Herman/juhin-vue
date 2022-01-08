@@ -6,7 +6,7 @@
     --back-grey:#303030;
     --back-grey2: #444444;
     --dark-blue:#536BAA;
-    --orange:#c07600;
+    --orange:#cc6d01;
     --green:#5a7e1f;
     --teal: #32A0C2;
     --delay: #B14343;
@@ -96,7 +96,7 @@ button, .btn {
     
 }
 button:hover, .btn:hover {
-    background-color: var(--dark-blue);
+    background-color: var(--orange);
 }
 .edit-btn, .edit-btn {
     background-color: rgb(21, 141, 0);

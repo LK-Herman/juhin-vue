@@ -119,11 +119,14 @@ import getWarehouses from '../composables/getWarehouses.js'
 import getCurrency from '../composables/getCurrency.js'
 import getUnits from '../composables/getUnits.js'
 import getPallets from '../composables/getPallets.js'
+import addItem from '../composables/addItem.js'
 import urlHolder from '../composables/urlHolder.js'
+import {useRouter} from 'vue-router'
 
 export default {
     props:['userToken', 'user', 'vend'],
     setup(props){
+        const router = useRouter()
         const vendor = ref(null)
         const mainUrl = urlHolder;
         const warehouseId = ref(1)
@@ -146,17 +149,22 @@ export default {
         const {loadCurrency, currencyList, error:curerror} = getCurrency(mainUrl, props.userToken)
         const {loadUnits, units, error:unierror} = getUnits(mainUrl, props.userToken)
         const {loadPallets, pallets, error:palerror} = getPallets(mainUrl, props.userToken)
+        const {addNewItem, error:addError, response} = addItem(mainUrl, props.userToken)
 
         onMounted(()=>{
-            vendor.value = JSON.parse(props.vend)
-            origin.value = vendor.value.country
-            loadWarehouses(1,50)
-            loadCurrency(1,50)
-            loadUnits(1,50)
-            loadPallets(1,50)
+            if(props.userToken === '' || props.vend === undefined ){
+                router.push({name:'Main'})
+            }else{
+                vendor.value = JSON.parse(props.vend)
+                origin.value = vendor.value.country
+                loadWarehouses(1,50)
+                loadCurrency(1,50)
+                loadUnits(1,50)
+                loadPallets(1,50)
+            }
         })
 
-        const handleSubmit = () =>{
+        const handleSubmit = async () =>{
             let itemData = {
                 name: partNumber.value,
                 description: description.value,
@@ -175,7 +183,12 @@ export default {
                 palletId: palletId.value,
                 unitId: unitId.value
             }
-            console.log(itemData)
+            
+            await addNewItem(itemData)
+                .then(function(){
+                    console.log(response.value)
+                })
+
         }
 
 

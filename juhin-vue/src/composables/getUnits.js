@@ -29,7 +29,7 @@ const getUnits = (url, token) =>{
         error.value = er.message
         
         }
-        console.log(units.value)
+        // console.log(units.value)
 
       }
 

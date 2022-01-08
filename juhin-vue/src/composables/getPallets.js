@@ -29,7 +29,7 @@ const getPallets = (url, token) =>{
         error.value = er.message
         
         }
-        console.log(pallets.value)
+        // console.log(pallets.value)
 
       }
 

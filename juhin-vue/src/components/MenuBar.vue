@@ -24,7 +24,7 @@
         </div>
     </div>
     <router-link :to="{name:'Orders', params: {userToken: userToken}}" class="orders-btn btn">Przeglądaj</router-link>
-    <router-link :to="{name:'OrderAdd'}" class="orders-btn btn">Dodaj</router-link>
+    
 
      <div class="title-bar">
         <div id="items" class="menu-icon">
@@ -35,7 +35,7 @@
         </div>
     </div>
     <router-link :to="{name:'Items'}" class="items-btn btn">Przeglądaj</router-link>
-    <router-link :to="{name:'ItemAdd'}" class="items-btn btn">Dodaj</router-link>
+    
 
     <div class="title-bar">
         <div id="vendors" class="menu-icon">

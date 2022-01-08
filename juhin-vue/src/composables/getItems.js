@@ -51,7 +51,7 @@ const getItems = (url, token) =>{
         })
 
 
-        console.log(items.value)
+        // console.log(items.value)
 
       }
 
