@@ -10,86 +10,136 @@
                     </div>
                 </div>
             </div>
-            
-            <div class="item-o">
+            <div class="item-s" :class="{statusDelivered:delivery.statusId==3, statusInTransit:delivery.statusId==2, statusCreated:delivery.statusId==1}">
+                <h3>{{delivery.status}}</h3>
+            </div>
+
+            <div v-if="!isEditing" class="item-o">
                 <h4>NR ZMÓWIENIA</h4> 
                 <div v-for="order in delivery.purchaseOrders" :key="order.orderId">
                         <p>{{order.orderNumber}}</p>
                 </div>
             </div>
 
-            <div class="item-po">
+            <div v-if="!isEditing" class="item-po">
                 <h4>UTWORZONA</h4> 
                 <div v-for="order in delivery.purchaseOrders" :key="order.orderId">
                     <p>{{delivery.createdAt}}</p>
                 </div>
             </div>
             
-            <div class="item-e">
+            <div v-if="!isEditing" class="item-e">
                 <h4>ETA</h4>
                 <p>{{delivery.etaD}} {{delivery.etaT}}</p>
             </div>
-            <div class="item-dd">
+            <div v-if="!isEditing" class="item-dd">
                 <h4>DATA DOSTAWY</h4>
                 <p v-if="delivery.statusId == 3" class="text-yellow">{{delivery.deliveryDate}}</p>
                 <p v-else>(brak)</p>
             </div>
-                    
             
-            <div class="item-s" :class="{statusDelivered:delivery.statusId==3, statusInTransit:delivery.statusId==2, statusCreated:delivery.statusId==1}">
-                <h3>{{delivery.status}}</h3>
-            </div>
             
-            <div class="item-p">
+            <div  v-if="!isEditing" class="item-p">
                 <h4>LISTA TOWARÓW: </h4>    
-
                 <div v-if="!error">
-                <div class="divTable blueTable">
-                    <div class="divTableHeading">
-                        <div class="divTableRow">
-                            <div class="divTableHead firstCol center-text">POZYCJA</div>
-                            <div class="divTableHead secondCol">NR TOWARU</div>
-                            <div class="divTableHead thirdCol">OPIS TOWARU</div>
-                            <div class="divTableHead fourthCol">ILOŚĆ</div>
-                            <div class="divTableHead fifthCol center-text">JEDN.</div>
+                    <div class="divTable blueTable">
+                        <div class="divTableHeading">
+                            <div class="divTableRow">
+                                <div class="divTableHead firstCol center-text">POZYCJA</div>
+                                <div class="divTableHead secondCol">NR TOWARU</div>
+                                <div class="divTableHead thirdCol">OPIS TOWARU</div>
+                                <div class="divTableHead fourthCol">ILOŚĆ</div>
+                                <div class="divTableHead fifthCol center-text">JEDN.</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="divTableBody">
-                        <div class="divTableRow" v-for="item in delivery.packedItems" :key="item.itemId">
-                            <div class="divTableCell firstCol center-text">{{item.counter}}</div>
-                            <div class="divTableCell secondCol">{{ item.partNumber.toUpperCase() }}</div>
-                            <div class="divTableCell thirdCol">{{ item.description.toUpperCase() }}</div>
-                            <div class="divTableCell fourthCol">{{ item.quantity }}</div>
-                            <div class="divTableCell fifthCol center-text">{{ item.unitMeasure.toUpperCase() }}</div>
+                        <div class="divTableBody">
+                            <div class="divTableRow" v-for="item in delivery.packedItems" :key="item.itemId">
+                                <div class="divTableCell firstCol center-text">{{item.counter}}</div>
+                                <div class="divTableCell secondCol">{{ item.partNumber.toUpperCase() }}</div>
+                                <div class="divTableCell thirdCol">{{ item.description.toUpperCase() }}</div>
+                                <div class="divTableCell fourthCol">{{ item.quantity }}</div>
+                                <div class="divTableCell fifthCol center-text">{{ item.unitMeasure.toUpperCase() }}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-            <div class="item-f">
+            <div v-if="!isEditing" class="item-f">
                 <h4>PRZWOŹNIK</h4> 
                 <p>{{delivery.forwarderName}}</p>
             </div>
-            <div class="item-prio">
+
+            <div v-if="!isEditing" class="item-prio">
                 <h4>PRIORYTET</h4> 
                 <p v-if="!delivery.isPriority">STANDARDOWA DOSTAWA</p>
                 <p v-else class="text-yellow">PIERWSZEŃSTWO ROZŁADUNKU</p>
             </div>
-            <div class="item-c">
+
+            <div v-if="!isEditing"  class="item-c">
                 <h4>KOMENTARZ</h4> 
                 <p>{{delivery.comment}}</p>
             </div>
-            <div class="item-btn">
+
+            <div v-if="!isEditing" class="item-btn">
                 <button @click="handleBack"> <span class="material-icons">keyboard_backspace</span> Powrót</button>
-                <button class="edit-btn">Edytuj</button>
+                <button @click="isEditing = true" class="edit-btn">Edytuj</button>
                 <button class="sub-btn">Subskrybuj</button>
                 <button v-if="delivery.statusId == 1" class="delete-btn" @click="handleDelete">Usuń</button>
             </div>
+
+        
+
         </div>         
-  </div>
-    <div>
-        <DeliveryDelete :userToken="userToken" :id="id" :orders="delivery.purchaseOrders"/>
+        <!--end of delivery-details-container -->
+        <div>
+            <DeliveryDelete :userToken="userToken" :id="id" :orders="delivery.purchaseOrders"/>
+        </div>
+
+        <div v-if="isEditing" >
+
+            <form class="delivery-form">
+                <div class="double" >
+                    <div>
+                        <label>Numer zamówienia</label>
+                        <input type="text">
+                    </div>
+                    <div>
+                        <label>Data dostawy</label>
+                        <input type="datetime-local">
+                    </div>
+                    <div>
+                        <label>Ustaw priorytet dostawy</label>
+                        <div class="flipswitch">
+                            <input type="checkbox" name="flipswitch" class="flipswitch-cb" id="fs" checked>
+                            <label class="flipswitch-label" for="fs">
+                                <div class="flipswitch-inner"></div>
+                                <div class="flipswitch-switch"></div>
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <label>Ocena dostawy: {{rating}}</label>
+                        <input type="range" max="100" min="1"  v-model="rating">
+                        
+                    </div>
+                    <div>
+                        <label>Zmień status</label>
+                        <select >
+                            <option value="">Doręczona</option>
+                            <option value="">Doręczona</option>
+                            <option value="">Doręczona</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Komentarz</label>
+                        <textarea cols="30" rows="10"></textarea>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
     </div>
 </template>
 
@@ -105,6 +155,8 @@ export default {
     components: {DeliveryDelete},
     setup(props){
         let counter = 1
+        const isEditing = ref(false)
+        const rating = ref (100)
         const mainUrl = urlHolder
         const router = useRouter()
         const {delivery, loadDetails, error} = getDeliveryDetails(mainUrl, props.userToken)
@@ -134,7 +186,13 @@ export default {
         }
         }
 
-        return{delivery, error, counter,handleDelete,  handleBack}
+        return{ delivery, 
+                error, 
+                counter,
+                handleDelete, 
+                handleBack, 
+                isEditing,
+                rating}
     }
 
 }
@@ -308,4 +366,181 @@ export default {
 }
 
 
+
+.delivery-form{
+    background: none;
+    box-shadow: none;
+    margin: 25px auto;
+    padding: 0;
+}
+.delivery-form .double{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 20px;
+}
+
+
+
+
+
+
+.flipswitch {
+    margin: 20px 0;
+    position: relative;
+    width: 98px;
+}
+.flipswitch input[type=checkbox] {
+  display: none;
+}
+.flipswitch-label {
+  display: block;
+  overflow: hidden;
+  cursor: pointer;
+  border: 0px solid #8C8C8C;
+  border-radius: 50px;
+}
+.flipswitch-inner {
+  width: 200%;
+  margin-left: -100%;
+  transition: margin 0.3s ease-in 0s;
+}
+.flipswitch-inner:before, .flipswitch-inner:after {
+  float: left;
+  width: 50%;
+  height: 22px;
+  padding: 0;
+  line-height: 22px;
+  font-size: 12px;
+  color: white;
+  font-family: Trebuchet, Arial, sans-serif;
+  font-weight: bold;
+  box-sizing: border-box;
+}
+.flipswitch-inner:before {
+  content: "PRIO";
+  padding-left: 11px;
+  background-color: #50990F;
+  color: #FFFFFF;
+  box-shadow: inset 1px 1px 3px rgba(0,0,0,0.5), inset -1px -1px 3px rgba(0,0,0,0.5);
+}
+.flipswitch-inner:after {
+    content: "NIE PRIO";
+    padding-right: 11px;
+    background-color: #636363;
+    color: #E8E8E8;
+    text-align: right;
+    box-shadow: inset 1px -1px 3px rgba(0,0,0,0.5), inset -1px 1px 3px rgba(0,0,0,0.5);
+}
+.flipswitch-switch {
+  width: 29px;
+  margin: -3.5px;
+  background: #F5B727;
+  box-shadow: 1px 1px 3px rgba(4,4,4,0.4), -1px -1px 3px rgba(4,4,4,0.4);
+  border-radius: 50px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 73px;
+  transition: all 0.3s ease-in 0s;
+}
+.flipswitch-cb:checked + .flipswitch-label .flipswitch-inner {
+  margin-left: 0;
+}
+.flipswitch-cb:checked + .flipswitch-label .flipswitch-switch {
+  right: 0;
+}
+
+
+/* INPUT RANGE */
+input[type=range] {
+  height: 35px;
+  -webkit-appearance: none;
+  margin: 10px 0;
+  width: 100%;
+  background: none;
+}
+input[type=range]:focus {
+  outline: none;
+}
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 20px;
+  cursor: pointer;
+  animate: 0.2s;
+  box-shadow: 0px 0px 0px #50555C;
+  background: #636363;
+  border-radius: 24px;
+  border: 0px solid #000000;
+}
+input[type=range]::-webkit-slider-thumb {
+  box-shadow: 0px 0px 0px #000000;
+  border: 0px solid #000000;
+  height: 29px;
+  width: 29px;
+  border-radius: 50px;
+  background: #F5B727;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -4.5px;
+  box-shadow: 1px 1px 3px rgba(0,0,0,0.6), -1px -1px 3px rgba(0,0,0,0.6);
+}
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background: #636363;
+}
+input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 20px;
+  cursor: pointer;
+  animate: 0.2s;
+  box-shadow: 0px 0px 0px #50555C;
+  background: #636363;
+  border-radius: 24px;
+  border: 0px solid #000000;
+}
+input[type=range]::-moz-range-thumb {
+  box-shadow: 0px 0px 0px #000000;
+  border: 0px solid #000000;
+  height: 29px;
+  width: 29px;
+  border-radius: 50px;
+  background: #F5B727;
+  cursor: pointer;
+}
+input[type=range]::-ms-track {
+  width: 100%;
+  height: 20px;
+  cursor: pointer;
+  animate: 0.2s;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+input[type=range]::-ms-fill-lower {
+  background: #636363;
+  border: 0px solid #000000;
+  border-radius: 48px;
+  box-shadow: 0px 0px 0px #50555C;
+}
+input[type=range]::-ms-fill-upper {
+  background: #636363;
+  border: 0px solid #000000;
+  border-radius: 48px;
+  box-shadow: 0px 0px 0px #50555C;
+}
+input[type=range]::-ms-thumb {
+  margin-top: 1px;
+  /* box-shadow: 0px 0px 0px rgba(0,0,0,0.6); */
+  border: 0px solid #000000;
+  height: 29px;
+  width: 29px;
+  border-radius: 50px;
+  background: #F5B727;
+  cursor: pointer;
+}
+input[type=range]:focus::-ms-fill-lower {
+  background: #636363;
+}
+input[type=range]:focus::-ms-fill-upper {
+  background: #636363;
+}
 </style>

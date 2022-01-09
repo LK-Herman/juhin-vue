@@ -20,6 +20,7 @@ import Forwarders from '../views/Forwarders.vue'
 import ForwarderAdd from '../views/ForwarderAdd.vue'
 import ForwarderRanking from '../views/ForwarderRanking.vue'
 import VendorDetails from '../views/VendorDetails.vue' 
+import OrderDetails from '../views/OrderDetails.vue' 
 import Created from '../views/Created.vue'
 // import getCurrentUser from '../composables/getCurrentUser.js'
 
@@ -93,6 +94,12 @@ const routes = [
       component: Orders,
       props: true
   },
+//   {
+//       path: '/orders/:orderId',
+//       name: 'OrderDetails',
+//       component: OrderDetails,
+//       props: true
+//   },
   {
       path: '/orders/add',
       name: 'OrderAdd',

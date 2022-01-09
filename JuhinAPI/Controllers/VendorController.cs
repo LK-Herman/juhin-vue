@@ -154,7 +154,23 @@ namespace JuhinAPI.Controllers
             {
                 return NotFound();
             }
+
             context.Remove(new Vendor() { VendorId = id });
+            await context.SaveChangesAsync();
+
+            var deliveries = await context.Deliveries
+                .Select(x => x.DeliveryId)
+                .ToListAsync();
+
+            foreach (var deliveryId in deliveries)
+            {
+                exists = await context.PurchaseOrders_Deliveries
+                    .AnyAsync(pd => pd.DeliveryId == deliveryId);
+                if (!exists)
+                {
+                    context.Remove(new Delivery() { DeliveryId = deliveryId });
+                }
+            }
             await context.SaveChangesAsync();
             return NoContent();
         }

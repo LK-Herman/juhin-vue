@@ -22,35 +22,37 @@
                     </div>
                 </div>
                 <div v-for="order in orders" :key="order.orderId" >
-                    <div id="orders-container" class="table-container">    
-                        <div class="sub-table-list" >
-                            <p>{{order.orderNumber}}</p>
+                    
+                        <div id="orders-container" class="table-container">    
+                            <div class="sub-table-list" >
+                                <p>{{order.orderNumber}}</p>
+                            </div>
+                            <div>
+                                <p>{{order.vendorShortName}}</p>
+                            </div>
+                            <div v-if="user.userId == order.userId">
+                                <p><span class="material-icons">account_circle</span></p>
+                            </div>
+                            <div v-else>
+                                <p ><span class="material-icons icon-group">group</span></p>
+                            </div>
+                            <div>
+                                <p>{{order.vendorName}}</p>
+                            </div>
+                            <div class="last-col">
+                                <router-link :to="{name:'DeliveryAdd', params:{
+                                            vId:order.vendorId, 
+                                            user:user, 
+                                            vendorName:order.vendorName, 
+                                            orderNo:order.orderNumber,
+                                            orderId:order.orderId}}" class="btn sub-btn">Dodaj dostawę
+                                </router-link>
+                            </div>
                         </div>
-                        <div>
-                            <p>{{order.vendorShortName}}</p>
-                        </div>
-                        <div v-if="user.userId == order.userId">
-                            <p><span class="material-icons">account_circle</span></p>
-                        </div>
-                        <div v-else>
-                            <p ><span class="material-icons icon-group">group</span></p>
-                        </div>
-                        <div>
-                            <p>{{order.vendorName}}</p>
-                        </div>
-                        
-                        <div class="last-col">
-                            <router-link :to="{name:'DeliveryAdd', params:{
-                                        vId:order.vendorId, 
-                                        user:user, 
-                                        vendorName:order.vendorName, 
-                                        orderNo:order.orderNumber,
-                                        orderId:order.orderId}}" class="btn sub-btn">Dodaj dostawę</router-link>
-                        </div>
-                        
-                    </div>
+                    
                 </div>
-          </div>
+            </div>
+    
           <div class="table-buttons">
                 
                 <button @click="handlePages(10)"><span class="material-icons">list</span>10</button>
