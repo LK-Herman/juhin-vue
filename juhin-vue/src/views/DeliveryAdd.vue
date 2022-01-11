@@ -10,24 +10,32 @@
         <div></div>
       </div>
 
-      <div v-if="error" class="error">
-        <p>{{ error }}</p>
-      </div>
+        <div v-if="error" class="error">
+            <p>{{ error }}</p>
+        </div>
+        <h3 id="add-delivery-h3">Wprowadź dane dostawy</h3>
+        <div class="double">
+            <div>
+                <label>Wprowadź datę dostawy</label>
+                <input type="datetime-local" v-model="eta" :class="{ disabled: packedItemsFlag }" required />
+            </div>
+            <div>
+                <label>Wybierz przewoźnika</label>
+                <select v-model="selectedForwarderId" :class="{ disabled: packedItemsFlag }" required>
+                    <option v-for="forwarder in forwarders" :key="forwarder.forwarderId" :value="forwarder.forwarderId">
+                    {{ forwarder.name }}
+                    </option>
+                </select>
+            </div>
 
-      <label>Wprowadź datę dostawy</label>
-      <input type="datetime-local" v-model="eta" :class="{ disabled: packedItemsFlag }" required />
-      <label>Dodaj komentarz (opcjonalnie)</label>
-      <textarea class="comment" v-model="comment" :class="{ disabled: packedItemsFlag }"></textarea>
-      <label>Wybierz przewoźnika</label>
-      <select v-model="selectedForwarderId" :class="{ disabled: packedItemsFlag }" required>
-        <option v-for="forwarder in forwarders" :key="forwarder.forwarderId" :value="forwarder.forwarderId">
-          {{ forwarder.name }}
-        </option>
-      </select>
-      <div class="submit">
-        <button>Dalej</button>
+        </div> 
+            <label>Dodaj komentarz (opcjonalnie)</label>
+            <textarea class="comment" v-model="comment" :class="{ disabled: packedItemsFlag }"></textarea>
+        <div class="submit">
+            <button>Dalej</button>
       </div>
     </form>
+
     <div v-if="packedItemsFlag">
         <div>
         <h2 class="center-text">Dostawa została utworzona</h2>
@@ -146,6 +154,26 @@ export default {
 form.add-delivery {
   background-color: transparent;
   box-shadow: none;
+  min-width: 700px;
+}
+form.add-delivery h2{
+    color: var(--yellow);
+}
+form.add-delivery #add-delivery-h3{
+    margin: 25px 0;
+}
+form.add-delivery .add-form-header{
+    border-bottom: solid 2px #666666;
+    padding-bottom: 10px;
+    margin-bottom: 40px;
+}
+
+form.add-delivery .double{
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    column-gap: 30px;
+    align-self: end;
+    margin-bottom: 25px;
 }
 
 form .comment {

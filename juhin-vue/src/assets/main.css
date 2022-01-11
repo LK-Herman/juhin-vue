@@ -6,6 +6,7 @@
     --back-grey:#303030;
     --back-grey2: #444444;
     --dark-blue:#536BAA;
+    --yellow: #F5B727;
     --orange:#cc6d01;
     --green:#5a7e1f;
     --teal: #32A0C2;
@@ -147,7 +148,12 @@ input, textarea, select {
     box-sizing: border-box;
     margin: 10px auto;
     font-weight: 500;
-    font-size: 16px ;
+    font-size: 16px;
+    height: 42px;
+}
+textarea{
+    resize: none;
+    height: 100%;
 }
 option{
     color: #000;

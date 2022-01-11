@@ -83,7 +83,7 @@
 
             <div v-if="!isEditing" class="item-btn">
                 <button @click="handleBack"> <span class="material-icons">keyboard_backspace</span> Powrót</button>
-                <button @click="isEditing = true" class="edit-btn">Edytuj</button>
+                <button @click="handleEditOrder" class="edit-btn">Edytuj</button>
                 <button class="sub-btn">Subskrybuj</button>
                 <button v-if="delivery.statusId == 1" class="delete-btn" @click="handleDelete">Usuń</button>
             </div>
@@ -98,50 +98,73 @@
 
         <div v-if="isEditing" >
 
-            <form class="delivery-form">
-                <div class="double" >
+            <form @submit.prevent="handleSubmitChanges" class="delivery-form">
+                <div class="triple">
                     <div>
                         <label>Numer zamówienia</label>
-                        <input type="text">
+                        <div >
+                            <h3 id="order-number" v-for="order in delivery.purchaseOrders" :key="order.orderId">
+                                <span>{{order.orderNumber}}</span>
+                            </h3>
+                        </div>
                     </div>
-                    <div>
-                        <label>Data dostawy</label>
-                        <input type="datetime-local">
-                    </div>
-                    <div>
-                        <label>Ustaw priorytet dostawy</label>
+
+                    <div class="double-items">
+                        <label>Ustaw priorytet</label>
                         <div class="flipswitch">
-                            <input type="checkbox" name="flipswitch" class="flipswitch-cb" id="fs" checked>
+                            <input type="checkbox" name="flipswitch" class="flipswitch-cb" id="fs" checked v-model="formPrio">
                             <label class="flipswitch-label" for="fs">
                                 <div class="flipswitch-inner"></div>
                                 <div class="flipswitch-switch"></div>
                             </label>
                         </div>
                     </div>
-                    <div>
-                        <label>Ocena dostawy: {{rating}}</label>
-                        <input type="range" max="100" min="1"  v-model="rating">
-                        
-                    </div>
-                    <div>
-                        <label>Zmień status</label>
-                        <select >
-                            <option value="">Doręczona</option>
-                            <option value="">Doręczona</option>
-                            <option value="">Doręczona</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label>Komentarz</label>
-                        <textarea cols="30" rows="10"></textarea>
+                    <div class="double-items">
+                        <label>Ocena dostawy:</label>
+                        <div class="double-rating">
+                            <span id="rating-value">{{formRating}}</span>
+                            <input type="range" max="100" min="0" step="1" v-model="formRating" :class="{redback:formRating<40, orangeback:formRating<70&&rating>39 , greenback:formRating>69}">
+                        </div>
                     </div>
                 </div>
+                <div class="double" >
+                    <div class="delivery-item-time">
+                        <label>Data i czas dostawy</label>
+                        <input type="datetime-local" v-model="formDate">
+                    </div>
+                    <div class="delivery-item-status">
+                        <label>Zmień status</label>
+                        <select v-model="formStatusId">
+                            <option v-for="status in statuses" :key="status.statusId" :value="status.statusId">{{status.name}}</option>
+                            
+                        </select>
+                    </div>
+                    <div v-if="!forError" class="delivery-item-forwarder">
+                        <label>Zmień przewoźnika</label>
+                        <select  v-model="formForwarderId">
+                            <option v-for="forwarder in forwarders" :key="forwarder.forwarderId" :value="forwarder.forwarderId">{{forwarder.name}}</option>
+                        </select>
+                    </div>
+                    <div class="delivery-item-comment">
+                        <label>Komentarz</label>
+                        <textarea cols="30" rows="5" v-model="formComment"></textarea>
+                    </div>
+                </div>
+                
+                <div class="delivery-buttons-container">
+                    <button @click="isEditing=false" class="btn">Anuluj</button>
+                    <button id="save" class="btn">Zapisz</button>
+                </div>
+
+
 
             </form>
 
         </div>
     </div>
+    
 </template>
+
 
 <script>
 import getDeliveryDetails from '../composables/getDeliveryDetails.js'
@@ -149,6 +172,10 @@ import urlHolder from '../composables/urlHolder.js'
 import { onMounted, ref } from '@vue/runtime-core'
 import {useRouter} from 'vue-router'
 import DeliveryDelete from '../components/DeliveryDelete.vue'
+import getForwarders from '../composables/getForwarders.js'
+import getStatuses from '../composables/getStatuses.js'
+import editDeliveryById from '../composables/editDeliveryById.js'
+import moment from 'moment'
 
 export default {
     props: ['userToken','user', 'id'],
@@ -160,6 +187,18 @@ export default {
         const mainUrl = urlHolder
         const router = useRouter()
         const {delivery, loadDetails, error} = getDeliveryDetails(mainUrl, props.userToken)
+        
+        const formPrio = ref('')
+        const formRating = ref(100)
+        const formDate = ref('')
+        const formStatusId = ref('')
+        const formForwarderId = ref('')
+        const formComment = ref('')
+
+        const {loadForwarders, error:forError, forwarders} = getForwarders(mainUrl, props.userToken)
+        const {loadStatuses, error:staError, statuses} = getStatuses(mainUrl, props.userToken)
+        const {editDelivery,error:ediError} = editDeliveryById(mainUrl, props.userToken)
+
         // const deleteFlag = ref(false)
         onMounted (()=>{
             counter = 1
@@ -169,9 +208,59 @@ export default {
                         item['counter'] = counter++
                     })
                 })
+            loadForwarders(1,50)
+            loadStatuses(1,50)
         })
+
+        const handleEditOrder = () =>{
+            isEditing.value = true
+            
+            formPrio.value = delivery.value.isPriority
+            formRating.value = delivery.value.rating
+            formDate.value = delivery.value.etaDate
+            formStatusId.value = delivery.value.statusId
+            formForwarderId.value = delivery.value.forwarderId
+            formComment.value = delivery.value.comment
+        }
+
         const handleBack = ()=>{
             router.back()
+        }
+        const handleSubmitChanges = async ()=>{
+            let newEtaDate = formDate.value
+            let newDeliveryDate = delivery.value.etaDate
+            if(formStatusId.value == 3){
+                newDeliveryDate = formDate.value
+                newEtaDate = delivery.value.etaDate
+            }else{
+                newEtaDate = formDate.value
+                newDeliveryDate = moment().toISOString()
+            }
+            let deliveryData = {
+            createdAt: delivery.value.createdAt,
+            etaDate: newEtaDate,
+            deliveryDate: newDeliveryDate,
+            rating: formRating.value,
+            comment: formComment.value,
+            forwarderId: formForwarderId.value,
+            statusId: formStatusId.value
+            }
+            await editDelivery(deliveryData, delivery.value.deliveryId)
+                    .then(function(){
+                        isEditing.value = false
+                        loadDetails(props.id)
+                            .then(function(){
+                            counter = 1   
+                            delivery.value.packedItems.forEach(item =>{
+                            item['counter'] = counter++
+                            })
+                        })
+                    })
+            
+
+            
+
+            console.log(deliveryData)
         }
         const handleDelete = ()=>{
             // deleteFlag.value = true
@@ -187,12 +276,25 @@ export default {
         }
 
         return{ delivery, 
-                error, 
+                error,
+                forError,
+                staError,
+                statuses,
+                forwarders,
                 counter,
                 handleDelete, 
-                handleBack, 
+                handleBack,
+                handleSubmitChanges,
+                handleEditOrder, 
                 isEditing,
-                rating}
+                rating,
+                formPrio,
+                formRating,
+                formDate,
+                formStatusId,
+                formForwarderId,
+                formComment
+                }
     }
 
 }
@@ -373,10 +475,81 @@ export default {
     margin: 25px auto;
     padding: 0;
 }
+
+.delivery-form #order-number{
+    margin: 15px 0;
+}
+
+.delivery-form .delivery-buttons-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+.delivery-form .delivery-buttons-container .btn{
+    width: 160px;
+    margin: 20px 0;
+}
+.delivery-form .delivery-buttons-container .btn#save{
+    background: var(--dark-blue);
+}
+.delivery-form .delivery-buttons-container .btn#save:hover{
+    background: var(--orange);
+}
+.delivery-form #rating-value{
+    margin: auto 0;
+    padding: 6px 12px;
+    border-radius: 20px;
+    max-width: 50px;
+    display: block;
+    text-align: center;
+    background: #3a3a3a;
+   
+}
 .delivery-form .double{
     display: grid;
     grid-template-columns: 1fr 1fr;
+    column-gap: 40px;
+    grid-template-areas: 
+    "status comm"
+    "time comm"
+    "forwarder comm";
+    align-items: space-between;
+}
+.delivery-form .double .delivery-item-status {
+    grid-area: status;
+    
+}
+.delivery-form .double .delivery-item-time {
+    grid-area: time;
+    
+    align-self: center;
+}
+.delivery-form .double .delivery-item-forwarder {
+    grid-area: forwarder;
+    align-self: end;
+}
+.delivery-form .double .delivery-item-comment {
+    grid-area: comm;
+    
+}
+.delivery-form .double .delivery-item-comment textarea{
+    height: 280px;
+}
+.delivery-form .triple{
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr;
     column-gap: 20px;
+}
+.delivery-form .double-items{ 
+    margin-bottom: 25px;
+}
+.delivery-form .double-rating{
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    column-gap: 20px;
+    justify-self: start;
 }
 
 
@@ -403,6 +576,7 @@ export default {
   width: 200%;
   margin-left: -100%;
   transition: margin 0.3s ease-in 0s;
+  
 }
 .flipswitch-inner:before, .flipswitch-inner:after {
   float: left;
@@ -415,13 +589,14 @@ export default {
   font-family: Trebuchet, Arial, sans-serif;
   font-weight: bold;
   box-sizing: border-box;
+  
 }
 .flipswitch-inner:before {
   content: "PRIO";
   padding-left: 11px;
   background-color: #50990F;
   color: #FFFFFF;
-  box-shadow: inset 1px 1px 3px rgba(0,0,0,0.5), inset -1px -1px 3px rgba(0,0,0,0.5);
+  box-shadow: inset 2px 2px 4px rgba(0,0,0,0.4);
 }
 .flipswitch-inner:after {
     content: "NIE PRIO";
@@ -429,7 +604,7 @@ export default {
     background-color: #636363;
     color: #E8E8E8;
     text-align: right;
-    box-shadow: inset 1px -1px 3px rgba(0,0,0,0.5), inset -1px 1px 3px rgba(0,0,0,0.5);
+    box-shadow: inset 2px 2px 4px rgba(0,0,0,0.4);
 }
 .flipswitch-switch {
   width: 29px;
@@ -458,6 +633,7 @@ input[type=range] {
   margin: 10px 0;
   width: 100%;
   background: none;
+  
 }
 input[type=range]:focus {
   outline: none;
@@ -467,13 +643,14 @@ input[type=range]::-webkit-slider-runnable-track {
   height: 20px;
   cursor: pointer;
   animate: 0.2s;
-  box-shadow: 0px 0px 0px #50555C;
   background: #636363;
   border-radius: 24px;
   border: 0px solid #000000;
+  box-shadow: inset 2px 2px 4px rgba(0,0,0,0.4);
 }
+
 input[type=range]::-webkit-slider-thumb {
-  box-shadow: 0px 0px 0px #000000;
+    box-shadow: 0px 0px 0px #000000;
   border: 0px solid #000000;
   height: 29px;
   width: 29px;
@@ -483,10 +660,23 @@ input[type=range]::-webkit-slider-thumb {
   -webkit-appearance: none;
   margin-top: -4.5px;
   box-shadow: 1px 1px 3px rgba(0,0,0,0.6), -1px -1px 3px rgba(0,0,0,0.6);
+  
 }
 input[type=range]:focus::-webkit-slider-runnable-track {
-  background: #636363;
+    background: #636363;
 }
+    input[type=range].redback:focus::-webkit-slider-runnable-track{
+        background: rgb(200, 0, 40);
+        transition: all 0.3s ease-in 0s;
+    }
+    input[type=range].orangeback:focus::-webkit-slider-runnable-track{
+        background: rgb(200, 137, 0);
+        transition: all 0.3s ease-in 0s;
+    }
+    input[type=range].greenback:focus::-webkit-slider-runnable-track{
+        background: #50990F;
+        transition: all 0.3s ease-in 0s;
+    }
 input[type=range]::-moz-range-track {
   width: 100%;
   height: 20px;

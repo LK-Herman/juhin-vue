@@ -23,7 +23,7 @@ namespace JuhinAPI.DTOs
         public DateTime DeliveryDate { get; set; }
 
         public int Rating { get; set; }
-
+        public bool IsPriority { get; set; }
         public string Comment { get; set; }
 
         //Delivery m-1 Forwarder
