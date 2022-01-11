@@ -1,31 +1,30 @@
 import { ref } from '@vue/reactivity'
+import axios from 'axios'
 import moment from 'moment'
 
 const getOrders = (url, token) =>{
 
     const orders = ref([])
     const error = ref(null)
-    const totalRecords = ref(1)
+    const totalRecords = ref()
+    const lastPage = ref()
 
     const loadOrders = async (pageNo, recordsPerPage) => {
-        await fetch(url + 'orders/', {
+       
+        await axios.get(url + 'orders?Page='+pageNo+'&RecordsPerPage='+recordsPerPage, {
             headers: {'Authorization':'Bearer ' + token,
             'Accept':'*/*' }})
-            .then(res => res.json())
-            .then(data => totalRecords.value = data.length)
-            .catch(err => error.value = err)
-
-        await fetch(url + 'orders?Page='+pageNo+'&RecordsPerPage='+recordsPerPage, {
-            headers: {'Authorization':'Bearer ' + token,
-            'Accept':'*/*' }})
-            .then(res => res.json())
-            .then(data => orders.value = data)
+            .then(res => {
+                orders.value = res.data
+                totalRecords.value = res.headers["all-records"]
+                lastPage.value = res.headers["totalamountpages"]
+                })
             .catch(err => error.value = err)
        
-            //  console.log(orders.value)
+              console.log(orders.value)
 
       }
     //   console.log('TOTAL RECORDS:'+totalRecords.value)
-      return {loadOrders, error, orders, totalRecords}
+      return {loadOrders, error, orders, totalRecords, lastPage}
 }
 export default getOrders

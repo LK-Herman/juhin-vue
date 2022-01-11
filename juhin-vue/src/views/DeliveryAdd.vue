@@ -112,6 +112,7 @@ export default {
             comment: comment.value,
             forwarderId: selectedForwarderId.value,
             statusId: 1,
+            isPriority: false
         }
         
         await addNewDelivery(deliveryData, props.orderId);

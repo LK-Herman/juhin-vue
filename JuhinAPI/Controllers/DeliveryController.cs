@@ -69,6 +69,22 @@ namespace JuhinAPI.Controllers
             return mapper.Map<List<DeliveryDetailsDTO>>(deliveries);
         }
         /// <summary>
+        /// Gets all deliveries records from database
+        /// </summary>
+        /// <param name="orderId">Purchase order Id</param>
+        /// <returns></returns>
+        [HttpGet("byorder/{orderId}", Name = "GetByOrderId")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist,Warehouseman,Guest")]
+        public async Task<ActionResult<List<PurchaseOrder_DeliveryDTO>>> GetByOrderId(Guid orderId)
+        {
+            var deliveries = await context.PurchaseOrders_Deliveries
+                .Include(d =>d.Delivery)
+                .Where(x => x.PurchaseOrderId == orderId)
+                .ToListAsync();
+
+            return mapper.Map<List<PurchaseOrder_DeliveryDTO>>(deliveries);
+        }
+        /// <summary>
         /// Shows only upcoming deliveries for next week (7 days) from today 
         /// </summary>
         /// <returns></returns>

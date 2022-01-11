@@ -49,7 +49,11 @@
                                 </router-link>
                             </div>
                         </div>
-                    
+
+                        <div>
+                            <p>ETA DATE . . . ETA DATE . . . ETA DATE ...</p>
+                        </div>
+
                 </div>
             </div>
     
@@ -97,48 +101,69 @@ export default {
     const pageNo = ref(1)
     const recordsPerPage = ref(5)
     const lastPage = ref(1)
+     let counter = 1
     
     const calculatePageCount = (pageSize, totalCount) => {
+        
         return totalCount < pageSize ? 1 : Math.ceil(totalCount / pageSize)
     }
 
     onMounted(async () => {
-      await loadOrders(pageNo.value, recordsPerPage.value)
+        counter = 1
+      await loadOrders(pageNo.value,recordsPerPage.value)
+            .then(function(){
+                  orders.value.forEach(item =>{item['counter']=counter++})  
+            })
     })
     watch(pageNo, () => {
         lastPage.value = calculatePageCount(recordsPerPage.value, totalRecords.value)
     })
 
     watch((orders), async () =>{
-        
         lastPage.value = calculatePageCount(recordsPerPage.value, totalRecords.value)
     })
 
     const handleNextPage = async () => {
         if(pageNo.value < lastPage.value){
             pageNo.value++
+            counter = 1
             await loadOrders(pageNo.value, recordsPerPage.value)
+                .then(function(){
+                    orders.value.forEach(item =>{item['counter']=counter++})  
+                })
         }
     }
     const handlePreviousPage = async () => {
         if(pageNo.value > 1){
             pageNo.value--
+            counter = 1
         await loadOrders(pageNo.value, recordsPerPage.value)
+            .then(function(){
+                  orders.value.forEach(item =>{item['counter']=counter++})  
+            })
     }
     }
-     const handlePages = async (pages) => {
+    const handlePages = async (pages) => {
         recordsPerPage.value = pages
         pageNo.value =1
         lastPage.value = calculatePageCount(recordsPerPage.value, totalRecords.value)
+        counter = 1
         await loadOrders(pageNo.value, recordsPerPage.value)
+            .then(function(){
+                  orders.value.forEach(item =>{item['counter']=counter++})  
+            })
     }
     const handleGoToPage = async (page) => {
         pageNo.value = page
+        counter = 1
         await loadOrders(pageNo.value, recordsPerPage.value)
+        .then(function(){
+                  orders.value.forEach(item =>{item['counter']=counter++})  
+            })
     }
 
     const handleBack = () =>{
-        router.go(-1)
+        router.back
     }
 
     return {handleBack, orders, error, pageNo, recordsPerPage, handleNextPage, handlePreviousPage, handlePages, handleGoToPage, lastPage }

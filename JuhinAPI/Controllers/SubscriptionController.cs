@@ -61,6 +61,24 @@ namespace JuhinAPI.Controllers
             return mapper.Map<SubscriptionDTO>(subscription);
         }
         /// <summary>
+        /// Gets the list of user subscriptions by user Id
+        /// </summary>
+        /// <param userId="userId">The Id of the user</param>
+        /// <returns></returns>
+        [HttpGet("user/{userId}", Name = "getUserSubscriptions")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Specialist,Warehouseman,Guest")]
+        public async Task<ActionResult<List<SubscriptionDTO>>> getUserSubscriptions(string userId)
+        {
+            var subscriptions = await context.Subscriptions
+                .Where(s => s.UserId == userId)
+                .ToListAsync();
+            if (subscriptions == null)
+            {
+                return NotFound();
+            }
+            return mapper.Map<List<SubscriptionDTO>>(subscriptions);
+        }
+        /// <summary>
         /// Adds new subscription
         /// </summary>
         /// <param name="newSubscription"></param>

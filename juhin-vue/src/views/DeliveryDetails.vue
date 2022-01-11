@@ -243,7 +243,8 @@ export default {
             rating: formRating.value,
             comment: formComment.value,
             forwarderId: formForwarderId.value,
-            statusId: formStatusId.value
+            statusId: formStatusId.value,
+            isPriority: formPrio.value
             }
             await editDelivery(deliveryData, delivery.value.deliveryId)
                     .then(function(){

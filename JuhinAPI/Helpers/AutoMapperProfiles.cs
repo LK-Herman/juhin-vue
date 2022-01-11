@@ -69,16 +69,18 @@ namespace JuhinAPI.Helpers
             CreateMap<IdentityUser, UserDTO>()
                 .ForMember(x => x.EmailAddress, options => options.MapFrom(x => x.Email))
                 .ForMember(x => x.UserId, options => options.MapFrom(x => x.Id));
-                
-                
+
+            CreateMap<PurchaseOrder_Delivery, PurchaseOrder_DeliveryDTO>()
+                .ForMember(x => x.EtaDate, options => options.MapFrom(x => x.Delivery.ETADate));
+
         }
-        
+
 
         //private VendorDTO MapOrderToVendor(PurchaseOrder purchaseOrder, PurchaseOrderDetailsDTO purchaseOrderDetails)
         //{
         //    return new VendorDTO() { Name = purchaseOrderDetails.VendorName, ShortName = purchaseOrderDetails.VendorShortName };
         //}
-
+        
         private string MapPackedItemToItem(PackedItem packedItem, PackedItemDetailsDTO detailedPackedItem)
         {
             var itemDTO = new ItemDTO() { Name = detailedPackedItem.Item.Name };
