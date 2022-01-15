@@ -9,7 +9,6 @@ import DeliverySearch from '../views/DeliverySearch.vue'
 import DeliverySchedule from '../views/DeliverySchedule.vue'
 import DeliveryDetails from '../views/DeliveryDetails.vue'
 import DeliveryAdd from '../views/DeliveryAdd.vue'
-import DeliveryUser from '../views/DeliveryUser.vue'
 import Orders from '../views/Orders.vue'
 import OrderAdd from '../views/OrderAdd.vue'
 import Items from '../views/Items.vue'
@@ -82,13 +81,7 @@ const routes = [
       component: DeliverySchedule,
       props: true
   },
-  {
-      path: '/deliveries/user-deliveries',
-      name: 'DeliveryUser',
-      component: DeliveryUser,
-      props: true
-  },
-  {
+   {
       path: '/orders',
       name: 'Orders',
       component: Orders,

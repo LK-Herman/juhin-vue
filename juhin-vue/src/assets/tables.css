@@ -70,7 +70,8 @@
 }
 .table-container:hover{
     transition: ease-in-out 240ms;
-    background-color: var(--back-grey);
+    background-color: #444;
+    cursor: pointer;
     
 }
 .table-container:active{

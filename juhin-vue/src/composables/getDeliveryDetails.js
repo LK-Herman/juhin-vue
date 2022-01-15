@@ -113,7 +113,7 @@ const getDeliveryDetails = (url, token) =>{
             }
 
        
-        //console.log(delivery.value)
+        console.log(delivery.value)
     }
     
     return {loadDetails, error, delivery}

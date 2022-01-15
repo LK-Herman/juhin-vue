@@ -25,7 +25,7 @@
                 <div>
                     <Weekly :userToken="userToken" :date="firstDayOfWeek2" />
                 </div>
-        </div>
+        </div> 
         <div class="item-head3">
             <h3>TYDZIEŃ {{week3}}</h3>
             <p>
@@ -76,7 +76,7 @@ export default {
 }
 .upcoming-container{
     display: grid;
-    
+  
     grid-template-columns: auto auto auto;
     column-gap: 0px;
     margin: 20px 0;

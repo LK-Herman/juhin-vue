@@ -23,7 +23,7 @@
                 </div>
                 <div v-for="order in orders" :key="order.orderId" >
                     
-                        <div id="orders-container" class="table-container">    
+                        <div @click="handleLoadDeliveries(order.orderId)" id="orders-container" class="table-container">    
                             <div class="sub-table-list" >
                                 <p>{{order.orderNumber}}</p>
                             </div>
@@ -48,10 +48,6 @@
                                             orderId:order.orderId}}" class="btn sub-btn">Dodaj dostawę
                                 </router-link>
                             </div>
-                        </div>
-
-                        <div>
-                            <p>ETA DATE . . . ETA DATE . . . ETA DATE ...</p>
                         </div>
 
                 </div>
@@ -90,6 +86,8 @@ import { onMounted, ref, watch, watchEffect } from '@vue/runtime-core'
 import getOrders from '../composables/getOrders.js'
 import urlHolder from '../composables/urlHolder.js'
 import { useRouter } from 'vue-router'
+import axios from 'axios'
+import mainUrl from '../composables/urlHolder.js'
 
 export default {
   components: {  },
@@ -99,7 +97,7 @@ export default {
     const url = urlHolder
     const {orders, error, loadOrders, totalRecords} = getOrders(url, props.userToken)
     const pageNo = ref(1)
-    const recordsPerPage = ref(5)
+    const recordsPerPage = ref(10)
     const lastPage = ref(1)
      let counter = 1
     
@@ -165,8 +163,17 @@ export default {
     const handleBack = () =>{
         router.back
     }
+    const deliveries = ref(null)
+    
+    const handleLoadDeliveries = async (orderId) =>{
+        await axios.get(mainUrl + "deliveries/byorder/"+ orderId,{
+            'Accept':'*/*',
+            'Authorization':'Bearer ' + props.userToken
+        }).then(resp => deliveries.value = resp.data)
 
-    return {handleBack, orders, error, pageNo, recordsPerPage, handleNextPage, handlePreviousPage, handlePages, handleGoToPage, lastPage }
+    }
+
+    return {handleBack, deliveries, handleLoadDeliveries, orders, error, pageNo, recordsPerPage, handleNextPage, handlePreviousPage, handlePages, handleGoToPage, lastPage }
   }
 }
 </script>
@@ -182,8 +189,15 @@ export default {
 }
 .table-container#orders-container{
     grid-template-columns: 110px 130px 80px 300px  1fr;
+    
 }
 .table-container .icon-group{
     color: rgb(97, 97, 97);
 }
+.table-list .dropdown{
+    position: relative;
+    /* display: inline-block; */
+    
+}
+
 </style>
