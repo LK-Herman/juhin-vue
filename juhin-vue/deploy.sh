@@ -15,7 +15,7 @@ cd dist
 git init
 git add -A
 git commit -m 'deploy'
-
+git show-ref
 # if you are deploying to https://<USERNAME>.github.io
 # git push -f git@github.com:lk-herman/lk-herman.github.io.git main
 
